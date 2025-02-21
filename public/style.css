@@ -42,6 +42,7 @@ div#results {
     max-width: 1200px;
 }
 
+/* Recipe card styles */
 .recipe {
     background-color: #fff;
     width: calc(100% - 30px);
@@ -72,6 +73,11 @@ div#results {
     font-size: 1.25em;
     height: 3em;
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .recipe img {
