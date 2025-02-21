@@ -1,12 +1,40 @@
 body {
     background-color: #f4f4f4;
     font-family: Arial, sans-serif;
+    height: 100%;
     margin: 0;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    padding: 20px;
+}
+
+input[type="text"] {
+    margin: 0;
+    width: 20%;
+    padding: 10px 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    margin: 0;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button[type="submit"]:hover {
+    background-color: #f4f4f4;
 }
 
 div#results {
-    margin: 0 auto;
+    margin: 20px auto; 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
@@ -30,7 +58,7 @@ div#results {
     transform: scale(1.05);
 }
 
-h3 {
+.recipe h3 {
     color: #666;
     text-transform: uppercase;
     letter-spacing: 0.2em;
@@ -40,9 +68,9 @@ h3 {
 
 .recipe h2 {
     margin: 0;
+    line-height: 0.9;
     font-size: 1.25em;
-    height: 2.5em;
-    width: 100%;
+    height: 3em;
     font-weight: 600;
 }
 
@@ -53,7 +81,22 @@ h3 {
     object-fit: cover;
 }
 
+.recipe .text-info {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .recipe p {
-    font-size: 1em;
+    font-size: 0.75em;
     color: #666;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #eee;
+    width: 100%;
+    margin-top: auto;
 }

@@ -24,6 +24,23 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
+app.get('/recipes', async (req, res) => {
+    const url = `https://api.edamam.com/search?q=random&app_id=${appId}&app_key=${apiKey}&to=24`;
+    try {
+        const response = await axios.get(url);
+        const recipes = response.data.hits.map(hit => {
+            const recipe = hit.recipe;
+            recipe.label = toTitleCase(recipe.label);
+            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(' ') : ''; // Ensure dishType is an array and join with spaces
+            return recipe;
+        });
+        res.json(recipes);
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        res.status(500).send(`Error: ${error.message}`);
+    }
+});
+
 app.post('/search', async (req, res) => {
     const recipeName = req.body.recipeName;
     const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&to=24`;

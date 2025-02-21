@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Find Recipes by Name</h1>
     <main>
         <form action="/search" method="POST">
-            <input type="text" name="recipeName" placeholder="Enter recipe name (e.g., chicken curry)" required>
+            <input type="text" name="recipeName" placeholder="Find a recipe or ingredient" required>
             <button type="submit">Search</button>
         </form>
         <div id="results" class="results"></div>
     </main>
+    <footer>
+        <p>Recipe Finder</p>
+    </footer>
     <script src="home.js"></script>
 </body>
 </html>
