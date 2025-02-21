@@ -1,0 +1,64 @@
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+}
+
+div#results {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 70%;
+    justify-items: center;
+    justify-content: center;
+}
+
+.recipe {
+    background-color: #fff;
+    width: calc(100% - 30px);
+    height: max-content;
+    border: 1px solid #ccc;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.recipe:hover {
+    transform: scale(1.05);
+}
+
+h3 {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75em;
+}
+
+.recipe h2 {
+    margin: 0;
+    font-size: 1.25em;
+    height: 2.5em;
+    width: 100%;
+    font-weight: bold;
+}
+
+.image-container {
+    display: flex;
+    overflow-x: auto;
+}
+
+.recipe img {
+    width: 300px;
+    height: 200px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.recipe p {
+    font-size: 1em;
+    color: #666;
+}
