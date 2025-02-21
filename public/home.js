@@ -1,3 +1,5 @@
+// Run this function after the page has loaded
+// This function fetches the random recipes from the server and renders them on the page
 document.addEventListener('DOMContentLoaded', async () => {
     const resultsDiv = document.getElementById('results');
     try {
@@ -9,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// This function renders the recipes on the page
 function renderRecipes(recipes) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = recipes.map(recipe => `
@@ -24,6 +27,7 @@ function renderRecipes(recipes) {
     `).join('');
 }
 
+// This function fetches the search results from the server and renders them on the page
 document.querySelector('form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const recipeName = event.target.elements.recipeName.value;
