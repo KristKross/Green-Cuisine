@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes to serve the recipes when page loads
+// TODO: Implement multiple pages for the loaded recipes
 app.get('/recipes', async (req, res) => {
     const url = `https://api.edamam.com/search?q=random&app_id=${appId}&app_key=${apiKey}&to=24`;
     try {
@@ -48,6 +49,7 @@ app.get('/recipes', async (req, res) => {
 });
 
 // Routes to serve the search results when the form is submitted
+// TODO: Implement multiple pages for search results
 app.post('/search', async (req, res) => {
     const recipeName = req.body.recipeName; // Getting the recipe name from the form
     const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&to=24`;
