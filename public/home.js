@@ -17,8 +17,8 @@ function renderRecipes(recipes) {
     resultsDiv.innerHTML = recipes.map(recipe => `
         <div class="recipe">
             <img src="${recipe.image}" alt="${recipe.label}">
-            <h3>${recipe.dishType}</h3>
-            <h2>${recipe.label}</h2>
+            <div class="dish-type">${recipe.dishType}</div>
+            <div class="recipe-name">${recipe.label}</div>
             <div class="text-info">
                 <p><b>Calories:</b> ${Math.round(recipe.calories)}</p>
                 <p><b>Cooking Time:</b> ${recipe.totalTime} min</p>
@@ -31,7 +31,6 @@ function renderRecipes(recipes) {
 document.querySelector('form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const recipeName = event.target.elements.recipeName.value;
-    const resultsDiv = document.getElementById('results');
     try {
         const response = await fetch('/search', {
             method: 'POST',
