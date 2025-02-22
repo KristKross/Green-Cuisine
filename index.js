@@ -39,6 +39,7 @@ app.get('/recipes', async (req, res) => {
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
             const recipe = hit.recipe; // Getting the recipe
             recipe.label = toTitleCase(recipe.label);
+            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
             return recipe; // Returning the recipe
         });
         res.json(recipes); // Sending the recipes as a JSON response
@@ -58,6 +59,7 @@ app.post('/search', async (req, res) => {
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
             const recipe = hit.recipe; // Getting the recipe
             recipe.label = toTitleCase(recipe.label);
+            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
             return recipe; // Returning the recipe
         });
         res.json(recipes); // Sending the recipes as a JSON response
