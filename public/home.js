@@ -34,9 +34,11 @@ function renderRecipes(recipes) {
     resultsDiv.innerHTML = recipes.map(recipe => `
         <div class="recipe">
             <img src="${recipe.image}" alt="${recipe.label}">
-            <div class="dish-type">${recipe.dishType}</div>
-            <div class="recipe-name">${recipe.label}</div>
-            <p><b>Cooking Time:</b> ${recipe.totalTime > 0 ? `${recipe.totalTime} min` : 'N/A'}</p>
+            <div class="column">
+                <div class="dish-type">${recipe.dishType}</div>
+                <div class="recipe-name">${recipe.label}</div>
+                <p><b>Cooking Time:</b> ${recipe.totalTime > 0 ? `${recipe.totalTime} min` : 'N/A'}</p>
+            </div>
         </div>
     `).join('');
 }
