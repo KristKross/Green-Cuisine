@@ -37,7 +37,6 @@ async function fetchSearchResults(recipeName, page) {
 function updatePagination(total, page, limit) {
     const totalPages = Math.ceil(total / limit);
     renderPaginationControls(totalPages, page);
-    document.getElementById('pagination-info').textContent = `Page ${page} of ${totalPages}`;
 }
 
 function renderRecipes(recipes) {
@@ -71,12 +70,12 @@ function renderPaginationControls(totalPages, currentPage) {
     `;
 
     paginationDiv.innerHTML = paginationHTML;
-    attachEventListeners();
+    attachEventListeners(totalPages, currentPage);
 }
 
-function attachEventListeners() {
+function attachEventListeners(totalPages, currentPage) {
     document.getElementById('next').addEventListener('click', () => {
-        if (currentPage < currentPage < 5) {
+        if (currentPage < totalPages) {
             currentPage++;
             if (currentRecipeName) {
                 fetchSearchResults(currentRecipeName, currentPage);
