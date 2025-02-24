@@ -125,6 +125,7 @@ div#results {
 
 .recipe img {
     width: 100%;
+    height: 200px;
     max-height: 200px;
     border-radius: 5px;
     object-fit: cover;
