@@ -71,7 +71,6 @@ div#results {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
     cursor: pointer;
-    justify-self: center;
 
     @media screen and (max-width: 576px) {
         width: calc(100% - 40px);
@@ -119,7 +118,6 @@ div#results {
 
     @media screen and (max-width: 576px) {
         font-size: 16px;
-        height: auto;
     }
 }
 
