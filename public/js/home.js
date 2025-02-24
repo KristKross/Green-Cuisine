@@ -1,17 +1,9 @@
 let currentPage = 1;
-let totalRecipes = 0;
 let currentRecipeName = '';
 
-// Function to fetch the total count of recipes
-async function fetchTotalRecipes() {
-    try {
-        const response = await fetch('/recipes/total');
-        const data = await response.json();
-        totalRecipes = data.total;
-    } catch (error) {
-        console.error('Error fetching total recipes:', error);
-    }
-}
+document.addEventListener('DOMContentLoaded', async () => {
+    fetchRecipes(currentPage);
+});
 
 // Function to fetch and render recipes
 async function fetchRecipes(page) {
@@ -20,8 +12,6 @@ async function fetchRecipes(page) {
         const data = await response.json();
         renderRecipes(data.recipes);
         updatePagination(data.total, data.page, data.limit);
-        updateURI(`/home/recipes/page/${page}`);
-        scrollToTop();
     } catch (error) {
         console.error('Error fetching recipes:', error);
     }
@@ -38,23 +28,15 @@ async function fetchSearchResults(recipeName, page) {
         const data = await response.json();
         renderRecipes(data.recipes);
         updatePagination(data.total, data.page, data.limit);
-        updateURI(`recipes/search/recipeName/${recipeName}/page/${page}`);
-        scrollToTop();
     } catch (error) {
         console.error('Error fetching search results:', error);
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await fetchTotalRecipes();
-    fetchRecipes(currentPage);
-});
-
 // Function to update pagination buttons
 function updatePagination(total, page, limit) {
     const totalPages = Math.ceil(total / limit);
-    document.getElementById('prev').disabled = page <= 1;
-    document.getElementById('next').disabled = page >= totalPages;
+    renderPaginationControls(totalPages, page);
     document.getElementById('pagination-info').textContent = `Page ${page} of ${totalPages}`;
 }
 
@@ -70,36 +52,66 @@ function renderRecipes(recipes) {
             </div>
         </div>
     `).join('');
-    renderPaginationControls();
-    attachEventListeners();
+    scrollToTop();
 }
 
-function renderPaginationControls() {
+function renderPaginationControls(totalPages, currentPage) {
     const paginationDiv = document.getElementById('pagination');
-    paginationDiv.innerHTML = `
-        <button id="prev">Previous</button>
-        <span id="pagination-info">Page ${currentPage}</span>
-        <button id="next">Next</button>
+    let paginationHTML = `
+        <button id="prev" class="${currentPage === 1 ? 'disabled' : ''}">< Previous</button>
     `;
+
+    // Generate numbered buttons
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button class="page-number ${i === currentPage ? 'active' : ''}" data-page="${i}" ${i === currentPage ? 'disabled' : ''}>${i}</button>`;
+    }
+
+    paginationHTML += `
+        <button id="next" class="${currentPage === totalPages ? 'disabled' : ''}">Next ></button>
+    `;
+
+    paginationDiv.innerHTML = paginationHTML;
+    attachEventListeners();
 }
 
 function attachEventListeners() {
     document.getElementById('next').addEventListener('click', () => {
-        currentPage++;
-        if (currentRecipeName) {
-            fetchSearchResults(currentRecipeName, currentPage);
-        } else {
-            fetchRecipes(currentPage);
+        if (currentPage < currentPage < 5) {
+            currentPage++;
+            if (currentRecipeName) {
+                fetchSearchResults(currentRecipeName, currentPage);
+            } else {
+                fetchRecipes(currentPage);
+            }
+            scrollToTop();
         }
     });
 
     document.getElementById('prev').addEventListener('click', () => {
-        currentPage--;
-        if (currentRecipeName) {
-            fetchSearchResults(currentRecipeName, currentPage);
-        } else {
-            fetchRecipes(currentPage);
+        if (currentPage > 1) {
+            currentPage--;
+            if (currentRecipeName) {
+                fetchSearchResults(currentRecipeName, currentPage);
+            } else {
+                fetchRecipes(currentPage);
+            }
+            scrollToTop();
         }
+    });
+
+    document.querySelectorAll('.page-number').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const page = parseInt(event.target.getAttribute('data-page'));
+            if (page !== currentPage) {
+                currentPage = page;
+                if (currentRecipeName) {
+                    fetchSearchResults(currentRecipeName, currentPage);
+                } else {
+                    fetchRecipes(currentPage);
+                }
+                scrollToTop();
+            }
+        });
     });
 
     document.querySelector('form').addEventListener('submit', (event) => {
@@ -108,6 +120,7 @@ function attachEventListeners() {
         currentRecipeName = recipeName;
         currentPage = 1; // Reset to the first page for new search
         fetchSearchResults(recipeName, currentPage);
+        scrollToTop();
     });
 }
 
@@ -120,5 +133,6 @@ function updateURI(uri) {
 function scrollToTop() {
     window.scrollTo({
         top: 0,
+        behavior: 'smooth'
     });
 }
