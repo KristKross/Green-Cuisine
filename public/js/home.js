@@ -1,15 +1,13 @@
 let currentPage = 1;
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await fetchTotalRecipes();
-    fetchRecipes(currentPage);
-});
+let totalRecipes = 0;
+let currentRecipeName = '';
 
 // Function to fetch the total count of recipes
 async function fetchTotalRecipes() {
     try {
         const response = await fetch('/recipes/total');
         const data = await response.json();
+        totalRecipes = data.total;
     } catch (error) {
         console.error('Error fetching total recipes:', error);
     }
@@ -22,6 +20,8 @@ async function fetchRecipes(page) {
         const data = await response.json();
         renderRecipes(data.recipes);
         updatePagination(data.total, data.page, data.limit);
+        updateURI(`/home/recipes/page/${page}`);
+        scrollToTop();
     } catch (error) {
         console.error('Error fetching recipes:', error);
     }
@@ -38,10 +38,17 @@ async function fetchSearchResults(recipeName, page) {
         const data = await response.json();
         renderRecipes(data.recipes);
         updatePagination(data.total, data.page, data.limit);
+        updateURI(`recipes/search/recipeName/${recipeName}/page/${page}`);
+        scrollToTop();
     } catch (error) {
         console.error('Error fetching search results:', error);
     }
 }
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchTotalRecipes();
+    fetchRecipes(currentPage);
+});
 
 // Function to update pagination buttons
 function updatePagination(total, page, limit) {
@@ -79,18 +86,39 @@ function renderPaginationControls() {
 function attachEventListeners() {
     document.getElementById('next').addEventListener('click', () => {
         currentPage++;
-        fetchRecipes(currentPage);
+        if (currentRecipeName) {
+            fetchSearchResults(currentRecipeName, currentPage);
+        } else {
+            fetchRecipes(currentPage);
+        }
     });
 
     document.getElementById('prev').addEventListener('click', () => {
         currentPage--;
-        fetchRecipes(currentPage);
+        if (currentRecipeName) {
+            fetchSearchResults(currentRecipeName, currentPage);
+        } else {
+            fetchRecipes(currentPage);
+        }
     });
 
     document.querySelector('form').addEventListener('submit', (event) => {
         event.preventDefault();
         const recipeName = event.target.elements.recipeName.value;
+        currentRecipeName = recipeName;
         currentPage = 1; // Reset to the first page for new search
         fetchSearchResults(recipeName, currentPage);
+    });
+}
+
+// Function to update the URI without reloading the page
+function updateURI(uri) {
+    history.pushState(null, '', uri);
+}
+
+// Function to scroll to the top of the page
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
     });
 }
