@@ -9,7 +9,7 @@ dotenv.config();
 
 // Variables to process environment variables
 const app = express();
-const port = 3001;
+const port = 3000;
 const appId = process.env.APP_ID;
 const apiKey = process.env.API_KEY;
 
