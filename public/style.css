@@ -98,7 +98,7 @@ div#results {
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 12px;
-    margin: 5px 0;
+    margin: 7px 0;
 
     @media screen and (max-width: 576px) {
         font-size: 8px;
@@ -108,14 +108,14 @@ div#results {
 .recipe-name {
     margin: 0;
     line-height: 1;
-    font-size: 20px;
-    height: 62px;
+    font-size: 18px;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    text-transform: capitalize;
 
     @media screen and (max-width: 576px) {
         font-size: 16px;

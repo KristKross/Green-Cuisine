@@ -18,13 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Function to convert a string to title case
-function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-}
-
 // Routes to serve the home page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
@@ -38,7 +31,6 @@ app.get('/recipes', async (req, res) => {
         const response = await axios.get(url); // Fetching data from the Edamam API
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
             const recipe = hit.recipe; // Getting the recipe
-            recipe.label = toTitleCase(recipe.label);
             recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
             return recipe; // Returning the recipe
         });
@@ -58,7 +50,6 @@ app.post('/search', async (req, res) => {
         const response = await axios.get(url); // Fetching data from the Edamam API
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
             const recipe = hit.recipe; // Getting the recipe
-            recipe.label = toTitleCase(recipe.label);
             recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
             return recipe; // Returning the recipe
         });
