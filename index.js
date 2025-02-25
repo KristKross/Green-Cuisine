@@ -20,7 +20,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes to serve the home page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html/home.html'));
+});
+
+// Routes to serve the search page
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html/search.html'));
 });
 
 // Routes to serve the recipes when page loads

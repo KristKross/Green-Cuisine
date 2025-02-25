@@ -9,14 +9,11 @@
 <body>
     <main>
         <!-- Search form for recipes -->
-        <form action="/search" method="POST">
+        <form id="search-form">
             <input type="text" name="recipeName" placeholder="Find a recipe or ingredient" required>
             <button type="submit">Search</button>
         </form>
-        <!-- Container for loaded recipes and search results -->
-        <div id="results" class="results"></div>
     </main>
-    <div id="pagination" class="pagination"></div>
     <footer>
         <p>Recipe Finder</p>
     </footer>
