@@ -1,6 +1,8 @@
+// Variables to store current page and recipe name
 let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 let currentRecipeName = new URLSearchParams(window.location.search).get('q') || '';
 
+// Event listener for DOM content loaded
 document.addEventListener('DOMContentLoaded', async () => {
     if (currentRecipeName) {
         fetchSearchResults(currentRecipeName, currentPage);
@@ -17,19 +19,60 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Function to fetch and render search results
 async function fetchSearchResults(recipeName, page) {
+    removeError();
     try {
+        showLoading();
         const response = await fetch(`/search?page=${page}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recipeName })
         });
         const data = await response.json();
-        renderRecipes(data.recipes);
-        updatePagination(data.total, data.page, data.limit);
         updateURI(`/search?q=${recipeName}&page=${page}`, { page, recipeName });
+        if (data.recipes.length > 0) {
+            renderRecipes(data.recipes);
+            updatePagination(data.total, data.page, data.limit);    
+        } else {
+            showError();
+        }
     } catch (error) {
         console.error('Error fetching search results:', error);
+        showError('Error fetching search results. Please try again later.');
+    } finally {
+        hideLoading();
     }
+}
+
+// Function to show loading indicator
+function showLoading() {
+    hideClasses(['results', 'pagination']);
+
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'loader';
+    const form = document.getElementById('search-form');
+    form.parentNode.insertBefore(loadingDiv, form.nextSibling);
+}
+
+// Function to hide loading indicator
+function hideLoading() {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.style.display = 'grid'; 
+
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.style.display = 'flex';
+
+    const loader = document.getElementById('loader');
+    loader.remove();
+}
+
+// Function to hide elements by class names
+function hideClasses(elements) {
+    elements.forEach(element => {
+        const el = document.getElementById(element);
+        if (el) {
+            el.style.display = 'none';
+        }
+    });
 }
 
 // Function to update pagination buttons
@@ -50,7 +93,6 @@ function renderRecipes(recipes) {
             </div>
         </div>
     `).join('');
-    scrollToTop();
 }
 
 function renderPaginationControls(totalPages, currentPage) {
@@ -113,10 +155,25 @@ function updateURI(uri, state) {
     history.pushState(state, '', uri);
 }
 
-// Function to scroll to the top of the page
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+// Function to show error messages
+function showError(message) {
+    hideClasses(['results', 'pagination']);
+
+    const resultsDiv = document.getElementById('results');
+    const paginationDiv = document.getElementById('pagination');
+    resultsDiv.innerHTML = '';
+    paginationDiv.innerHTML = '';
+
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'error';
+    errorDiv.textContent = message || "The page you're looking for is unavailable. Please try a different search term.";
+    
+    const form = document.getElementById('search-form');
+    form.parentNode.insertBefore(errorDiv, form.nextSibling);
+}
+
+// Function to hide error messages
+function removeError() {
+    const error = document.getElementById('error');
+    if (error) error.remove();
 }
