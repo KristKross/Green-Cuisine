@@ -59,12 +59,30 @@ button[type="submit"]:hover {
     100% { transform: rotate(360deg); }
 }
 
-#error {
+#error-message {
+    width: 100%;
+    max-width: 900px;
     margin: auto;
     align-self: center;
     text-align: center;
 }
 
+.error-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    
+    @media screen and (max-width: 576px) {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+}
+
+.error-message {
+    @media screen and (max-width: 576px) {
+        font-size: 12px;
+    }
+}
 
 div#results {
     margin: 20px auto; 

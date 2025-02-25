@@ -53,28 +53,6 @@ function showLoading() {
     form.parentNode.insertBefore(loadingDiv, form.nextSibling);
 }
 
-// Function to hide loading indicator
-function hideLoading() {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.style.display = 'grid'; 
-
-    const paginationDiv = document.getElementById('pagination');
-    paginationDiv.style.display = 'flex';
-
-    const loader = document.getElementById('loader');
-    loader.remove();
-}
-
-// Function to hide elements by class names
-function hideClasses(elements) {
-    elements.forEach(element => {
-        const el = document.getElementById(element);
-        if (el) {
-            el.style.display = 'none';
-        }
-    });
-}
-
 // Function to update pagination buttons
 function updatePagination(total, page, limit) {
     const totalPages = Math.ceil(total / limit);
@@ -155,6 +133,28 @@ function updateURI(uri, state) {
     history.pushState(state, '', uri);
 }
 
+// Function to hide loading indicator
+function hideLoading() {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.style.display = 'grid'; 
+
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.style.display = 'flex';
+
+    const loader = document.getElementById('loader');
+    loader.remove();
+}
+
+// Function to hide elements by class names
+function hideClasses(elements) {
+    elements.forEach(element => {
+        const el = document.getElementById(element);
+        if (el) {
+            el.style.display = 'none';
+        }
+    });
+}
+
 // Function to show error messages
 function showError(message) {
     hideClasses(['results', 'pagination']);
@@ -164,12 +164,15 @@ function showError(message) {
     resultsDiv.innerHTML = '';
     paginationDiv.innerHTML = '';
 
-    const errorDiv = document.createElement('div');
-    errorDiv.id = 'error';
-    errorDiv.textContent = message || "The page you're looking for is unavailable. Please try a different search term.";
+    const errorMessageDiv = document.createElement('div');
+    errorMessageDiv.id = 'error-message';
+    errorMessageDiv.innerHTML = `
+        <div class="error-title">Whoops! This one's a bit undercooked.</div>
+        <div class="error-message">${message || "The page you're looking for is unavailable. Please try again using our menu at the top."}</div>
+    `;
     
     const form = document.getElementById('search-form');
-    form.parentNode.insertBefore(errorDiv, form.nextSibling);
+    form.parentNode.insertBefore(errorMessageDiv, form.nextSibling);
 }
 
 // Function to hide error messages
