@@ -177,6 +177,6 @@ function showError(message) {
 
 // Function to hide error messages
 function removeError() {
-    const error = document.getElementById('error');
+    const error = document.getElementById('error-message');
     if (error) error.remove();
 }
