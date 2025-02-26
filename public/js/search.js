@@ -61,8 +61,8 @@ function updatePagination(total, page, limit) {
 
 function renderRecipes(recipes) {
     const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = recipes.map(recipe => `
-        <div class="recipe">
+    resultsDiv.innerHTML = recipes.map((recipe, index) => `
+        <div class="recipe" data-index="${index}">
             <img src="${recipe.image}" alt="${recipe.label}">
             <div class="recipe-column">
                 <div class="dish-type">${recipe.dishType}</div>
@@ -71,6 +71,14 @@ function renderRecipes(recipes) {
             </div>
         </div>
     `).join('');
+
+    document.querySelectorAll('.recipe').forEach((recipeElement, index) => {
+        recipeElement.addEventListener('click', () => {
+            const recipe = recipes[index];
+            localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
+            window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
+        });
+    });
 }
 
 function renderPaginationControls(totalPages, currentPage) {

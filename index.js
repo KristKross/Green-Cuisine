@@ -28,26 +28,8 @@ app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/search.html'));
 });
 
-// Routes to serve the recipes when page loads
-app.get('/recipes', async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const total = 100;
-    const limit = 24;
-    const from = (page - 1) * limit;
-    const to = from + limit;
-    const url = `https://api.edamam.com/search?q=random&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${to}`;
-    try {
-        const response = await axios.get(url); // Fetching data from the Edamam API
-        const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
-            const recipe = hit.recipe; // Getting the recipe
-            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
-            return recipe; // Returning the recipe
-        });
-        res.json({ recipes, total, page, limit }); // Sending the recipes, total count, current page, and limit as a JSON response
-    } catch (error) {
-        console.error('Error:', error.response ? error.response.data : error.message);
-        res.status(500).send(`Error: ${error.message}`);
-    }
+app.get('/recipe', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html/recipe.html'));
 });
 
 // Routes to serve the search results when the form is submitted
@@ -59,6 +41,7 @@ app.post('/search', async (req, res) => {
     const from = (page - 1) * limit;
     const to = from + limit;
     const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${to}`;
+    console.log(url);
     try {
         const response = await axios.get(url); // Fetching data from the Edamam API
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
