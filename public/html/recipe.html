@@ -7,16 +7,25 @@
     <link rel="stylesheet" href="css/recipe.css">
 </head>
 <body>
-    <div class="recipe-container">
-        <img id="recipe-image" class="recipe-image" src="" alt="">
-        <div id="recipe-details">
-            <h1 id="recipe-name"></h1>
-            <p id="recipe-dish-type"></p>
-            <p id="recipe-cooking-time"></p>
-            <p id="recipe-ingredients"></p>
-            <p id="recipe-instructions"></p>
+    <main>
+        <form id="search-form">
+            <input type="text" name="recipeName" placeholder="Find a recipe or ingredient" required>
+            <button type="submit">Search</button>
+        </form>
+        <div class="recipe-container">
+            <img id="recipe-image" class="recipe-image" src="" alt="">
+            <div id="recipe-details">
+                <h1 id="recipe-name"></h1>
+                <p id="recipe-dish-type"></p>
+                <p id="recipe-cooking-time"></p>
+                <p id="recipe-ingredients"></p>
+                <p id="recipe-instructions"></p>
+            </div>
         </div>
-    </div>
+    </main>
+    <footer>
+        <p>Recipe Finder</p>
+    </footer>
     <script src="js/recipe.js"></script>
 </body>
 </html>
