@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function fetchSearchResults(recipeName, page) {
     removeError();
     try {
+        hideElements([results, pagination]);
         showLoading();
+        disableButtons();
         const response = await fetch(`/search?page=${page}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -40,17 +42,9 @@ async function fetchSearchResults(recipeName, page) {
         showError('Error fetching search results. Please try again later.');
     } finally {
         hideLoading();
+        showElements([results, pagination]);
+        enableButtons();
     }
-}
-
-// Function to show loading indicator
-function showLoading() {
-    hideClasses(['results', 'pagination']);
-
-    const loadingDiv = document.createElement('div');
-    loadingDiv.id = 'loader';
-    const form = document.getElementById('search-form');
-    form.parentNode.insertBefore(loadingDiv, form.nextSibling);
 }
 
 // Function to update pagination buttons
@@ -141,37 +135,40 @@ function updateURI(uri, state) {
     history.pushState(state, '', uri);
 }
 
+// Function to show loading indicator
+function showLoading() {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'loader';
+
+    const form = document.getElementById('search-form');
+    form.parentNode.insertBefore(loadingDiv, form.nextSibling);
+}
+
 // Function to hide loading indicator
 function hideLoading() {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.style.display = 'grid'; 
-
-    const paginationDiv = document.getElementById('pagination');
-    paginationDiv.style.display = 'flex';
-
     const loader = document.getElementById('loader');
     loader.remove();
 }
 
-// Function to hide elements by class names
-function hideClasses(elements) {
+function hideElements(elements) {
     elements.forEach(element => {
-        const el = document.getElementById(element);
-        if (el) {
-            el.style.display = 'none';
+        element.style.display = 'none';
+    });
+}
+
+function showElements(elements) {
+    elements.forEach(element => {
+        if (element.id === 'results') {
+            element.style.display = 'grid';
+        } else if (element.id === 'pagination') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'block';
         }
     });
 }
 
-// Function to show error messages
 function showError(message) {
-    hideClasses(['results', 'pagination']);
-
-    const resultsDiv = document.getElementById('results');
-    const paginationDiv = document.getElementById('pagination');
-    resultsDiv.innerHTML = '';
-    paginationDiv.innerHTML = '';
-
     const errorMessageDiv = document.createElement('div');
     errorMessageDiv.id = 'error-message';
     errorMessageDiv.innerHTML = `
@@ -187,4 +184,18 @@ function showError(message) {
 function removeError() {
     const error = document.getElementById('error-message');
     if (error) error.remove();
+}
+
+// Function to disable buttons
+function disableButtons() {
+    document.querySelectorAll('button').forEach(button => {
+        button.disabled = true;
+    });
+}
+
+// Function to enable buttons
+function enableButtons() {
+    document.querySelectorAll('button').forEach(button => {
+        button.disabled = false;
+    });
 }

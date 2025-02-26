@@ -41,7 +41,6 @@ app.post('/search', async (req, res) => {
     const from = (page - 1) * limit;
     const to = from + limit;
     const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${to}`;
-    console.log(url);
     try {
         const response = await axios.get(url); // Fetching data from the Edamam API
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields

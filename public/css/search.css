@@ -86,7 +86,7 @@ button[type="submit"]:hover {
 
 div#results {
     margin: 20px auto; 
-    display: none;
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     width: 100%;
@@ -199,7 +199,7 @@ div#results {
 }
 
 #pagination {
-    display: none;
+    display: flex;
     justify-content: center;
     margin-top: auto;
     margin-bottom: 15px;
