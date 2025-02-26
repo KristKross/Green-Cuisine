@@ -33,7 +33,8 @@ async function fetchSearchResults(recipeName, page) {
         updateURI(`/search?q=${recipeName}&page=${page}`, { page, recipeName });
         if (data.recipes.length > 0) {
             renderRecipes(data.recipes);
-            updatePagination(data.total, data.page, data.limit);    
+            updatePagination(data.total, data.page, data.limit);
+            showElements([results, pagination]);
         } else {
             showError();
         }
@@ -42,7 +43,6 @@ async function fetchSearchResults(recipeName, page) {
         showError('Error fetching search results. Please try again later.');
     } finally {
         hideLoading();
-        showElements([results, pagination]);
         enableButtons();
     }
 }
@@ -147,7 +147,7 @@ function showLoading() {
 // Function to hide loading indicator
 function hideLoading() {
     const loader = document.getElementById('loader');
-    loader.remove();
+    if (loader) loader.remove();
 }
 
 function hideElements(elements) {
