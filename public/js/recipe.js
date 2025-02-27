@@ -1,5 +1,3 @@
-const { showError } = require('../../modules/errorHandler.js');
-
 let currentPage = 1;
 let currentRecipeName = '';
 
