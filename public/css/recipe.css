@@ -71,11 +71,17 @@ button[type="submit"]:hover {
     max-width: 800px;
     margin: 0 auto;
 }
-.recipe-image {
+#recipe-image {
     width: 100%;
+    max-width: 800px;
     height: auto;
 }
-.recipe-details {
+
+#recipe-name {
+    text-transform: capitalize;
+}
+
+#recipe-details {
     margin-top: 20px;
 }
 

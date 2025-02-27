@@ -29,20 +29,16 @@ if (recipeName) {
             const elements = {
                 recipeImage: document.getElementById('recipe-image'),
                 recipeNameElement: document.getElementById('recipe-name'),
-                recipeDishType: document.getElementById('recipe-dish-type'),
                 recipeCookingTime: document.getElementById('recipe-cooking-time'),
                 recipeIngredients: document.getElementById('recipe-ingredients'),
-                recipeInstructions: document.getElementById('recipe-instructions')
             };
 
             if (Object.values(elements).every(el => el)) {
                 elements.recipeImage.src = recipeData.image;
                 elements.recipeImage.alt = recipeData.label;
                 elements.recipeNameElement.textContent = recipeData.label;
-                elements.recipeDishType.textContent = `Dish Type: ${recipeData.dishType}`;
-                elements.recipeCookingTime.textContent = `Cooking Time: ${recipeData.totalTime > 0 ? `${recipeData.totalTime} min` : 'N/A'}`;
-                elements.recipeIngredients.textContent = `Ingredients: ${recipeData.ingredientLines.join(', ')}`;
-                elements.recipeInstructions.innerHTML = `Instructions: <a href="${recipeData.url}" target="_blank">View full instructions</a>`;
+                elements.recipeCookingTime.textContent = `Cooking Time: ${recipeData.totalTime} min`;
+                elements.recipeIngredients.innerHTML = `<ul>${recipeData.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}</ul>`;
             } else {
                 showError();
             }
