@@ -61,7 +61,7 @@ function renderRecipes(recipes) {
             <div class="recipe-column">
                 <div class="dish-type">${recipe.dishType}</div>
                 <div class="recipe-name">${recipe.label}</div>
-                <p><b>Cooking Time:</b> ${recipe.totalTime > 0 ? `${recipe.totalTime} min` : 'N/A'}</p>
+                <p><b>Cooking Time:</b> ${recipe.totalTime} min</p>
             </div>
         </div>
     `).join('');
