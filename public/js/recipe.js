@@ -1,3 +1,5 @@
+const { showError } = require('../../modules/errorHandler.js');
+
 let currentPage = 1;
 let currentRecipeName = '';
 
@@ -38,7 +40,13 @@ if (recipeName) {
                 elements.recipeImage.alt = recipeData.label;
                 elements.recipeNameElement.textContent = recipeData.label;
                 elements.recipeCookingTime.textContent = `Cooking Time: ${recipeData.totalTime} min`;
-                elements.recipeIngredients.innerHTML = `<ul>${recipeData.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}</ul>`;
+                elements.recipeIngredients.innerHTML = `
+                    <ul>
+                        ${recipeData.ingredientLines.map(ingredient => `
+                            <li>${ingredient}</li>
+                        `).join('')}
+                    </ul>
+                `;
             } else {
                 showError();
             }
