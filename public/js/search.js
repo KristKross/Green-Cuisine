@@ -16,8 +16,8 @@ function showError() {
         <div class="error-message">The page you're looking for is unavailable. Please try again using our menu at the top.</div>
     `;
     
-    const form = document.getElementById('search-form');
-    form.parentNode.insertBefore(errorMessageDiv, form.nextSibling);
+    const main = document.querySelector('main');
+    main.appendChild(errorMessageDiv);
 }
 
 // Function to show loading indicator
@@ -25,8 +25,8 @@ function showLoading() {
     const loadingDiv = document.createElement('div');
     loadingDiv.id = 'loader';
 
-    const form = document.getElementById('search-form');
-    form.parentNode.insertBefore(loadingDiv, form.nextSibling);
+    const main = document.querySelector('main');
+    main.appendChild(loadingDiv);
 }
 
 // Function to remove loading indicator
