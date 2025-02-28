@@ -1,5 +1,4 @@
 let currentPage = 1;
-let currentRecipeName = '';
 
 // Function to update the URI without reloading the page
 function updateURI(uri) {
@@ -9,8 +8,7 @@ function updateURI(uri) {
 function attachEventListeners() {
     document.querySelector('#search-form').addEventListener('submit', (event) => {
         event.preventDefault();
-        const recipeName = event.target.elements.recipeName.value;
-        currentRecipeName = recipeName;
+        const recipeName = event.target.elements.recipeName.value;;
         currentPage = 1; // Reset to the first page for new search
         window.location.href = `/search?q=${recipeName}&page=${currentPage}`;
     });
