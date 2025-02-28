@@ -2,7 +2,6 @@
 let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 let currentRecipeName = new URLSearchParams(window.location.search).get('q') || '';
 
-// Event listener for DOM content loaded
 document.addEventListener('DOMContentLoaded', async () => {
     if (currentRecipeName) {
         fetchSearchResults(currentRecipeName, currentPage);
@@ -19,11 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Function to fetch and render search results
 async function fetchSearchResults(recipeName, page) {
-    removeError();
+    if (document.getElementById('loader')) return;
     try {
-        hideElements([results, pagination]);
         showLoading();
-        disableButtons();
         const response = await fetch(`/search?page=${page}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -34,16 +31,15 @@ async function fetchSearchResults(recipeName, page) {
         if (data.recipes.length > 0) {
             renderRecipes(data.recipes);
             updatePagination(data.total, data.page, data.limit);
-            showElements([results, pagination]);
+            window.scrollTo(0, 0);
         } else {
             showError();
         }
     } catch (error) {
         console.error('Error fetching search results:', error);
-        showError('Error fetching search results. Please try again later.');
+        showError();
     } finally {
         hideLoading();
-        enableButtons();
     }
 }
 
@@ -100,7 +96,8 @@ function attachEventListeners() {
         const recipeName = event.target.elements.recipeName.value;
         currentRecipeName = recipeName;
         currentPage = 1; // Reset to the first page for new search
-        fetchSearchResults(currentRecipeName, currentPage);
+        updateURI(`/search?q=${recipeName}&page=${currentPage}`, { page: currentPage, recipeName });
+        window.location.reload(); // Reload the page
     });
 }
 
@@ -144,28 +141,11 @@ function showLoading() {
     form.parentNode.insertBefore(loadingDiv, form.nextSibling);
 }
 
-// Function to hide loading indicator
 function hideLoading() {
-    const loader = document.getElementById('loader');
-    if (loader) loader.remove();
-}
-
-function hideElements(elements) {
-    elements.forEach(element => {
-        element.style.display = 'none';
-    });
-}
-
-function showElements(elements) {
-    elements.forEach(element => {
-        if (element.id === 'results') {
-            element.style.display = 'grid';
-        } else if (element.id === 'pagination') {
-            element.style.display = 'flex';
-        } else {
-            element.style.display = 'block';
-        }
-    });
+    const loadingDiv = document.getElementById('loader');
+    if (loadingDiv) {
+        loadingDiv.remove();
+    }
 }
 
 function showError(message) {
@@ -178,24 +158,4 @@ function showError(message) {
     
     const form = document.getElementById('search-form');
     form.parentNode.insertBefore(errorMessageDiv, form.nextSibling);
-}
-
-// Function to hide error messages
-function removeError() {
-    const error = document.getElementById('error-message');
-    if (error) error.remove();
-}
-
-// Function to disable buttons
-function disableButtons() {
-    document.querySelectorAll('button').forEach(button => {
-        button.disabled = true;
-    });
-}
-
-// Function to enable buttons
-function enableButtons() {
-    document.querySelectorAll('button').forEach(button => {
-        button.disabled = false;
-    });
 }
