@@ -37,32 +37,35 @@ nav a {
     justify-content: center;
     flex: 1;
     margin: 0;
+    overflow: hidden;
 }
 
 input[type="text"] {
     width: 100%;
     max-width: 400px;
     padding: 10px 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
     font-size: 16px;
-    box-sizing: border-box;
+    border: none;
+    outline: none;
+    border-radius: 5px 0 0 5px;
 }
 
 button[type="submit"] {
     margin: 0;
     width: 40px;
     height: 40px;
-    border: 1px solid #ccc;
+    border: none;
+    outline: none;
     border-radius: 0 5px 5px 0;
     background-image: url('/images/search-icon.png');
     background-repeat: no-repeat;
     background-size: 50%;
     background-position: center;
+    caret-color: transparent;
 }
 
 button[type="submit"]:hover {
-    background-color: #f4f4f4;
+    background-color: #cccaca;
 }
 
 main {
@@ -81,6 +84,7 @@ main {
     width: 50px;
     height: 50px;
     animation: spin 2s linear infinite;
+    caret-color: transparent;
 
     @media screen and (max-width: 576px) {
         width: 30px;
@@ -145,15 +149,17 @@ main {
 .recipe {
     background-color: #fff;
     width: calc(100% - 30px);
-    height: 320px;
+    min-height: 320px;
     border: 1px solid #ccc;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    caret-color: transparent;
     transition: transform 0.3s;
     cursor: pointer;
 
     @media screen and (max-width: 576px) {
         width: calc(100% - 40px);
+        min-height: max-content;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -208,10 +214,30 @@ main {
 }
 
 .recipe-image-container {
-    position: relative; 
+    position: relative;
+    width: 100%;
+    height: 200px;
+    max-height: 200px;
+
+    @media screen and (max-width: 576px) {
+        width: 150px;
+        max-width: 150px;
+        height: 100px;
+        min-width: 150px;
+        margin-right: 15px;
+    }
 }
 
-button.favourite-button {
+.recipe-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: auto;
+    border-radius: 5px;
+}
+
+
+.favourite-button {
     width: 50px;
     height: 50px;
     background-image: url('/images/heart-icon.png');
@@ -230,33 +256,14 @@ button.favourite-button {
         width: 30px;
         height: 30px;
         top: 5px;
-        right: 20px;
+        right: 5px;
     }
 }
 
-button.favourite-button:hover {
+.favourite-button:hover {
     background-image: url('/images/heart-filled-icon.png');
     background-color: #4e5c32;
-    transition: 0.1s ease-in-out;
-}
-
-
-.recipe img {
-    width: 100%;
-    height: 200px;
-    max-height: 200px;
-    border-radius: 5px;
-    object-fit: cover;
-    aspect-ratio: auto;
-
-    @media screen and (max-width: 576px) {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-        height: 100px;
-        border-radius: 0px;
-        margin-right: 15px;
-    }
+    transition:  ease-in-out 0.1s;
 }
 
 .recipe p {

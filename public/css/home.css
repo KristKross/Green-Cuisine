@@ -35,32 +35,35 @@ nav a {
     justify-content: center;
     flex: 1;
     margin: 0;
+    overflow: hidden;
 }
 
 input[type="text"] {
     width: 100%;
     max-width: 400px;
     padding: 10px 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
     font-size: 16px;
-    box-sizing: border-box;
+    border: none;
+    outline: none;
+    border-radius: 5px 0 0 5px;
 }
 
 button[type="submit"] {
     margin: 0;
     width: 40px;
     height: 40px;
-    border: 1px solid #ccc;
+    border: none;
+    outline: none;
     border-radius: 0 5px 5px 0;
     background-image: url('/images/search-icon.png');
     background-repeat: no-repeat;
     background-size: 50%;
     background-position: center;
+    caret-color: transparent;
 }
 
 button[type="submit"]:hover {
-    background-color: #f4f4f4;
+    background-color: #cccaca;
 }
 
 main {
