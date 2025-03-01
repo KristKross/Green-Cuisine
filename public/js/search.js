@@ -103,7 +103,10 @@ function renderRecipes(recipes) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = recipes.map((recipe, index) => `
         <div class="recipe" data-index="${index}">
-            <img src="${recipe.image}" alt="${recipe.label}">
+            <div class="recipe-image-container">
+                <img src="${recipe.image}" alt="${recipe.label}">
+                <button class="favourite-button" data-index="${index}"></button>
+            </div>
             <div class="recipe-column">
                 <div class="dish-type">${recipe.dishType}</div>
                 <div class="recipe-name">${recipe.label}</div>
@@ -120,7 +123,24 @@ function renderRecipes(recipes) {
             window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
         });
     });
+
+    // Add event listener for favourite buttons
+    const favouriteButtons = document.querySelectorAll('.favourite-button');
+    favouriteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const index = event.target.dataset.index;
+            handleFavouriteButtonClick(recipes, index);
+        });
+    });
 }
+
+function handleFavouriteButtonClick(recipes, index) {
+    const recipe = recipes[index];
+    console.log(`Favourite button clicked for recipe: ${recipe.label}`);
+    // Add your logic to handle the favourite button click here
+}
+
 
 // Function to update pagination buttons
 function updatePagination(total, page, limit) {
