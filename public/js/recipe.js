@@ -23,8 +23,6 @@ function showError() {
 
     const main = document.querySelector('main');
     main.appendChild(errorMessageDiv);
-
-    errorMessageDiv.style.display = 'block';
 }
 
 
