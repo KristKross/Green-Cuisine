@@ -21,8 +21,9 @@ function showError() {
         <div class="error-message">The page you're looking for is unavailable. Please try again using our menu at the top.</div>
     `;
 
-    const form = document.getElementById('search-form');
-    form.parentNode.insertBefore(errorMessageDiv, form.nextSibling);
+    const main = document.querySelector('main');
+    main.appendChild(errorMessageDiv);
+
     errorMessageDiv.style.display = 'block';
 }
 
