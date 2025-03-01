@@ -135,10 +135,10 @@ function renderRecipes(recipes) {
     });
 }
 
+// Function to handle favourite button click
 function handleFavouriteButtonClick(recipes, index) {
     const recipe = recipes[index];
     console.log(`Favourite button clicked for recipe: ${recipe.label}`);
-    // Add your logic to handle the favourite button click here
 }
 
 
