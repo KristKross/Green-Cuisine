@@ -19,7 +19,7 @@ nav {
     width: 100%;
     max-width: 1200px;
     display: flex; 
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     margin: 0 auto;
 }
@@ -32,12 +32,14 @@ nav a {
 
 #search-form {
     display: flex;
+    justify-content: center;
+    flex: 1;
     margin: 0;
 }
 
 input[type="text"] {
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
     padding: 10px 5px;
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
@@ -46,9 +48,15 @@ input[type="text"] {
 }
 
 button[type="submit"] {
+    margin: 0;
+    width: 40px;
     height: 40px;
     border: 1px solid #ccc;
     border-radius: 0 5px 5px 0;
+    background-image: url('/images/search-icon.png');
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
 }
 
 button[type="submit"]:hover {
