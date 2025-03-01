@@ -34,18 +34,19 @@ nav a {
 
 #search-form {
     display: flex;
+    justify-content: center;
+    flex: 1;
     margin: 0;
 }
 
 input[type="text"] {
-    margin: 0;
-    max-width: 300px;
+    width: 100%;
+    max-width: 400px;
     padding: 10px 5px;
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
     font-size: 16px;
     box-sizing: border-box;
-    width: 100%;
 }
 
 button[type="submit"] {
@@ -59,6 +60,7 @@ button[type="submit"] {
     background-size: 50%;
     background-position: center;
 }
+
 
 button[type="submit"]:hover {
     background-color: #f4f4f4;
