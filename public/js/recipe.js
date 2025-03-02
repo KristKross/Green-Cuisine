@@ -46,11 +46,21 @@ if (recipeName) {
                 <div class="recipe-details">
                     <p class="recipe-dish-type">${recipeData.dishType}</p>
                     <p class="recipe-cooking-time">Cooking Time: ${recipeData.totalTime} min</p>
+                    <p class="serving-size">Serving Size: ${recipeData.yield === 1 ? 'serving' : ` ${recipeData.yield} servings`}</p>
+                    <p class="calories">Calories: ${Math.round(recipeData.calories)} kcal</p>
                     <p class="recipe-ingredients">Ingredients:
                         <ul>
                             ${recipeData.ingredientLines.map(ingredient => `
                                 <li>${ingredient}</li>
                             `).join('')}
+                        </ul>
+                    </p>
+                    <p class="health-label">Health Labels:${recipeData.healthLabels.join(' &#8226; ')}</p>
+                    <p class="recipe-nutrition">Nutrition (per serving):
+                        <ul>
+                            <li class="protein">Protein: ${Math.round(recipeData.totalNutrients.PROCNT.quantity)} ${recipeData.totalNutrients.PROCNT.unit}</li>
+                            <li class="carbs">Carbohydrates: ${Math.round(recipeData.totalNutrients.CHOCDF.quantity)} ${recipeData.totalNutrients.CHOCDF.unit}</li>
+                            <li class="fat">Fat: ${Math.round(recipeData.totalNutrients.FAT.quantity)} ${recipeData.totalNutrients.FAT.unit}</li>
                         </ul>
                     </p>
                 </div>
