@@ -26,6 +26,17 @@ nav {
     margin: 0 auto;
 }
 
+.login {
+    display: flex;
+    align-items: center;
+}
+
+.login:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #fff;
+}
+
 nav a {
     color: #fff;
     margin: 0 5px;

@@ -26,6 +26,17 @@ nav {
     margin: 0 auto;
 }
 
+.login {
+    display: flex;
+    align-items: center;
+}
+
+.login:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #fff;
+}
+
 nav a {
     color: #fff;
     margin: 0 5px;
@@ -101,7 +112,7 @@ main {
 }
 
 #recipe {
-    max-width: 700px;
+    max-width: 900px;   
     margin: 0 auto;
 }
 
