@@ -29,7 +29,7 @@ nav {
     align-items: center;
 }
 
-.login:hover {
+.login a:hover {
     cursor: pointer;
     text-decoration: underline;
     text-decoration-color: #fff;
