@@ -1,3 +1,5 @@
+let recipeName = new URLSearchParams(window.location.search).get('q');
+
 // Function to attach event listeners
 function attachEventListeners() {
     document.querySelector('#search-form').addEventListener('submit', (event) => {
@@ -13,57 +15,50 @@ function attachEventListeners() {
 attachEventListeners();
 
 // Function to show error messages
-function showError() {
+function showError(message) {
     const errorMessageDiv = document.createElement('div');
     errorMessageDiv.id = 'error-message';
     errorMessageDiv.innerHTML = `
         <div class="error-title">Whoops! This one's a bit undercooked.</div>
-        <div class="error-message">The page you're looking for is unavailable. Please try again using our menu at the top.</div>
+        <div class="error-message">${message || "The page you're looking for is unavailable. Please try again using our menu at the top."}</div>
     `;
 
     const main = document.querySelector('main');
     main.appendChild(errorMessageDiv);
 }
 
-
-// Get the recipe name from the URL
-let recipeName = new URLSearchParams(window.location.search).get('q');
 if (recipeName) {
     try {
         const decodedRecipeName = decodeURIComponent(recipeName);
         const recipeData = JSON.parse(localStorage.getItem('selectedRecipe'));
+        console.log('Recipe data:', recipeData);
 
         // Check if the recipe data is valid and matches the decoded recipe name
         if (!recipeData || recipeData.label !== decodedRecipeName) {
-            showError();
+            showError('Invalid recipe name in the URL.');
         } else {
-            const elements = {
-                recipeImage: document.getElementById('recipe-image'),
-                recipeNameElement: document.getElementById('recipe-name'),
-                recipeCookingTime: document.getElementById('recipe-cooking-time'),
-                recipeIngredients: document.getElementById('recipe-ingredients'),
-            };
+            const recipeContainer = document.getElementById('recipe');
 
-            // Check if all elements are present
-            if (!Object.values(elements).every(el => el)) {
-                showError();
-            } else {
-                elements.recipeImage.src = recipeData.image;
-                elements.recipeImage.alt = recipeData.label;
-                elements.recipeNameElement.textContent = recipeData.label;
-                elements.recipeCookingTime.textContent = `Cooking Time: ${recipeData.totalTime} min`;
-                elements.recipeIngredients.innerHTML = `Ingredients:
-                    <ul>
-                        ${recipeData.ingredientLines.map(ingredient => `
-                            <li>${ingredient}</li>
-                        `).join('')}
-                    </ul>
-                `;
-            }
+            // Create the inner HTML for the recipe
+            recipeContainer.innerHTML = `
+                <h1 class="recipe-name">${recipeData.label}</h1>
+                <img class="recipe-image" src="${recipeData.image}" alt="${recipeData.label}">
+                <div class="recipe-details">
+                    <p class="recipe-dish-type">${recipeData.dishType}</p>
+                    <p class="recipe-cooking-time">Cooking Time: ${recipeData.totalTime} min</p>
+                    <p class="recipe-ingredients">Ingredients:
+                        <ul>
+                            ${recipeData.ingredientLines.map(ingredient => `
+                                <li>${ingredient}</li>
+                            `).join('')}
+                        </ul>
+                    </p>
+                </div>
+            `;
         }
     } catch (error) {
-        showError('Invalid recipe name in the URL.');
+        showError('Error decoding recipe name from the URL.');
     }
 } else {
-    showError();
+    showError('No recipe name found in the URL.');
 }
