@@ -48,7 +48,7 @@ nav a {
     flex: 1;
 }
 
-input[type="text"] {
+#search-form input[type="text"] {
     width: 100%;
     max-width: 360px;   
     padding: 10px 5px;
@@ -73,13 +73,64 @@ input[type="text"] {
     caret-color: transparent;
 }
 
-button[type="submit"]:hover {
+#search-form button[type="submit"]:hover {
     background-color: #eee;
 }
 
 main {
+    display: flex;
+    align-items: center;
     padding: 20px;
     flex: 1;
+}
+
+#register {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 350px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#register-form h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#register-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#register-form input[type="email"],
+#register-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#register-form button[type="submit"] {
+    margin: 10px 0;
+    width: 100%;
+    padding: 10px;
+    background-color: #626F47;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#register-form button[type="submit"]:hover {
+    background-color: #4e5c32;
 }
 
 footer {
