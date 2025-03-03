@@ -1,15 +1,12 @@
 // Call function to set up the event listener of the search form
-function attachEventListeners() {
-    document.querySelector('#search-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        const recipeName = event.target.elements.recipeName.value;;
-        currentPage = 1;
-        window.location.href = `/search?q=${recipeName}&page=${currentPage}`; // Redirect to the search page
-    });
-}
+document.querySelector('#search-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const recipeName = event.target.elements.recipeName.value;;
+    currentPage = 1;
+    window.location.href = `/search?q=${recipeName}&page=${currentPage}`; 
+});
 
-attachEventListeners();
-
+// Call function to set up the event listener of the login form
 document.querySelector('#login-form').addEventListener('submit', (event) => {
     event.preventDefault();
     const data = new FormData(event.target);

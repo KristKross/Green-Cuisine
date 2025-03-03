@@ -1,18 +1,12 @@
 let recipeName = new URLSearchParams(window.location.search).get('q');
 
-// Function to attach event listeners
-function attachEventListeners() {
-    document.querySelector('#search-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        const recipeName = event.target.elements.recipeName.value;
-        currentRecipeName = recipeName;
-        currentPage = 1;
-        window.location.href = `/search?q=${encodeURIComponent(recipeName)}&page=${currentPage}`;
-    });
-}
-
-// Call attachEventListeners to set up the event listeners
-attachEventListeners();
+// Call function to set up the event listener of the search form
+document.querySelector('#search-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const recipeName = event.target.elements.recipeName.value;;
+    currentPage = 1;
+    window.location.href = `/search?q=${recipeName}&page=${currentPage}`;
+});
 
 // Function to show error messages
 function showError(message) {
