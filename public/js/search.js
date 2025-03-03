@@ -141,7 +141,6 @@ function handleFavouriteButtonClick(recipes, index) {
     console.log(`Favourite button clicked for recipe: ${recipe.label}`);
 }
 
-
 // Function to update pagination buttons
 function updatePagination(total, page, limit) {
     const totalPages = Math.ceil(total / limit);
