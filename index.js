@@ -111,7 +111,7 @@ app.post('/login', (req, res) => {
 
     // Check if the user exists in the database
     const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
-    
+
     db.query(query, [email, password], (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);

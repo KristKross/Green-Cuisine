@@ -137,8 +137,9 @@ function renderRecipes(recipes) {
 
 // Function to handle favourite button click
 function handleFavouriteButtonClick(recipes, index) {
-    const recipe = recipes[index];
-    console.log(`Favourite button clicked for recipe: ${recipe.label}`);
+    const favouriteButton = document.querySelectorAll('.favourite-button')[index];
+    favouriteButton.classList.toggle('active');
+    console.log(`Favourite button clicked for recipe: ${recipes[index].label}`);
 }
 
 // Function to update pagination buttons

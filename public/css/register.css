@@ -107,8 +107,7 @@ main {
     font-weight: bold;
 }
 
-#register-form input[type="email"],
-#register-form input[type="password"] {
+#register-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
