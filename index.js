@@ -137,9 +137,121 @@ app.post('/login', (req, res) => {
             return;
         }
         const user = results[0];
-        res.json({ success: true, message: 'Login successful', username: user.username });
+        res.json({ success: true, message: 'Login successful', username: user.Username, userID: user.UserID });
     });
 });
+
+app.post('/add-favourite', (req, res) => {
+    const { user_id, recipe_name, recipe_uri } = req.body;
+
+    const query = 'INSERT INTO favourites (UserID, RecipeName, RecipeURI) VALUES (?, ?, ?)';
+    db.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
+        if (err) {
+            console.error('Error adding favourite:', err);
+            res.json({ success: false, message: 'Error occurred' });
+            return;
+        }
+        res.json({ success: true, message: 'Recipe added to favourites' });
+    });
+});
+
+app.get('/favourites/:userID', (req, res) => {
+    const userID = req.params.userID;
+
+    // Modify the query to select both RecipeName and RecipeURI
+    const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
+    db.query(query, [userID], (err, results) => {
+        if (err) {
+            console.error('Error fetching favourites:', err);    
+            res.json({ success: false, message: 'Error occurred' });
+            return;
+        }
+
+        res.json({ success: true, favourites: results });
+    });
+});
+
+// Function to check if a recipe is favourited
+app.post('/check-favourite', (req, res) => {
+    const { user_id, recipe_name, recipe_uri } = req.body;
+
+    const query = 'SELECT * FROM favourites WHERE UserID = ? AND RecipeName = ? AND RecipeURI = ?';
+    db.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
+        if (err) {
+            console.error('Error checking favourite:', err);
+            return res.json({ success: false, message: 'Error occurred' });
+        }
+
+        if (results.length > 0) {
+            res.json({ isFavourited: true });
+        } else {
+            res.json({ isFavourited: false });
+        }
+    });
+});
+
+// Function to remove a recipe from favourites
+app.post('/remove-favourite', (req, res) => {
+    const { user_id, recipe_name } = req.body;
+
+    const query = 'DELETE FROM favourites WHERE UserID = ? AND RecipeName = ?';
+    db.query(query, [user_id, recipe_name], (err, results) => {
+        if (err) {
+            console.error('Error removing favourite:', err);
+            res.json({ success: false, message: 'Error occurred' });
+            return;
+        }
+        res.json({ success: true, message: 'Recipe removed from favourites' });
+    });
+});
+
+// Function to fetch favourite recipes
+app.post('/search-favourites', async (req, res) => {
+    const { userID } = req.body;
+
+    try {
+        const results = await fetchFavouriteRecipeDetails(userID);
+        const favouriteRecipes = await fetchRecipesFromAPI(results);
+        res.json({ success: true, favourites: favouriteRecipes });
+    } catch (error) {
+        console.error('Error fetching favourites:', error);
+        res.json({ success: false, message: 'Error occurred' });
+    }
+});
+
+// Function to fetch recipe details from the database
+function fetchFavouriteRecipeDetails(userID) {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
+        db.query(query, [userID], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+// Function to fetch recipe details from Edamam
+async function fetchRecipesFromAPI(results) {
+    const favouriteRecipes = [];
+    for (const result of results) {
+        const recipeName = result.RecipeName.toLowerCase();
+        const recipeURI = result.RecipeURI;
+        try {
+            const response = await axios.get(`https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}`);
+            const recipeData = response.data.hits
+                .map(hit => hit.recipe)
+                .filter(recipe => recipe.label.toLowerCase() === recipeName && recipe.uri === recipeURI);
+
+            favouriteRecipes.push(...recipeData);
+        } catch (error) {
+            console.error('Error fetching recipe details from Edamam:', error.message);
+        }
+    }
+    return favouriteRecipes;
+}
 
 // Server listening on port 3000 
 app.listen(port, () => { 
