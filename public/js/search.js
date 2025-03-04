@@ -45,14 +45,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Event listener for the search form submit
-    document.querySelector('#search-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        const recipeName = event.target.elements.recipeName.value;
-        currentRecipeName = recipeName;
-        currentPage = 1; 
-        updateURI(`/search?q=${recipeName}&page=${currentPage}`, { page: currentPage, recipeName });
-        window.location.reload();
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('#search-form')) {
+        setupSearchForm();
+    }
+});
 
     // The popstate event listener is to handle the back button and forward button and update the page accordingly
     window.addEventListener('popstate', (event) => {

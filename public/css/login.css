@@ -1,87 +1,8 @@
-body {
-    background-color: #fff;
-    font-family: Arial, sans-serif;
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-nav {
-    background-color: #626F47;
-    display: flex;
-    padding: 15px;
-    color: #fff;
-}
-
-.navbar-container {
-    width: 100%;
-    max-width: 1200px;
-    display: flex; 
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto;
-}
-
-.login {
-    display: flex;
-    align-items: center;
-}
-
-.login a:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: #fff;
-}
-
-nav a {
-    color: #fff;
-    margin: 0 5px;
-    text-decoration: none;
-}
-
-#search-form {
-    margin: 0 10px;
-    display: flex;
-    justify-content: center;
-    flex: 1;
-}
-
-#search-form input[type="text"] {
-    width: 100%;
-    max-width: 360px;   
-    padding: 10px 5px;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    border-radius: 5px 0 0 5px;
-}
-
-#search-form button[type="submit"] {
-    margin: 0;
-    width: 40px;
-    height: 40px;
-    border: none;
-    outline: none;
-    border-radius: 0 5px 5px 0;
-    background-color: #fff;
-    background-image: url('/images/search-icon.png');
-    background-repeat: no-repeat;
-    background-size: 50%;
-    background-position: center;
-    caret-color: transparent;
-}
-
-#search-form button[type="submit"]:hover {
-    background-color: #eee;
-}
-
 main {
-    display: flex;
-    align-items: center;
     padding: 20px;
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 #login {
@@ -131,12 +52,4 @@ main {
 
 #login-form button[type="submit"]:hover {
     background-color: #4e5c32;
-}
-
-footer {
-    text-align: center;
-    padding: 10px 0;
-    background-color: #eee;
-    width: 100%;
-    margin-top: auto;
 }
