@@ -55,6 +55,10 @@ app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/register.html'));
 });
 
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html/profile.html'));
+});
+
 // Routes to serve the search results when the form is submitted
 app.post('/search', async (req, res) => {
     const recipeName = req.body.recipeName; // Getting the recipe name from the form
@@ -68,6 +72,7 @@ app.post('/search', async (req, res) => {
         const response = await axios.get(url); // Fetching data from the Edamam API
         const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
             const recipe = hit.recipe; // Getting the recipe
+            recipe.label = recipe.label.toLowerCase();
             recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
             return recipe; // Returning the recipe
         });
@@ -79,7 +84,7 @@ app.post('/search', async (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    const { email, password } = req.body;
+    const { email, username, password } = req.body;
 
     // Check if the user exists in the database
     const query = 'SELECT * FROM users WHERE email = ?';
@@ -93,18 +98,27 @@ app.post('/register', (req, res) => {
             res.json({ success: false, message: 'Email is already taken' });
             return;
         }
+        if (username.length < 3) {
+            res.json({ success: false, message: 'Username must be at least 3 characters long' });
+            return;
+        }
+        if (username.length > 10) {
+            res.json({ success: false, message: 'Username must be at most 10 characters long' });
+            return;
+        }
         // Insert the user data into the database
-        const insertQuery = 'INSERT INTO users (email, password) VALUES (?, ?)';
-        db.query(insertQuery, [email, password], (err, results) => {
+        const insertQuery = 'INSERT INTO users (email, username, password) VALUES (?, ?, ?)';
+        db.query(insertQuery, [email, username, password], (err, results) => {
             if (err) {
                 console.error('Error inserting data:', err);
                 res.json({ success: false, message: 'Error occurred' });
                 return;
             }
-            res.json({ success: true, message: 'User registered successfully' });
+            res.json({ success: true, message: 'User registered successfully', email });
         });
     });
 });
+
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -118,11 +132,12 @@ app.post('/login', (req, res) => {
             res.json({ success: false, message: 'Error occurred' });
             return;
         }
-        if (results.length > 0) {
-            res.json({ success: true, message: 'Login successful' });
-        } else {
+        if (results.length === 0) {
             res.json({ success: false, message: 'Invalid email or password' });
+            return;
         }
+        const user = results[0];
+        res.json({ success: true, message: 'Login successful', username: user.username });
     });
 });
 
