@@ -1,3 +1,4 @@
 /node_modules
 .env
 nodemon.json
+127.0.0.1.session.sql
