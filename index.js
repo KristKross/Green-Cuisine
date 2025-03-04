@@ -59,29 +59,69 @@ app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/profile.html'));
 });
 
+let storedTotalRecipes = {}; // Cache total counts for recipe searches
+
+// Function to count total available recipes dynamically
+async function countRecipes(recipeName) {
+    if (storedTotalRecipes[recipeName]) {
+        return storedTotalRecipes[recipeName]; // Use cached total if available
+    }
+
+    let totalRecipes = 0;
+    let from = 0;
+    const limit = 100; 
+    let hasMore = true;
+
+    try {
+        while (hasMore) {
+            const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${from + limit}`;
+            const response = await axios.get(url);
+
+            const batchSize = response.data.hits.length;
+            totalRecipes += batchSize; // Increase count by fetched results
+
+            if (batchSize < limit) {
+                hasMore = false; // No more recipes available
+            } else {
+                from += limit; // Move to the next batch
+            }
+        }
+    } catch (error) {
+        console.error('Error counting total recipes:', error.message);
+    }
+
+    storedTotalRecipes[recipeName] = totalRecipes; // Cache the total count
+    return totalRecipes;
+}
+
 // Routes to serve the search results when the form is submitted
 app.post('/search', async (req, res) => {
-    const recipeName = req.body.recipeName; // Getting the recipe name from the form
+    const recipeName = req.body.recipeName;
     const page = parseInt(req.query.page) || 1;
-    const total = 100;
     const limit = 24;
     const from = (page - 1) * limit;
     const to = from + limit;
-    const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${to}`;
+
     try {
-        const response = await axios.get(url); // Fetching data from the Edamam API
-        const recipes = response.data.hits.map(hit => { // Mapping the data to get the required fields
-            const recipe = hit.recipe; // Getting the recipe
+        const total = await countRecipes(recipeName); // Get total count dynamically
+        const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${to}`;
+        console.log('URL:', url);
+        const response = await axios.get(url);
+        const recipes = response.data.hits.map(hit => {
+            const recipe = hit.recipe;
             recipe.label = recipe.label.toLowerCase();
             recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
-            return recipe; // Returning the recipe
+            return recipe;
         });
+
         res.json({ recipes, total, page, limit });
+
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
         res.status(500).send(`Error: ${error.message}`);
     }
 });
+
 
 app.post('/register', (req, res) => {
     const { email, username, password } = req.body;
