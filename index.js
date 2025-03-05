@@ -59,69 +59,50 @@ app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/profile.html'));
 });
 
-let storedTotalRecipes = {}; // Cache total counts for recipe searches
+// Store all fetched recipes globally
+let allRecipes = [];
 
-// Function to count total available recipes dynamically
-async function countRecipes(recipeName) {
-    if (storedTotalRecipes[recipeName]) {
-        return storedTotalRecipes[recipeName]; // Use cached total if available
-    }
-
-    let totalRecipes = 0;
+// Function to fetch all recipes and store them in memory
+async function fetchAllRecipes(recipeName) {
+    let allHits = [];
     let from = 0;
-    const limit = 100; 
-    let hasMore = true;
-
+    const limit = 100;
     try {
-        while (hasMore) {
-            const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${from + limit}`;
-            const response = await axios.get(url);
-
-            const batchSize = response.data.hits.length;
-            totalRecipes += batchSize; // Increase count by fetched results
-
-            if (batchSize < limit) {
-                hasMore = false; // No more recipes available
-            } else {
-                from += limit; // Move to the next batch
-            }
-        }
+        const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${from + limit}`;
+        const response = await axios.get(url);
+        allHits = response.data.hits; 
     } catch (error) {
-        console.error('Error counting total recipes:', error.message);
+        console.error('Error fetching recipes:', error.message);
     }
-
-    storedTotalRecipes[recipeName] = totalRecipes; // Cache the total count
-    return totalRecipes;
+    allRecipes = allHits;
+    console.log('Fetched', allHits.length, 'recipes');
 }
 
-// Routes to serve the search results when the form is submitted
+// Route to handle the search and paginate results
 app.post('/search', async (req, res) => {
     const recipeName = req.body.recipeName;
-    const page = parseInt(req.query.page) || 1;
+    const page = parseInt(req.query.page) || 1; 
     const limit = 24;
-    const from = (page - 1) * limit;
-    const to = from + limit;
 
-    try {
-        const total = await countRecipes(recipeName); // Get total count dynamically
-        const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${to}`;
-        console.log('URL:', url);
-        const response = await axios.get(url);
-        const recipes = response.data.hits.map(hit => {
-            const recipe = hit.recipe;
-            recipe.label = recipe.label.toLowerCase();
-            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
-            return recipe;
-        });
+    // Clear the cached recipes on each new search to avoid showing old data
+    allRecipes = [];
 
-        res.json({ recipes, total, page, limit });
+    await fetchAllRecipes(recipeName);
 
-    } catch (error) {
-        console.error('Error:', error.response ? error.response.data : error.message);
-        res.status(500).send(`Error: ${error.message}`);
-    }
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    const recipesForPage = allRecipes.slice(start, end);
+
+    const formattedRecipes = recipesForPage.map(hit => {
+        const recipe = hit.recipe;
+        recipe.label = recipe.label.toLowerCase();
+        recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
+        return recipe;
+    });
+
+    res.json({recipes: formattedRecipes, total: allRecipes.length, page, limit});
 });
-
 
 app.post('/register', (req, res) => {
     const { email, username, password } = req.body;
@@ -198,7 +179,6 @@ app.post('/add-favourite', (req, res) => {
 app.get('/favourites/:userID', (req, res) => {
     const userID = req.params.userID;
 
-    // Modify the query to select both RecipeName and RecipeURI
     const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
     db.query(query, [userID], (err, results) => {
         if (err) {
