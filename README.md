@@ -34,6 +34,9 @@ To get started with this project, follow the steps below to set up your local en
    npm run dev
    ```
 
+6. **SQL setup**:
+   Create the database: Open your SQL Server Management Studio (SSMS) or preferred SQL editor and run the following script to create the database and its tables.
+
 ## Usage
 
 - Open your browser and navigate to `http://localhost:3000`.
