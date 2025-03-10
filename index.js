@@ -68,9 +68,17 @@ async function fetchAllRecipes(recipeName) {
     let from = 0;
     const limit = 100;
     try {
-        const url = `https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}&from=${from}&to=${from + limit}`;
+        const baseURL = 'https://api.edamam.com/search';
+        const params = new URLSearchParams({
+            q: recipeName,
+            app_id: appId,
+            app_key: apiKey,
+            from,
+            to: from + limit
+        });
+        const url = `${baseURL}?${params.toString()}`;
         const response = await axios.get(url);
-        allHits = response.data.hits; 
+        allHits = response.data.hits;
     } catch (error) {
         console.error('Error fetching recipes:', error.message);
     }
@@ -259,7 +267,14 @@ async function fetchRecipesFromAPI(results) {
         const recipeName = result.RecipeName.toLowerCase();
         const recipeURI = result.RecipeURI;
         try {
-            const response = await axios.get(`https://api.edamam.com/search?q=${recipeName}&app_id=${appId}&app_key=${apiKey}`);
+            const baseURL = 'https://api.edamam.com/search';
+            const params = new URLSearchParams({
+                q: recipeName,
+                app_id: appId,
+                app_key: apiKey
+            });
+            const url = `${baseURL}?${params.toString()}`;
+            const response = await axios.get(url);
             const recipeData = response.data.hits
                 .map(hit => hit.recipe)
                 .filter(recipe => recipe.label.toLowerCase() === recipeName && recipe.uri === recipeURI);
@@ -271,6 +286,7 @@ async function fetchRecipesFromAPI(results) {
     }
     return favouriteRecipes;
 }
+
 
 // Server listening on port 3000 
 app.listen(port, () => { 
