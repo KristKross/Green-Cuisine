@@ -75,7 +75,6 @@ async function fetchAllRecipes(recipeName) {
         console.error('Error fetching recipes:', error.message);
     }
     allRecipes = allHits;
-    console.log('Fetched', allHits.length, 'recipes');
 }
 
 // Route to handle the search and paginate results

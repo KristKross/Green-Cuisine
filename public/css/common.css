@@ -77,7 +77,7 @@ input[type="text"] {
     caret-color: transparent;
 }
 
-button[type="submit"]:hover {
+#search-form button[type="submit"]:hover {
     background-color: #eee;
 }
 

@@ -5,7 +5,7 @@ CREATE TABLE users (
     Email VARCHAR(100)
 );
 
-CREATE TABLE recipes (
+CREATE TABLE favourites (
     RecipeID INT PRIMARY KEY,
     RecipeName VARCHAR(100),
     Instructions TEXT,
