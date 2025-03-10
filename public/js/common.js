@@ -22,9 +22,8 @@ function setupSearchForm(searchForm) {
 
 function setupLoginName(loginName) {
     if (loginName) {
-        const userLoggedIn = localStorage.getItem('userLoggedIn');
-        if (userLoggedIn === 'true') {
-            const username = localStorage.getItem('username');
+        const username = localStorage.getItem('username');
+        if (username) {
             loginName.textContent = `Hello, ${username}`;
             loginName.href = '/profile';
         }

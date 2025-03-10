@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((data) => {
                 console.log(data);
                 if (data.success) { // Check if login was successful    
-                    localStorage.setItem('userLoggedIn', 'true');
                     localStorage.setItem('username', data.username);
                     localStorage.setItem('userID', data.userID);
                     window.location.href = '/';
