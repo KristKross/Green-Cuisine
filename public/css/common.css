@@ -86,6 +86,10 @@ main {
     flex: 1;
 }
 
+h1, h2, h3 {
+    margin: 0;
+}
+
 footer {
     text-align: center;
     padding: 10px 0;

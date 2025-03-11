@@ -63,7 +63,7 @@ app.get('/profile', (req, res) => {
 let allRecipes = [];
 
 // Function to fetch all recipes and store them in memory
-async function fetchAllRecipes(recipeName) {
+async function fetchAllRecipes(recipeName, mealType, diet, health) {
     let allHits = [];
     let from = 0;
     const limit = 100;
@@ -76,7 +76,17 @@ async function fetchAllRecipes(recipeName) {
             from,
             to: from + limit
         });
+        if (mealType) {
+            params.append('mealType', mealType);
+        }
+        if (diet) {
+            params.append('diet', diet);
+        }
+        if (health) {
+            params.append('health', health);
+        }
         const url = `${baseURL}?${params.toString()}`;
+        console.log(url);
         const response = await axios.get(url);
         allHits = response.data.hits;
     } catch (error) {
@@ -91,7 +101,6 @@ app.post('/search', async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = 24;
 
-    // Clear the cached recipes on each new search to avoid showing old data
     allRecipes = [];
 
     await fetchAllRecipes(recipeName);

@@ -1,0 +1,162 @@
+main {
+    padding: 0;
+}
+
+#hero {
+    width: 100%;
+    height: calc(70vh - 70px);
+    min-height: 400px;
+    max-height: 800px;
+    color: #fff;
+    text-align: center;
+    background-image: url('/images/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h2 {
+        margin: 0;
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 1;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    p {
+        font-size: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+}
+
+#featured {
+    height: 25vh;
+    min-height: 100px;
+    max-height: 300px;
+    background-color: #f1f1ee;
+}
+
+.featured-card-container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: min-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -180px;
+
+    .card {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0;
+    }
+    
+    .main-card {
+        width: 300px;
+        height: 300px;
+        z-index: 1;
+    }
+    
+    .sub-card {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .left{
+        transform: translateX(10px);
+    }
+    
+    .right {
+        transform: translateX(-10px);
+    }
+}
+
+.recipe-categories {
+    height: min-content;
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.categories-container {
+    text-align: center;
+
+    h2 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #626F47;
+    }
+
+    p {
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+}
+
+.categories-grid {
+    margin: 0 auto;
+    max-width: 940px;
+    display: grid;
+    grid-template-columns: repeat(3, 3fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+}
+
+.category-card {
+    margin: 0;
+    padding: 20px;
+    max-width: 300px;
+    width: 100%;
+    height: 120px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.dietary-preferences {
+    height: min-content;
+    padding: 60px 0;
+    background-color: #f1f1ee;
+}
+
+.preferences-container {
+    text-align: center;
+
+    h2 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #626F47;
+    }
+    
+    p {
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+}
+
+.preferences-grid {
+    margin: 0 auto;
+    max-width: 940px;
+    display: grid;
+    grid-template-columns: repeat(3, 3fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+}
+
+.preference-card {
+    margin: 0;
+    padding: 20px;
+    max-width: 300px;
+    width: 100%;
+    height: 120px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
