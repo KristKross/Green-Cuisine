@@ -75,7 +75,7 @@ main {
     }
 }
 
-.recipe-categories {
+#recipe-categories {
     height: min-content;
     padding: 60px 0;
     background-color: #fff;
@@ -118,7 +118,7 @@ main {
     box-sizing: border-box;
 }
 
-.dietary-preferences {
+#dietary-preferences {
     height: min-content;
     padding: 60px 0;
     background-color: #f1f1ee;
@@ -159,4 +159,139 @@ main {
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+}
+
+#seasonal-recipes {
+    height: min-content;
+    padding: 60px 0;
+    background-color: #626F47;
+}
+
+.seasonal-container {
+    text-align: center;
+
+    h2 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #fff;
+    }
+    
+    p {
+        font-size: 18px;
+        margin-bottom: 40px;
+        color: #fff;
+    }
+}
+
+.recipe-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+#main-container {
+    width: 500px;
+    height: 500px;
+    color: #fff;
+
+    .seasonal-card {
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        p {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+    }
+    
+    .seasonal-card:hover {
+        transform: scale(1.05);
+    }
+    
+    .dish-type {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 12px;
+        margin: 7px 0;
+    }
+    
+    .recipe-name {
+        margin: 0;
+        line-height: 1.2;
+        font-size: 18px;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-transform: capitalize;
+    }
+}
+
+#side-container {
+    margin-left: 10px;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #fff;
+    
+    .seasonal-card {
+        padding: 20px;
+        height: calc(50% - 5px);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        p {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+    }
+    
+    .seasonal-card:hover {
+        transform: scale(1.05);
+    }
+    
+    .dish-type {
+        display: flex;
+        justify-self: flex-start;
+        align-self: flex-start;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 12px;
+        margin: 7px 0;
+    }
+    
+    .recipe-name {
+        margin: 0;
+        line-height: 1.2;
+        font-size: 18px;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-transform: capitalize;
+    }
 }

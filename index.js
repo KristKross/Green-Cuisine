@@ -59,14 +59,34 @@ app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/profile.html'));
 });
 
+function getSeason() {
+    const month = new Date().getMonth();
+    if (month >= 2 && month <= 4) {
+        return 'spring';
+    } else if (month >= 5 && month <= 7) {
+        return 'summer';
+    } else if (month >= 8 && month <= 10) {
+        return 'fall'; 
+    } else {
+        return 'winter'; 
+    }
+}
+
+const seasonalIngredients = {
+    spring: ['asparagus', 'strawberry', 'peas'],
+    summer: ['tomato', 'zucchini', 'berries'],
+    fall: ['pumpkin', 'apples', 'squash'],
+    winter: ['root vegetables', 'citrus', 'stew']
+};
+
 // Store all fetched recipes globally
 let allRecipes = [];
 
 // Function to fetch all recipes and store them in memory
-async function fetchAllRecipes(recipeName, mealType, diet, health) {
+async function fetchAllRecipes(recipeName, start, end, mealType, diet, health) {
     let allHits = [];
-    let from = 0;
-    const limit = 100;
+    let from = start ? start : 0;
+    const limit = end ? end : 100;
     try {
         const baseURL = 'https://api.edamam.com/search';
         const params = new URLSearchParams({
@@ -94,6 +114,27 @@ async function fetchAllRecipes(recipeName, mealType, diet, health) {
     }
     allRecipes = allHits;
 }
+
+app.get('/seasonal-recipes', async (req, res) => {
+    const season = getSeason();
+    const recipeName = seasonalIngredients[season][Math.floor(Math.random() * seasonalIngredients[season].length)];
+    
+    const start = Math.floor(Math.random() * 100);
+    await fetchAllRecipes(recipeName, start, 3);
+
+    const formattedRecipes = allRecipes.map(hit => {
+        const recipe = hit.recipe;
+        recipe.label = recipe.label.toLowerCase();
+        recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
+        return recipe;
+    });
+
+    if (formattedRecipes.length) {
+        res.json({ recipes: formattedRecipes });
+    } else {
+        res.status(404).json({ success: false, message: 'No recipes found.' });
+    }
+});
 
 // Route to handle the search and paginate results
 app.post('/search', async (req, res) => {
