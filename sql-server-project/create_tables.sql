@@ -1,3 +1,4 @@
+-- For Edamam API
 CREATE TABLE users (
     UserID INT PRIMARY KEY,
     Username VARCHAR(50),
@@ -6,9 +7,8 @@ CREATE TABLE users (
 );
 
 CREATE TABLE favourites (
-    RecipeID INT PRIMARY KEY,
-    RecipeName VARCHAR(100),
-    Instructions TEXT,
     UserID INT,
+    RecipeName VARCHAR(100),
+    RecipeURI VARCHAR(200),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
