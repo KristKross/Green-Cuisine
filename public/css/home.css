@@ -49,8 +49,6 @@ main {
     background-color: #f1f1ee;
 
     @media screen and (min-width: 769px) {
-        height: 15vh;
-
         .recipe-name {
             margin-bottom: 20px;
             font-size: 24px;
