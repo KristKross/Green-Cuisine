@@ -1,6 +1,8 @@
 // Variables to store current page and recipe name
 let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 let currentRecipeName = new URLSearchParams(window.location.search).get('q') || '';
+let currentMealType = new URLSearchParams(window.location.search).get('mealType') || '';
+let currentDishType = new URLSearchParams(window.location.search).get('dishType') || '';
 
 // Function to update the URI without reloading the page
 function updateURI(uri, state) {
@@ -41,7 +43,7 @@ function removeLoading() {
 document.addEventListener('DOMContentLoaded', async () => {
     // Fetch and render search results
     if (currentRecipeName) {
-        fetchSearchResults(currentRecipeName, currentPage, true);
+        fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, true);
     }
 
     // The popstate event listener is to handle the back button and forward button and update the page accordingly
@@ -49,13 +51,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (event.state) {
             currentPage = event.state.page || 1;
             currentRecipeName = event.state.recipeName || '';
-            fetchSearchResults(currentRecipeName, currentPage, true);
+            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentdishType, true);
         }
     });
 });
 
 // Function to fetch and render search results
-async function fetchSearchResults(recipeName, page, isSearch = false) {
+async function fetchSearchResults(recipeName, page, currentMealType, currentDishType, isSearch = false) {
     if (document.getElementById('loader')) return;
 
     try {
@@ -63,7 +65,7 @@ async function fetchSearchResults(recipeName, page, isSearch = false) {
             showLoading();
         }
 
-        const response = await fetch(`/search?page=${page}`, {
+        const response = await fetch(`/search?page=${page}&mealType=${currentMealType}&dishType=${currentDishType}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recipeName })
@@ -128,7 +130,6 @@ async function renderRecipes(recipes) {
         });
     });
 }
-
 
 // Function to fetch favourites from the database
 async function fetchFavouritesFromDatabase() {
@@ -235,29 +236,31 @@ function updatePagination(total, page, limit) {
 // Function to render pagination controls
 function renderPaginationControls(totalPages, currentPage) {
     const paginationDiv = document.getElementById('pagination');  
-    
-    // Add "Previous" button
+
+    // If pagination already exists, update only the active button
+    if (paginationDiv.innerHTML.trim() !== '') {
+        document.querySelectorAll('.page-number').forEach(button => {
+            button.classList.toggle('active', parseInt(button.dataset.page) === currentPage);
+        });
+        return;
+    }
+
+    // Otherwise, generate new buttons
     let paginationHTML = `
         <button id="prev" class="${currentPage === 1 ? 'disabled' : ''}">Previous</button>
     `;
 
-    // Generate numbered buttons 
     for (let i = 1; i <= totalPages; i++) {
         const active = i === currentPage ? 'active' : '';
-        paginationHTML += `
-            <button class="page-number ${active}" data-page="${i}">${i}</button>
-        `;
+        paginationHTML += `<button class="page-number ${active}" data-page="${i}">${i}</button>`;
     }
 
-    // Add "Next" button
-    paginationHTML += `
-        <button id="next" class="${currentPage === totalPages ? 'disabled' : ''}">Next</button>
-    `;
+    paginationHTML += `<button id="next" class="${currentPage === totalPages ? 'disabled' : ''}">Next</button>`;
 
-    // Render the pagination controls
     paginationDiv.innerHTML = paginationHTML;
     attachPaginationEventListeners(totalPages);
 }
+
 
 // Function to attach event listeners to pagination buttons
 function attachPaginationEventListeners(totalPages) {
@@ -265,7 +268,7 @@ function attachPaginationEventListeners(totalPages) {
     document.getElementById('next').addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage++;
-            fetchSearchResults(currentRecipeName, currentPage);
+            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType);
         }
     });
 
@@ -273,7 +276,7 @@ function attachPaginationEventListeners(totalPages) {
     document.getElementById('prev').addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
-            fetchSearchResults(currentRecipeName, currentPage);
+            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType);
         }
     });
 
@@ -283,7 +286,7 @@ function attachPaginationEventListeners(totalPages) {
             const page = parseInt(event.target.getAttribute('data-page'));
             if (page !== currentPage) {
                 currentPage = page;
-                fetchSearchResults(currentRecipeName, currentPage);
+                fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType);
             }
         });
     });

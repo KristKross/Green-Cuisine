@@ -53,3 +53,32 @@ function renderSeasonalRecipes(seasonalRecipes) {
         });
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const categories = {
+        'main-dishes': 'main course',
+        'desserts': 'desserts',
+        'appetisers': 'starter',
+        'soups': 'soups',
+        'salads': 'salad',
+        'breakfast': 'breakfast'
+    };
+
+    Object.keys(categories).forEach(categoryId => {
+        const categoryCard = document.getElementById(categoryId);
+        if (categoryCard) {
+            categoryCard.addEventListener('click', () => {
+                searchRecipes(categories[categoryId]);
+            });
+        }
+    });
+});
+
+function searchRecipes(category) {
+    event.preventDefault();
+    if (['soups', 'salad', 'main course', 'starter', 'desserts'].includes(category)) {
+        window.location.href = `/search?q=recipe&dishType=${encodeURIComponent(category)}&page=1`;
+    } else {
+        window.location.href = `/search?q=recipe&mealType=${encodeURIComponent(category)}&page=1`;
+    }
+}

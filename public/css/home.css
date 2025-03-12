@@ -17,28 +17,38 @@ main {
     justify-content: center;
 
     h2 {
-        margin: 0;
+        padding: 10px 0;
         font-size: 48px;
         font-weight: 800;
         line-height: 1;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-
-        @media screen and (max-width: 768px) {
-            font-size: 32px;
-        }
     }
 
     p {
         font-size: 20px;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-
-        @media screen and (max-width: 768px) {
-            font-size: 15px;
-        }
     }
     
     @media screen and (max-width: 768px) {
         height: calc(50vh - 70px);
+
+        h2 {
+            font-size: 32px;
+        }
+
+        p {
+            font-size: 15px;
+        }
+    }
+
+    @media screen and (max-width: 576px) {
+        h2 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 12px;
+        }
     }
 }
 
@@ -177,6 +187,7 @@ main {
     
     .right {
         transform: translateX(-10px);
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/steak.jpg');
         
         &:hover {
             cursor: pointer;
@@ -232,17 +243,44 @@ main {
     padding: 20px;
     width: 100%;
     height: 130px;
-    background-color: #fff;
+    color: #fff;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
     &:hover {
         cursor: pointer;
         filter: brightness(0.9);
+    }
+
+    &:nth-child(1) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/main-dish.jpg');
+    }
+
+    &:nth-child(2) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/dessert.jpg');
+    }
+
+    &:nth-child(3) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/appetiser.jpg');
+    }
+
+    &:nth-child(4) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/soup.jpg');
+    }
+
+    &:nth-child(5) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/salad.jpg');
+    }
+  
+    &:nth-child(6) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/breakfast.jpg');
     }
 }
 
@@ -308,8 +346,8 @@ main {
 }
 
 #seasonal-recipes {
+    padding: 60px 20px;
     height: min-content;
-    padding: 60px 0;
     background-color: #626F47;
 }
 
@@ -428,11 +466,17 @@ main {
     
     .seasonal-card {
         height: calc(50% - 5px);
+
+        @media screen and (max-width: 576px) {
+            height: 200px;
+        }
     }
 
     @media screen and (max-width: 576px) {
         margin: 0;
+        gap: 10px;
         width: 100%;
+        height: 400px;
     }
 }
 
