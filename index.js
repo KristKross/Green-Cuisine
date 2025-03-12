@@ -73,10 +73,10 @@ function getSeason() {
 }
 
 const seasonalIngredients = {
-    spring: ['asparagus', 'strawberry', 'peas'],
-    summer: ['tomato', 'zucchini', 'berries'],
-    fall: ['pumpkin', 'apples', 'squash'],
-    winter: ['root vegetables', 'citrus', 'stew']
+    spring: ['asparagus', 'strawberry', 'peas', 'lemon', 'mint', 'lamb', 'quiche', 'frittata'],
+    summer: ['tomato', 'zucchini', 'berries', 'stone fruit', 'grilled meat', 'salads', 'corn', 'avocado'],
+    fall: ['pumpkin', 'apples', 'squash', 'sweet potato', 'cranberries', 'brussels sprouts', 'turkey', 'stuffing'],
+    winter: ['root vegetables', 'citrus', 'stew', 'braised meat', 'roasted vegetables', 'hot chocolate', 'soup', 'baked goods']
 };
 
 // Store all fetched recipes globally
@@ -119,13 +119,13 @@ app.get('/seasonal-recipes', async (req, res) => {
     const season = getSeason();
     const recipeName = seasonalIngredients[season][Math.floor(Math.random() * seasonalIngredients[season].length)];
     
-    const start = Math.floor(Math.random() * 100);
+    const start = Math.floor(Math.random() * 97);
     await fetchAllRecipes(recipeName, start, 3);
 
     const formattedRecipes = allRecipes.map(hit => {
         const recipe = hit.recipe;
         recipe.label = recipe.label.toLowerCase();
-        recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
+        recipe.dishType = Array.isArray(recipe.dishType) && recipe.dishType.length > 0 ? recipe.dishType[0] : '';
         return recipe;
     });
 

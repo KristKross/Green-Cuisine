@@ -22,11 +22,23 @@ main {
         font-weight: 800;
         line-height: 1;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+        @media screen and (max-width: 768px) {
+            font-size: 32px;
+        }
     }
 
     p {
         font-size: 20px;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+        @media screen and (max-width: 768px) {
+            font-size: 15px;
+        }
+    }
+    
+    @media screen and (max-width: 768px) {
+        height: calc(50vh - 70px);
     }
 }
 
@@ -35,6 +47,42 @@ main {
     min-height: 100px;
     max-height: 300px;
     background-color: #f1f1ee;
+
+    @media screen and (min-width: 769px) {
+        height: 15vh;
+
+        .recipe-name {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        p {
+            font-size: 14px;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        height: 15vh;
+
+        .recipe-name {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        p {
+            font-size: 12px;
+        }
+    }
+
+    @media screen and (max-width: 576px) {
+        .recipe-name {
+            font-size: 14px;
+        }
+        
+        p {
+            font-size: 10px;
+        }
+    }
 }
 
 .featured-card-container {
@@ -45,7 +93,12 @@ main {
     justify-content: center;
     align-items: center;
     position: relative;
+    text-align: center;
     top: -180px;
+    
+    @media screen and (max-width: 768px) {
+        top: -120px;
+    }
 
     .card {
         background-color: #fff;
@@ -54,24 +107,83 @@ main {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 0;
     }
+
+    .time-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .clock-image {
+        margin-right: 5px;
+        width: 20px;
+        height: 20px;
+        background-image: url('/images/clock.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
     
     .main-card {
         width: 300px;
         height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/burger.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         z-index: 1;
+        color: #fff;
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(0.9);
+        }
+
+        @media screen and (max-width: 768px) {
+            width: 200px;
+            height: 200px;
+        }
     }
     
     .sub-card {
         width: 250px;
         height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat; 
+        color: #fff;
+
+        @media screen and (max-width: 768px) {
+            width: 150px;
+            height: 150px;
+        }
     }
-    
+       
     .left{
         transform: translateX(10px);
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/carbonara.jpg');
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(0.9);
+        }
     }
     
     .right {
         transform: translateX(-10px);
+        
+        &:hover {
+            cursor: pointer;
+            filter: brightness(0.9);
+        }
     }
 }
 
@@ -85,37 +197,55 @@ main {
     text-align: center;
 
     h2 {
+        margin-bottom: 10px;
         font-size: 32px;
         font-weight: 800;
         color: #626F47;
     }
 
     p {
-        font-size: 18px;
         margin-bottom: 40px;
+        font-size: 18px;
     }
 }
 
 .categories-grid {
     margin: 0 auto;
+    padding: 20px;
     max-width: 940px;
     display: grid;
     grid-template-columns: repeat(3, 3fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 20px;
     justify-items: center;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 576px) {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
 }
 
 .category-card {
     margin: 0;
     padding: 20px;
-    max-width: 300px;
     width: 100%;
-    height: 120px;
+    height: 130px;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.9);
+    }
 }
 
 #dietary-preferences {
@@ -128,37 +258,55 @@ main {
     text-align: center;
 
     h2 {
+        margin-bottom: 10px;
         font-size: 32px;
         font-weight: 800;
         color: #626F47;
     }
     
     p {
-        font-size: 18px;
         margin-bottom: 40px;
+        font-size: 18px;
     }
 }
 
 .preferences-grid {
     margin: 0 auto;
+    padding: 20px;
     max-width: 940px;
     display: grid;
     grid-template-columns: repeat(3, 3fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 20px;
     justify-items: center;
+    
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 576px) {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
 }
 
 .preference-card {
     margin: 0;
     padding: 20px;
-    max-width: 300px;
     width: 100%;
-    height: 120px;
+    height: 130px;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.9);
+    }
 }
 
 #seasonal-recipes {
@@ -171,22 +319,89 @@ main {
     text-align: center;
 
     h2 {
+        margin-bottom: 10px;
         font-size: 32px;
         font-weight: 800;
         color: #fff;
     }
     
     p {
-        font-size: 18px;
         margin-bottom: 40px;
-        color: #fff;
+        font-size: 18px;
+        color: #eeeeeead;
     }
 }
 
 .recipe-container {
     display: flex;
-    max-width: 1000px;
+    max-width: 950px;
     margin: 0 auto;
+
+    @media screen and (max-width: 576px) {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+}
+
+.seasonal-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+    p {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-container {
+        margin: 10px 10px 0 0;
+        padding: 7px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        text-transform: capitalize;
+
+        p {
+            font-size: 12px;
+        }
+    }
+
+    .time-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .clock-image {
+        margin-right: 5px;
+        width: 20px;
+        height: 20px;
+        background-image: url('/images/clock.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.9);
+    }
 }
 
 #main-container {
@@ -195,47 +410,12 @@ main {
     color: #fff;
 
     .seasonal-card {
-        padding: 20px;
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: flex-start;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        box-sizing: border-box;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
+    }
 
-        p {
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-    }
-    
-    .seasonal-card:hover {
-        transform: scale(1.05);
-    }
-    
-    .dish-type {
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-size: 12px;
-        margin: 7px 0;
-    }
-    
-    .recipe-name {
-        margin: 0;
-        line-height: 1.2;
-        font-size: 18px;
-        font-weight: 600;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        text-transform: capitalize;
+    @media screen and (max-width: 576px) {
+        width: 100%;
+        height: 200px;
     }
 }
 
@@ -249,49 +429,24 @@ main {
     color: #fff;
     
     .seasonal-card {
-        padding: 20px;
         height: calc(50% - 5px);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: flex-start;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        box-sizing: border-box;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
+    }
 
-        p {
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-    }
-    
-    .seasonal-card:hover {
-        transform: scale(1.05);
-    }
-    
-    .dish-type {
-        display: flex;
-        justify-self: flex-start;
-        align-self: flex-start;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-size: 12px;
-        margin: 7px 0;
-    }
-    
-    .recipe-name {
+    @media screen and (max-width: 576px) {
         margin: 0;
-        line-height: 1.2;
-        font-size: 18px;
-        font-weight: 600;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        text-transform: capitalize;
+        width: 100%;
     }
+}
+
+.recipe-name {
+    margin: 0;
+    line-height: 1.2;
+    font-size: 24px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-transform: capitalize;
 }

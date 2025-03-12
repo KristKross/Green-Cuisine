@@ -16,19 +16,40 @@ function renderSeasonalRecipes(seasonalRecipes) {
         const mainRecipe = seasonalRecipes[0];
         mainContainer.innerHTML = `
             <div class="seasonal-card" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent), url('${mainRecipe.image}');">
-                <p class="dish-type">${mainRecipe.dishType}</p>
-                    <p><b>Cooking Time:</b> ${mainRecipe.totalTime} min</p>
-                    <p class="recipe-name">${mainRecipe.label}</p>
+                <div class="text-container" style="display: ${mainRecipe.dishType ? 'block' : 'none'};">
+                    <p class="dish-type">${mainRecipe.dishType}</p>
+                </div>
+                <div class="time-container">
+                    <div class="clock-image"></div> 
+                    <p>${mainRecipe.totalTime} min</p>
+                </div>
+                <p class="recipe-name">${mainRecipe.label}</p>
             </div>
         `;
+        mainContainer.addEventListener('click', () => {
+            localStorage.setItem('selectedRecipe', JSON.stringify(mainRecipe));
+            window.location.href = `/recipe?q=${encodeURIComponent(mainRecipe.label)}`;
+        });
     }
     
     const sideRecipes = seasonalRecipes.slice(1, 3);
     sideContainer.innerHTML = sideRecipes.map(recipe => `
         <div class="seasonal-card" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent), url('${recipe.image}');">
-                <p class="dish-type">${recipe.dishType}</p>
-                <p><b>Cooking Time:</b> ${recipe.totalTime} min</p>
+                <div class="text-container" style="display: ${recipe.dishType ? 'block' : 'none'};">
+                    <p class="dish-type">${recipe.dishType}</p>
+                </div>
+                <div class="time-container">
+                    <div class="clock-image"></div> 
+                    <p>${recipe.totalTime} min</p>
+                </div>
                 <p class="recipe-name">${recipe.label}</p>
             </div>
     `).join('');
+    sideRecipes.forEach(recipe => {
+        const sideRecipeElement = sideContainer.querySelector(`.seasonal-card[style*="${recipe.image}"]`);
+        sideRecipeElement.addEventListener('click', () => {
+            localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
+            window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
+        });
+    });
 }
