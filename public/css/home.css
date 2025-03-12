@@ -92,7 +92,7 @@ main {
     align-items: center;
     position: relative;
     text-align: center;
-    top: -180px;
+    top: -160px;
     
     @media screen and (max-width: 768px) {
         top: -120px;
