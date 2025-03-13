@@ -3,6 +3,8 @@ let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 let currentRecipeName = new URLSearchParams(window.location.search).get('q') || '';
 let currentMealType = new URLSearchParams(window.location.search).get('mealType') || '';
 let currentDishType = new URLSearchParams(window.location.search).get('dishType') || '';
+let currentDiet = new URLSearchParams(window.location.search).get('diet') || '';
+let currentHealth = new URLSearchParams(window.location.search).get('health') || '';
 
 // Function to update the URI without reloading the page
 function updateURI(uri, state) {
@@ -43,7 +45,7 @@ function removeLoading() {
 document.addEventListener('DOMContentLoaded', async () => {
     // Fetch and render search results
     if (currentRecipeName) {
-        fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, true);
+        fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth, true);
     }
 
     // The popstate event listener is to handle the back button and forward button and update the page accordingly
@@ -51,44 +53,78 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (event.state) {
             currentPage = event.state.page || 1;
             currentRecipeName = event.state.recipeName || '';
-            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentdishType, true);
+            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth, true);
         }
     });
 });
 
 // Function to fetch and render search results
-async function fetchSearchResults(recipeName, page, currentMealType, currentDishType, isSearch = false) {
+async function fetchSearchResults(recipeName, page, currentMealType, currentDishType, currentDiet, currentHealth, isSearch = false) {
+    // Check if the loader element is already present to prevent multiple requests
     if (document.getElementById('loader')) return;
 
     try {
+        // Show loading indicator if it's a new search
         if (isSearch) {
             showLoading();
         }
 
-        const response = await fetch(`/search?page=${page}&mealType=${currentMealType}&dishType=${currentDishType}`, {
+        // Build the query string dynamically
+        let queryParams = new URLSearchParams();
+        queryParams.set('q', recipeName); // Set the recipe name
+        queryParams.set('page', page); // Set the current page number
+
+        // Add the current query parameters to the query string if they exist
+        if (currentMealType) queryParams.set('mealType', currentMealType);
+        if (currentDishType) queryParams.set('dishType', currentDishType);
+        if (currentDiet) queryParams.set('diet', currentDiet);
+        if (currentHealth) queryParams.set('health', currentHealth);
+
+        // Fetch the search results from the server
+        const response = await fetch(`/search?${queryParams.toString()}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ recipeName })
+            body: JSON.stringify({ recipeName }) // Send the recipe name in the request body
         });
 
+        // Check if the response is OK (status 200)
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        // Parse the response JSON data
         const data = await response.json();
 
+        // If recipes are found, render them and update pagination
         if (data.recipes.length > 0) {
-            renderRecipes(data.recipes);
-            updatePagination(data.total, data.page, data.limit);
-            window.scrollTo(0, 0);
+            renderRecipes(data.recipes); // Render the fetched recipes
+            updatePagination(data.total, data.page, data.limit); // Update the pagination controls
+            window.scrollTo(0, 0); // Scroll to the top of the page
+
+            // Update the URI with the new page and query parameters
+            updateURI(`/search?${queryParams.toString()}`, {
+                page: page,
+                recipeName: recipeName,
+                mealType: currentMealType,
+                dishType: currentDishType,
+                diet: currentDiet,
+                health: currentHealth
+            });
         } else {
-            showError();
+            showError(); // Show an error message if no recipes are found
         }
 
     } catch (error) {
+        // Log the error and show an error message
         console.error('Error fetching search results:', error);
         showError();
 
     } finally {
+        // Remove the loading indicator
         removeLoading();
     }
 }
+
 
 async function renderRecipes(recipes) {
     const favouriteRecipes = await fetchFavouritesFromDatabase();
@@ -268,7 +304,7 @@ function attachPaginationEventListeners(totalPages) {
     document.getElementById('next').addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage++;
-            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType);
+            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth);
         }
     });
 
@@ -276,7 +312,7 @@ function attachPaginationEventListeners(totalPages) {
     document.getElementById('prev').addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
-            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType);
+            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth);
         }
     });
 
@@ -286,7 +322,7 @@ function attachPaginationEventListeners(totalPages) {
             const page = parseInt(event.target.getAttribute('data-page'));
             if (page !== currentPage) {
                 currentPage = page;
-                fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType);
+                fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth);
             }
         });
     });

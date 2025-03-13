@@ -83,7 +83,7 @@ const seasonalIngredients = {
 let allRecipes = [];
 
 // Function to fetch all recipes and store them in memory
-async function fetchAllRecipes(recipeName, start, end, mealType, dishType, diet, health) {
+async function fetchAllRecipes(recipeName, start, end, mealType, dishType, dietLabel, healthLabel) {
     let allHits = [];
     let from = start ? start : 0;
     const limit = end ? end : 100;
@@ -102,11 +102,11 @@ async function fetchAllRecipes(recipeName, start, end, mealType, dishType, diet,
         if (dishType) {
             params.append('dishType', dishType);
         }
-        if (diet) {
-            params.append('diet', diet);
+        if (dietLabel) {
+            params.append('diet', dietLabel);
         }
-        if (health) {
-            params.append('health', health);
+        if (healthLabel) {
+            params.append('health', healthLabel);
         }
         const url = `${baseURL}?${params.toString()}`;
         console.log(url);
@@ -145,11 +145,13 @@ app.post('/search', async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const mealType = req.query.mealType || '';
     const dishType = req.query.dishType || '';
+    const dietLabel = req.query.diet || '';
+    const healthLabel = req.query.health || '';
     const limit = 24;
 
     allRecipes = [];
 
-    await fetchAllRecipes(recipeName, null, null, mealType, dishType);
+    await fetchAllRecipes(recipeName, null, null, mealType, dishType, dietLabel, healthLabel);
 
     const start = (page - 1) * limit;
     const end = start + limit;

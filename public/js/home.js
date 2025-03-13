@@ -54,31 +54,40 @@ function renderSeasonalRecipes(seasonalRecipes) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const categories = {
-        'main-dishes': 'main course',
-        'desserts': 'desserts',
-        'appetisers': 'starter',
-        'soups': 'soups',
-        'salads': 'salad',
-        'breakfast': 'breakfast'
-    };
 
-    Object.keys(categories).forEach(categoryId => {
-        const categoryCard = document.getElementById(categoryId);
-        if (categoryCard) {
-            categoryCard.addEventListener('click', () => {
-                searchRecipes(categories[categoryId]);
-            });
+const categoriesMap = {
+    'main dishes': 'main course',
+    'desserts': 'desserts',
+    'appetisers': 'starter',
+    'soups': 'soup',
+    'salads': 'salad',
+    'breakfast': 'breakfast'
+};
+
+document.querySelectorAll('.category-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const category = card.querySelector('h3').textContent.toLowerCase();
+        if (['soups', 'salads', 'main dishes', 'appetisers', 'desserts'].includes(category)) {
+            window.location.href = `/search?q=recipe&page=1&dishType=${encodeURIComponent(categoriesMap[category])}`;
+        } else {
+            window.location.href = `/search?q=recipe&page=1&mealType=${encodeURIComponent(categoriesMap[category])}`;
         }
     });
 });
 
-function searchRecipes(category) {
-    event.preventDefault();
-    if (['soups', 'salad', 'main course', 'starter', 'desserts'].includes(category)) {
-        window.location.href = `/search?q=recipe&dishType=${encodeURIComponent(category)}&page=1`;
-    } else {
-        window.location.href = `/search?q=recipe&mealType=${encodeURIComponent(category)}&page=1`;
-    }
-}
+const dietLabelMap = {
+    'vegan': 'vegan',
+    'vegetarian': 'vegetarian',
+    'gluten-free': 'gluten-free',
+    'low-carb': 'low-carb',
+    'paleo': 'paleo',
+    'keto': 'keto-friendly'
+};
+
+document.querySelectorAll('.preference-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const diet = card.querySelector('h3').textContent.trim().toLowerCase();
+
+        window.location.href = `/search?q=recipe&page=1&health=${encodeURIComponent(dietLabelMap[diet])}`;
+    });
+});
