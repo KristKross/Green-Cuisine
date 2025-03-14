@@ -54,7 +54,7 @@ main {
 
 #featured {
     height: 25vh;
-    min-height: 100px;
+    min-height: 150px;
     max-height: 300px;
     background-color: #f1f1ee;
 
@@ -93,6 +93,22 @@ main {
     }
 }
 
+.time-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.clock-image {
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/images/clock.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .featured-card-container {
     margin: 0 auto;
     width: 100%;
@@ -118,22 +134,6 @@ main {
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 0;
-    }
-
-    .time-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .clock-image {
-        margin-right: 5px;
-        width: 20px;
-        height: 20px;
-        background-image: url('/images/clock.png');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
     }
     
     .main-card {
@@ -213,6 +213,10 @@ main {
     height: min-content;
     padding: 60px 0;
     background-color: #fff;
+
+    @media screen and (max-width: 768px) {
+        padding: 30px 0;
+    }
 }
 
 .categories-container {
@@ -228,6 +232,17 @@ main {
     p {
         margin-bottom: 40px;
         font-size: 18px;
+    }
+
+    @media screen and (max-width: 768px) {
+        h2 {
+            font-size: 18px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
     }
 }
 
@@ -301,6 +316,10 @@ main {
     height: min-content;
     padding: 60px 0;
     background-color: #f1f1ee;
+
+    @media screen and (max-width: 768px) {
+        padding: 30px 0;
+    }
 }
 
 .preferences-container {
@@ -316,6 +335,17 @@ main {
     p {
         margin-bottom: 40px;
         font-size: 18px;
+    }
+    
+    @media screen and (max-width: 768px) {
+        h2 {
+            font-size: 18px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
     }
 }
 
@@ -344,13 +374,40 @@ main {
     padding: 20px;
     width: 100%;
     height: 130px;
-    background-color: #fff;
+    color: #fff;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &:nth-child(1) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/vegan.jpg');
+    }
+
+    &:nth-child(2) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/vegatarian.jpg');
+    }
+
+    &:nth-child(3) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/gluten-free.jpg');
+    }
+
+    &:nth-child(4) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/carb-free.jpg');
+    }
+
+    &:nth-child(5) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/paleo.jpg');
+    }
+
+    &:nth-child(6) {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/keto.jpg');
+    }
 
     &:hover {
         cursor: pointer;
@@ -378,6 +435,17 @@ main {
         margin-bottom: 40px;
         font-size: 18px;
         color: #eeeeeead;
+    }
+
+    @media screen and (max-width: 768px) {
+        h2 {
+            font-size: 18px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
     }
 }
 
@@ -427,26 +495,6 @@ main {
         }
     }
 
-    .time-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-
-        p {
-            font-size: 14px;
-        }
-    }
-
-    .clock-image {
-        margin-right: 5px;
-        width: 20px;
-        height: 20px;
-        background-image: url('/images/clock.png');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-    
     &:hover {
         cursor: pointer;
         filter: brightness(0.9);

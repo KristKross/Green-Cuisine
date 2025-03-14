@@ -102,7 +102,7 @@ async function fetchSearchResults(recipeName, page, currentMealType, currentDish
             window.scrollTo(0, 0); // Scroll to the top of the page
 
             // Update the URI with the new page and query parameters
-            updateURI(`/search?${queryParams.toString()}`, {
+            updateURI(`/search?${queryParams}`, {
                 page: page,
                 recipeName: recipeName,
                 mealType: currentMealType,
