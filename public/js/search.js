@@ -141,7 +141,10 @@ async function renderRecipes(recipes) {
                 <div class="recipe-column">
                     <h4 class="dish-type">${recipe.dishType}</h4>
                     <h3 class="recipe-name">${recipe.label}</h3>
-                    <h4 class="cooking-time"><b>Cooking Time:</b> ${recipe.totalTime} min</h4>
+                    <div class="time-container">
+                        <div class="clock-image"></div> 
+                        <h4 class="cooking-time">${recipe.totalTime} min</h4>
+                    </div>
                 </div>
             </div>
         `;

@@ -133,6 +133,22 @@ main {
     text-transform: capitalize;
 }
 
+.time-container {
+    display: flex;
+    align-items: center;
+}
+
+.clock-image {
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/images/clock.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: invert(1) brightness(0) saturate(1);
+}
+
 .cooking-time {
     color: #666;
 }
