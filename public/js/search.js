@@ -139,9 +139,9 @@ async function renderRecipes(recipes) {
                     <button class="favourite-button ${isFavourited ? 'active' : ''}" data-index="${index}"></button>
                 </div>
                 <div class="recipe-column">
-                    <div class="dish-type">${recipe.dishType}</div>
-                    <div class="recipe-name">${recipe.label}</div>
-                    <p><b>Cooking Time:</b> ${recipe.totalTime} min</p>
+                    <h4 class="dish-type">${recipe.dishType}</h4>
+                    <h3 class="recipe-name">${recipe.label}</h3>
+                    <h4 class="cooking-time"><b>Cooking Time:</b> ${recipe.totalTime} min</h4>
                 </div>
             </div>
         `;

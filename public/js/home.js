@@ -23,7 +23,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
                     <div class="clock-image"></div> 
                     <p>${mainRecipe.totalTime} min</p>
                 </div>
-                <p class="recipe-name">${mainRecipe.label}</p>
+                <h3 class="recipe-name">${mainRecipe.label}</h3>
             </div>
         `;
         mainContainer.addEventListener('click', () => {
@@ -42,7 +42,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
                     <div class="clock-image"></div> 
                     <p>${recipe.totalTime} min</p>
                 </div>
-                <p class="recipe-name">${recipe.label}</p>
+                <h3 class="recipe-name">${recipe.label}</h3>
             </div>
     `).join('');
     sideRecipes.forEach(recipe => {

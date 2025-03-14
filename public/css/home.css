@@ -15,41 +15,24 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 
-    h2 {
-        padding: 10px 0;
-        font-size: 48px;
+    h1 {
         font-weight: 800;
         line-height: 1;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
+}
 
-    p {
-        font-size: 20px;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    }
-    
-    @media screen and (max-width: 768px) {
-        height: calc(50vh - 70px);
-
-        h2 {
-            font-size: 32px;
-        }
-
-        p {
-            font-size: 15px;
-        }
-    }
-
-    @media screen and (max-width: 576px) {
-        h2 {
-            font-size: 24px;
-        }
-
-        p {
-            font-size: 12px;
-        }
-    }
+.recipe-name {
+    margin: 0;
+    line-height: 1.2;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-transform: capitalize;
 }
 
 #featured {
@@ -58,55 +41,14 @@ main {
     max-height: 300px;
     background-color: #f1f1ee;
 
-    @media screen and (min-width: 769px) {
-        .recipe-name {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        p {
-            font-size: 14px;
-        }
-    }
-
     @media screen and (max-width: 768px) {
         height: 15vh;
-
-        .recipe-name {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        
-        p {
-            font-size: 12px;
-        }
-    }
-
-    @media screen and (max-width: 576px) {
-        .recipe-name {
-            font-size: 14px;
-        }
-        
-        p {
-            font-size: 10px;
-        }
     }
 }
 
 .time-container {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-
-    p {
-        font-size: 14px;
-    }
-
-    @media screen and (max-width: 576px) {
-        p {
-            font-size: 12px;
-        }
-    }
 }
 
 .clock-image {
@@ -159,12 +101,12 @@ main {
         background-repeat: no-repeat;
         z-index: 1;
         color: #fff;
-
+        
         &:hover {
             cursor: pointer;
             filter: brightness(0.9);
         }
-
+        
         @media screen and (max-width: 768px), screen and (max-height: 800px) {
             width: 200px;
             height: 200px;
@@ -195,9 +137,9 @@ main {
 
         @media screen and (max-width: 576px) {
             display: none;
-        }
+        }   
     }
-       
+
     .left{
         transform: translateX(10px);
         background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/carbonara.jpg');
@@ -219,9 +161,9 @@ main {
     }
 }
 
-#recipe-categories {
+#recipe-categories, #dietary-preferences {
     height: min-content;
-    padding: 60px 0;
+    padding: 50px 0;
     background-color: #fff;
 
     @media screen and (max-width: 768px) {
@@ -229,34 +171,16 @@ main {
     }
 }
 
-.categories-container {
+.categories-container, .preferences-container {
     text-align: center;
 
     h2 {
-        margin-bottom: 10px;
-        font-size: 32px;
         font-weight: 800;
         color: #626F47;
     }
-
-    p {
-        margin-bottom: 40px;
-        font-size: 18px;
-    }
-
-    @media screen and (max-width: 768px) {
-        h2 {
-            font-size: 18px;
-        }
-        
-        p {
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-    }
 }
 
-.categories-grid {
+.categories-grid, .preferences-grid {
     margin: 0 auto;
     padding: 20px;
     max-width: 940px;
@@ -273,6 +197,10 @@ main {
     @media screen and (max-width: 576px) {
         grid-template-columns: 1fr;
         padding: 10px;
+    }
+
+    p, h3 {
+        margin: 0;
     }
 }
 
@@ -323,60 +251,7 @@ main {
 }
 
 #dietary-preferences {
-    height: min-content;
-    padding: 60px 0;
     background-color: #f1f1ee;
-
-    @media screen and (max-width: 768px) {
-        padding: 30px 0;
-    }
-}
-
-.preferences-container {
-    text-align: center;
-
-    h2 {
-        margin-bottom: 10px;
-        font-size: 32px;
-        font-weight: 800;
-        color: #626F47;
-    }
-    
-    p {
-        margin-bottom: 40px;
-        font-size: 18px;
-    }
-    
-    @media screen and (max-width: 768px) {
-        h2 {
-            font-size: 18px;
-        }
-        
-        p {
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-    }
-}
-
-.preferences-grid {
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 940px;
-    display: grid;
-    grid-template-columns: repeat(3, 3fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 20px;
-    justify-items: center;
-    
-    @media screen and (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media screen and (max-width: 576px) {
-        grid-template-columns: 1fr;
-        padding: 10px;
-    }
 }
 
 .preference-card {
@@ -394,6 +269,11 @@ main {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.9);
+    }
 
     &:nth-child(1) {
         background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/vegan.jpg');
@@ -418,16 +298,11 @@ main {
     &:nth-child(6) {
         background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/keto.jpg');
     }
-
-    &:hover {
-        cursor: pointer;
-        filter: brightness(0.9);
-    }
 }
 
 #seasonal-recipes {
-    padding: 60px 20px;
     height: min-content;
+    padding: 50px 0;
     background-color: #626F47;
 }
 
@@ -435,34 +310,21 @@ main {
     text-align: center;
 
     h2 {
-        margin-bottom: 10px;
-        font-size: 32px;
         font-weight: 800;
         color: #fff;
     }
     
     p {
-        margin-bottom: 40px;
-        font-size: 18px;
         color: #eeeeeead;
-    }
-
-    @media screen and (max-width: 768px) {
-        h2 {
-            font-size: 18px;
-        }
-        
-        p {
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
     }
 }
 
 .recipe-container {
-    display: flex;
-    max-width: 950px;
     margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    max-width: 950px;
 
     @media screen and (max-width: 576px) {
         flex-direction: column;
@@ -486,13 +348,17 @@ main {
     background-size: cover;
     position: relative;
 
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.9);
+    }
+
     p {
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     .text-container {
         margin: 10px 10px 0 0;
-        padding: 7px;
         position: absolute;
         top: 0;
         right: 0;
@@ -501,19 +367,16 @@ main {
         text-transform: capitalize;
 
         p {
+            margin: 0;
+            padding: 7px 5px;
             font-size: 12px;
         }
-    }
-
-    &:hover {
-        cursor: pointer;
-        filter: brightness(0.9);
     }
 }
 
 #main-container {
-    width: 500px;
-    height: 500px;
+    width: 450px;
+    height: 450px;
     color: #fff;
 
     .seasonal-card {
@@ -528,8 +391,8 @@ main {
 
 #side-container {
     margin-left: 10px;
-    width: 500px;
-    height: 500px;
+    width: 450px;
+    height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -548,22 +411,5 @@ main {
         gap: 10px;
         width: 100%;
         height: 300px;
-    }
-}
-
-.recipe-name {
-    margin: 0;
-    line-height: 1.2;
-    font-size: 24px;
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    text-transform: capitalize;
-
-    @media screen and (max-width: 768px) {
-        font-size: 18px;
     }
 }
