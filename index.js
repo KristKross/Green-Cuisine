@@ -109,7 +109,6 @@ async function fetchAllRecipes(recipeName, start, end, mealType, dishType, dietL
             params.append('health', healthLabel);
         }
         const url = `${baseURL}?${params.toString()}`;
-        console.log(url);
         const response = await axios.get(url);
         allHits = response.data.hits;
     } catch (error) {
@@ -118,7 +117,29 @@ async function fetchAllRecipes(recipeName, start, end, mealType, dishType, dietL
     allRecipes = allHits;
 }
 
+app.get('/featured-search', async (req, res) => {
+    allRecipes = [];
+
+    const recipeName = req.query.q;
+    const start = 0
+    await fetchAllRecipes(recipeName, start, 1);
+
+    const formattedRecipes = allRecipes.map(hit => {
+        const recipe = hit.recipe;
+        recipe.label = recipe.label.toLowerCase();
+        return recipe;
+    });
+
+    if (formattedRecipes.length) {
+        res.json({ recipes: formattedRecipes });
+    } else {
+        res.status(404).json({ success: false, message: 'No recipes found.' });
+    }
+});
+
 app.get('/seasonal-recipes', async (req, res) => {
+    allRecipes = [];
+
     const season = getSeason();
     const recipeName = seasonalIngredients[season][Math.floor(Math.random() * seasonalIngredients[season].length)];
     

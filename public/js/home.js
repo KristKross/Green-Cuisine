@@ -1,12 +1,56 @@
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/seasonal-recipes')
-        .then(response => response.json())
-        .then(data => {
-            const seasonalRecipes = data.recipes;
-            renderSeasonalRecipes(seasonalRecipes);
-        })
-        .catch(error => console.error('Error fetching season:', error));
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/seasonal-recipes');
+        const data = await response.json();
+        const seasonalRecipes = data.recipes;
+        renderSeasonalRecipes(seasonalRecipes);
+    } catch (error) {
+        console.error('Error fetching season:', error);
+    }
+
+    const recipeQueries = [
+        'Non-Traditional Pasta Carbonara',
+        'Classic American Burger',
+        'Pan-Seared Ribeye Steak with Quick Creamed Spinach Recipe'
+    ];
+    try {
+        const results = await Promise.all(
+            recipeQueries.map(query =>
+                fetch(`/featured-search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+            )
+        );
+        const singleRecipes = results.flatMap(result => result.recipes);
+        renderFeaturedRecipes(singleRecipes);
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+    }
 });
+
+function renderFeaturedRecipes(recipes) {
+    const featuredContainer = document.getElementById('featured');
+    const classes = ['sub-card left', 'main-card', 'sub-card right'];
+    
+    featuredContainer.innerHTML = `
+        <div class="featured-container">
+            ${recipes.slice(0, 3).map((recipe, index) => `
+                <div class="featured-card ${classes[index]}" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent), url('${recipe.image}');">
+                    <div class="time-container">
+                        <div class="clock-image"></div>
+                        <h4>${recipe.totalTime} min</h4>
+                    </div>
+                    <h3 class="recipe-name">${recipe.label}</h3>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    featuredContainer.querySelectorAll('.featured-card').forEach((recipeCard, index) => {
+        recipeCard.addEventListener('click', () => {
+            localStorage.setItem('selectedRecipe', JSON.stringify(recipes[index]));
+            window.location.href = `/recipe?q=${encodeURIComponent(recipes[index].label)}`;
+        });
+    });
+}
 
 function renderSeasonalRecipes(seasonalRecipes) {
     const mainContainer = document.getElementById('main-container');
@@ -21,7 +65,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
                 </div>
                 <div class="time-container">
                     <div class="clock-image"></div> 
-                    <p>${mainRecipe.totalTime} min</p>
+                    <h4>${mainRecipe.totalTime} min</h4>
                 </div>
                 <h3 class="recipe-name">${mainRecipe.label}</h3>
             </div>
@@ -40,7 +84,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
                 </div>
                 <div class="time-container">
                     <div class="clock-image"></div> 
-                    <p>${recipe.totalTime} min</p>
+                    <h4>${recipe.totalTime} min</h4>
                 </div>
                 <h3 class="recipe-name">${recipe.label}</h3>
             </div>
