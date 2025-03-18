@@ -13,6 +13,18 @@ function showError(message) {
     main.appendChild(errorMessageDiv);
 }
 
+// Function to render nutrient information
+function renderNutrient(name, nutrient) {
+    return nutrient ? `
+        <div style="display: block;">
+            <div class="text-container">
+                <p>${name}</p>
+                <p class="nutrition-value">${Math.round(nutrient.quantity)}${nutrient.unit}</p>
+            </div>
+        </div>
+    ` : '';
+}
+
 if (recipeName) {
     try {
         const decodedRecipeName = decodeURIComponent(recipeName);
@@ -176,60 +188,15 @@ if (recipeName) {
                                         <p class="nutrition-value">${Math.round(recipeData.totalNutrients.PROCNT.quantity)}${recipeData.totalNutrients.PROCNT.unit}</p>    
                                     </div>   
                                 </div>             
-                                <div style="display: ${recipeData.totalNutrients.CHOLE ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Cholesterol</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.CHOLE ? Math.round(recipeData.totalNutrients.CHOLE.quantity) + recipeData.totalNutrients.CHOLE.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.NA ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Sodium</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.NA ? Math.round(recipeData.totalNutrients.NA.quantity) + recipeData.totalNutrients.NA.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.CA ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Calcium</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.CA ? Math.round(recipeData.totalNutrients.CA.quantity) + recipeData.totalNutrients.CA.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.MG ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Magnesium</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.MG ? Math.round(recipeData.totalNutrients.MG.quantity) + recipeData.totalNutrients.MG.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.K ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Potassium</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.K ? Math.round(recipeData.totalNutrients.K.quantity) + recipeData.totalNutrients.K.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.FE ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Iron</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.FE ? Math.round(recipeData.totalNutrients.FE.quantity) + recipeData.totalNutrients.FE.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.VITC ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Vitamin C</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.VITC ? Math.round(recipeData.totalNutrients.VITC.quantity) + recipeData.totalNutrients.VITC.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.VITD ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Vitamin D</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.VITD ? Math.round(recipeData.totalNutrients.VITD.quantity) + recipeData.totalNutrients.VITD.unit : ""}</p>
-                                    </div>
-                                </div>
-                                <div style="display: ${recipeData.totalNutrients.VITK1 ? 'block' : 'none'};">
-                                    <div class="text-container">
-                                        <p>Vitamin K</p>
-                                        <p class="nutrition-value">${recipeData.totalNutrients.VITK1 ? Math.round(recipeData.totalNutrients.VITK1.quantity) + recipeData.totalNutrients.VITK1.unit : ""}</p>
-                                    </div>
-                                </div>
+                                ${renderNutrient('Cholesterol', recipeData.totalNutrients.CHOLE)}
+                                ${renderNutrient('Sodium', recipeData.totalNutrients.NA)}
+                                ${renderNutrient('Calcium', recipeData.totalNutrients.CA)}
+                                ${renderNutrient('Magnesium', recipeData.totalNutrients.MG)}
+                                ${renderNutrient('Potassium', recipeData.totalNutrients.K)}
+                                ${renderNutrient('Iron', recipeData.totalNutrients.FE)}
+                                ${renderNutrient('Vitamin C', recipeData.totalNutrients.VITC)}
+                                ${renderNutrient('Vitamin D', recipeData.totalNutrients.VITD)}
+                                ${renderNutrient('Vitamin K', recipeData.totalNutrients.VITK1)}
                             </div>
                         </div>
                     </div>
