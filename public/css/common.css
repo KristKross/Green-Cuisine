@@ -86,11 +86,44 @@ main {
     flex: 1;
 }
 
+#error-message {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    align-self: center;
+    text-align: center;
+}
+
+.error-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    
+    @media screen and (max-width: 576px) {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+}
+
+.error-message {
+    @media screen and (max-width: 576px) {
+        font-size: 12px;
+    }
+}
+
 p {
     font-size: 16px;
     
     @media screen and (max-width: 768px) {
         font-size: 14px;
+    }
+}
+
+li {
+    font-size: 14px;
+    
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
     }
 }
 

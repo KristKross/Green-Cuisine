@@ -236,7 +236,6 @@ main {
 
     @media screen and (max-width: 576px) {
         grid-template-columns: 1fr;
-        padding: 10px;
     }
 
     p, h3 {

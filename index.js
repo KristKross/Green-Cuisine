@@ -109,6 +109,7 @@ async function fetchAllRecipes(recipeName, start, end, mealType, dishType, dietL
             params.append('health', healthLabel);
         }
         const url = `${baseURL}?${params.toString()}`;
+        console.log('URL:', url);
         const response = await axios.get(url);
         allHits = response.data.hits;
     } catch (error) {
