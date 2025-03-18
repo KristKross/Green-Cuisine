@@ -17,7 +17,6 @@ if (recipeName) {
     try {
         const decodedRecipeName = decodeURIComponent(recipeName);
         const recipeData = JSON.parse(localStorage.getItem('selectedRecipe'));
-        console.log('Recipe data:', recipeData);
 
         // Check if the recipe data is valid and matches the decoded recipe name
         if (!recipeData || recipeData.label !== decodedRecipeName) {
@@ -74,30 +73,13 @@ if (recipeName) {
                                 // If quantity is not 0
                                 if (ingredient.quantity && ingredient.quantity !== 0) {
                                     let quantityText;
-                            
-                                    // If quantity is a whole number
-                                    if (ingredient.quantity % 1 === 0) {
-                                        quantityText = ingredient.quantity.toString();
-                                    } else {
-                                        // Adds fraction symbol to quantity text
-                                        switch (ingredient.quantity) {
-                                            case 0.5:
-                                                quantityText = '½';
-                                                break;
-                                            case 0.33:
-                                                quantityText = '⅓';
-                                                break;
-                                            case 0.25:
-                                                quantityText = '¼';
-                                                break;
-                                            case 0.13:
-                                                quantityText = '⅛';
-                                                break;
-                                            default:
-                                                // If quantity is a decimal other than the ones above
-                                                quantityText = ingredient.quantity.toFixed(2);
-                                        }
-                                    }
+
+                                    const fractionMap = { 0.5: '½', 0.33: '⅓', 0.25: '¼', 0.13: '⅛', 0.75: '¾' };
+
+                                    // Check if the quantity is a fraction and use the corresponding symbol
+                                    quantityText = ingredient.quantity in fractionMap ? fractionMap[ingredient.quantity] : 
+                                    (ingredient.quantity % 1 === 0 ? ingredient.quantity : ingredient.quantity.toFixed(2));
+
                                     // Add measure if it exists
                                     if (ingredient.measure && ingredient.measure !== '\u003Cunit\u003E') {
                                         ingredientText = `${quantityText} ${ingredient.measure} ${ingredientText}`;
@@ -194,82 +176,58 @@ if (recipeName) {
                                         <p class="nutrition-value">${Math.round(recipeData.totalNutrients.PROCNT.quantity)}${recipeData.totalNutrients.PROCNT.unit}</p>    
                                     </div>   
                                 </div>             
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.CHOLE ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Cholesterol</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.CHOLE.quantity)}${recipeData.totalNutrients.CHOLE.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.CHOLE ? Math.round(recipeData.totalNutrients.CHOLE.quantity) + recipeData.totalNutrients.CHOLE.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.NA ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Sodium</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.NA.quantity)}${recipeData.totalNutrients.NA.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.NA ? Math.round(recipeData.totalNutrients.NA.quantity) + recipeData.totalNutrients.NA.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.CA ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Calcium</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.CA.quantity)}${recipeData.totalNutrients.CA.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.CA ? Math.round(recipeData.totalNutrients.CA.quantity) + recipeData.totalNutrients.CA.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.MG ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Magnesium</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.MG.quantity)}${recipeData.totalNutrients.MG.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.MG ? Math.round(recipeData.totalNutrients.MG.quantity) + recipeData.totalNutrients.MG.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.K ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Potassium</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.K.quantity)}${recipeData.totalNutrients.K.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.K ? Math.round(recipeData.totalNutrients.K.quantity) + recipeData.totalNutrients.K.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.FE ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Iron</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FE.quantity)}${recipeData.totalNutrients.FE.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.FE ? Math.round(recipeData.totalNutrients.FE.quantity) + recipeData.totalNutrients.FE.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="text-container">
-                                        <p>Zinc</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.ZN.quantity)}${recipeData.totalNutrients.ZN.unit}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="text-container">
-                                        <p>Phosphorus</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.P.quantity)}${recipeData.totalNutrients.P.unit}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="text-container">
-                                        <p>Vitamin A</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.VITA_RAE.quantity)}${recipeData.totalNutrients.VITA_RAE.unit}</p>
-                                    </div>
-                                </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.VITC ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Vitamin C</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.VITC.quantity)}${recipeData.totalNutrients.VITC.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.VITC ? Math.round(recipeData.totalNutrients.VITC.quantity) + recipeData.totalNutrients.VITC.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.VITD ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Vitamin D</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.VITD.quantity)}${recipeData.totalNutrients.VITD.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.VITD ? Math.round(recipeData.totalNutrients.VITD.quantity) + recipeData.totalNutrients.VITD.unit : ""}</p>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="text-container">
-                                        <p>Vitamin E</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.TOCPHA.quantity)}${recipeData.totalNutrients.TOCPHA.unit}</p>
-                                    </div>
-                                </div>
-                                <div>
+                                <div style="display: ${recipeData.totalNutrients.VITK1 ? 'block' : 'none'};">
                                     <div class="text-container">
                                         <p>Vitamin K</p>
-                                        <p class="nutrition-value">${Math.round(recipeData.totalNutrients.VITK1.quantity)}${recipeData.totalNutrients.VITK1.unit}</p>
+                                        <p class="nutrition-value">${recipeData.totalNutrients.VITK1 ? Math.round(recipeData.totalNutrients.VITK1.quantity) + recipeData.totalNutrients.VITK1.unit : ""}</p>
                                     </div>
                                 </div>
                             </div>
@@ -289,8 +247,10 @@ if (recipeName) {
             });
         }
     } catch (error) {
+        console.error(error);
         showError('Error decoding recipe name from the URL.');
     }
 } else {
+    console.error(error);
     showError('No recipe name found in the URL.');
 }
