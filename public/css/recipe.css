@@ -74,6 +74,7 @@ main {
     max-width: 900px;
     display: flex;
     align-items: center;
+    position: relative;
 
     @media screen and (max-width: 576px) {
         margin: 0;
@@ -81,6 +82,38 @@ main {
         max-width: 100%;
         justify-content: space-evenly;
         align-items: end;
+    }
+}
+
+.favourite-button {
+    width: 80px;
+    height: 80px;
+    background-image: url('/images/heart-icon.png');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: center;
+    background-color: #626F47;
+    border-radius: 50%;
+    border: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+
+    @media screen and (max-width: 576px) {
+        top: 10px;
+        right: 10px;
+    }
+
+    &:hover {
+        background-image: url('/images/heart-filled-icon.png');
+        background-color: #4e5c32;
+        transition:  ease-in-out 0.1s;
+    }
+
+    &.active {
+        background-image: url('/images/heart-filled-icon.png');
+        background-color: #4e5c32;
     }
 }
 

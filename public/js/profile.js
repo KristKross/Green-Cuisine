@@ -47,6 +47,7 @@ function renderFavouriteRecipes(favourites) {
     document.querySelectorAll('.recipe').forEach((recipeElement, index) => {
         recipeElement.addEventListener('click', () => {
             const recipe = favourites[index];
+            recipe.label = recipe.label.toLowerCase();
             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
             window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
         });

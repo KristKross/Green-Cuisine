@@ -16,7 +16,7 @@ function showError(message) {
 // Function to render nutrient information
 function renderNutrient(name, nutrient) {
     return nutrient ? `
-        <div style="display: block;">
+        <div>
             <div class="text-container">
                 <p>${name}</p>
                 <p class="nutrition-value">${Math.round(nutrient.quantity)}${nutrient.unit}</p>
@@ -25,7 +25,117 @@ function renderNutrient(name, nutrient) {
     ` : '';
 }
 
-if (recipeName) {
+function renderSubNutrient(name, nutrient) {
+    return nutrient ? `
+        <li>
+            <p>${name}</p>
+            <p class="nutrition-value">${Math.round(nutrient.quantity)}${nutrient.unit}</p>
+        </li>
+    ` : '';
+}
+
+// Function to fetch favourites from the database
+async function fetchFavouritesFromDatabase() {
+    const userID = localStorage.getItem('userID');
+
+    if (!userID) {
+        return [];
+    }
+
+    try {
+        const response = await fetch(`/favourites/${userID}`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            console.error('Error fetching favourites:', result.message);
+            return [];
+        }
+
+        return result.favourites.map(fav => ({
+            name: fav.RecipeName,
+            uri: fav.RecipeURI
+        }));
+
+    } catch (error) {
+        console.error('Error fetching favourites:', error);
+        return [];
+    }
+}
+
+async function handleFavouriteButtonClick(recipe) {
+    const favouriteButton = document.querySelector('.favourite-button');
+    const userID = localStorage.getItem('userID');
+
+    if (!userID) {
+        window.location.href = '/login';
+        return;
+    }
+
+    const favouriteData = {
+        user_id: userID,
+        recipe_name: recipe.label, 
+        recipe_uri: recipe.uri
+    };
+
+    try {
+        const isFavouritedResponse = await fetch('/check-favourite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(favouriteData)
+        });
+
+        const isFavouritedResult = await isFavouritedResponse.json();
+
+        if (isFavouritedResult.isFavourited) {
+            await removeFavourite(favouriteData);
+            favouriteButton.classList.remove('active');
+        } else {
+            await addFavourite(favouriteData);
+            favouriteButton.classList.add('active'); 
+        }
+    } catch (error) {
+        console.error('Error handling favourite:', error);
+    }
+}
+
+
+// Function to add a favourite recipe to the database
+async function addFavourite(favouriteData) {
+    const addResponse = await fetch('/add-favourite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(favouriteData)
+    });
+
+    if (addResponse.ok) {
+        console.log('Recipe added to favourites:', favouriteData.recipe_name);
+    } else {
+        console.error('Error adding favourite:', await addResponse.json().error);
+    }
+}
+
+// Function to remove a favourite recipe from the database
+async function removeFavourite(favouriteData) {
+    const removeResponse = await fetch('/remove-favourite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(favouriteData)
+    });
+
+    if (removeResponse.ok) {
+        console.log('Recipe removed from favourites:', favouriteData.recipe_name);
+    } else {
+        console.error('Error removing favourite:', await removeResponse.json().error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    if (recipeName) {
+        renderRecipes(recipeName);
+    }
+});
+
+async function renderRecipes(recipeName) {
     try {
         const decodedRecipeName = decodeURIComponent(recipeName);
         const recipeData = JSON.parse(localStorage.getItem('selectedRecipe'));
@@ -35,6 +145,11 @@ if (recipeName) {
             showError('Invalid recipe name in the URL.');
         } else {
             const recipeContainer = document.getElementById('recipe');
+            const favouriteRecipes = await fetchFavouritesFromDatabase();
+            console.log('Favourite recipes:', favouriteRecipes);
+            console.log('Recipe data:', recipeData.label, recipeData.uri);
+            const isFavourited = favouriteRecipes.some(fav => fav.name === recipeData.label && fav.uri === recipeData.uri);
+            console.log('Is recipe favourited?', isFavourited);
 
             // Create the inner HTML for the recipe
             recipeContainer.innerHTML = `
@@ -48,6 +163,7 @@ if (recipeName) {
                 </div>
                 <div class="recipe-image" style="background-image: url('${recipeData.image}')">
                     <div class="description-overlay">    
+                        <div class="favourite-button ${isFavourited ? 'active' : ''}"></div>
                         <div class="recipe-description">
                             <div class="category-container">
                                 <img src="/images/cooking-pot.png" alt="Cooking Pot">
@@ -142,22 +258,10 @@ if (recipeName) {
                                         <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FAT.quantity)}${recipeData.totalNutrients.FAT.unit}</p>
                                     </div>
                                     <ul>
-                                        <li>
-                                            <p>Saturated</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FASAT.quantity)}${recipeData.totalNutrients.FASAT.unit}</p>
-                                        </li>
-                                        <li>
-                                            <p>Trans</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FATRN.quantity)}${recipeData.totalNutrients.FATRN.unit}</p>
-                                        </li>
-                                        <li>
-                                            <p>Monounsaturated</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FAMS.quantity)}${recipeData.totalNutrients.FAMS.unit}</p>
-                                        </li>
-                                        <li>
-                                            <p>Polyunsaturated</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FAPU.quantity)}${recipeData.totalNutrients.FAPU.unit}</p>
-                                        </li>
+                                        ${renderSubNutrient('Saturated', recipeData.totalNutrients.FASAT)}
+                                        ${renderSubNutrient('Trans', recipeData.totalNutrients.FATRN)}
+                                        ${renderSubNutrient('Monounsaturated', recipeData.totalNutrients.FAMS)}
+                                        ${renderSubNutrient('Polyunsaturated', recipeData.totalNutrients.FAPU)}
                                     </ul>
                                 </div>
                                 <div>
@@ -167,18 +271,9 @@ if (recipeName) {
                                         <p class="nutrition-value">${Math.round(recipeData.totalNutrients.CHOCDF.quantity)}${recipeData.totalNutrients.CHOCDF.unit}</p>
                                     </div>
                                     <ul>
-                                        <li>
-                                            <p>Net Carbohydrates</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients["CHOCDF.net"].quantity)}${recipeData.totalNutrients.CHOCDF.unit}</p>
-                                        </li>
-                                        <li>
-                                            <p>Fiber</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients.FIBTG.quantity)}${recipeData.totalNutrients.FIBTG.unit}</p>
-                                        </li>
-                                        <li>
-                                            <p>Sugars</p>
-                                            <p class="nutrition-value">${Math.round(recipeData.totalNutrients.SUGAR.quantity)}${recipeData.totalNutrients.SUGAR.unit}</p>
-                                        </li>
+                                        ${renderSubNutrient('Net Carbohydrates', recipeData.totalNutrients["CHOCDF.net"])}
+                                        ${renderSubNutrient('Fiber', recipeData.totalNutrients.FIBTG)}
+                                        ${renderSubNutrient('Sugars', recipeData.totalNutrients.SUGAR)}
                                     </ul>
                                 </div>
                                 <div>
@@ -207,6 +302,13 @@ if (recipeName) {
                 window.location.href = '/';
             });
 
+            const favButton = document.querySelector('.favourite-button');
+            if (favButton) {
+                favButton.addEventListener('click', async () => {
+                    handleFavouriteButtonClick(recipeData);
+                });
+            }
+
             document.querySelectorAll('.health-label').forEach(label => {
                 label.addEventListener('click', () => {
                     window.location.href = `/search?q=recipes&page=1&health=${encodeURIComponent(label.textContent.toLowerCase())}`;
@@ -217,7 +319,4 @@ if (recipeName) {
         console.error(error);
         showError('Error decoding recipe name from the URL.');
     }
-} else {
-    console.error(error);
-    showError('No recipe name found in the URL.');
 }

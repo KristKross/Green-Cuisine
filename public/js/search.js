@@ -155,7 +155,7 @@ async function renderRecipes(recipes) {
         recipeElement.addEventListener('click', () => {
             const recipe = recipes[index];
             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
-            window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
+            window.location.href = `/recipe?q=${encodeURIComponent(recipe.label.toLowerCase())}`;
         });
     });
 
@@ -208,8 +208,6 @@ async function handleFavouriteButtonClick(recipes, index) {
         return;
     }
 
-    favouriteButton.classList.toggle('active');
-
     const recipe = recipes[index];
 
     const favouriteData = {
@@ -226,10 +224,13 @@ async function handleFavouriteButtonClick(recipes, index) {
         });
 
         const isFavouritedResult = await isFavouritedResponse.json();
+        
         if (isFavouritedResult.isFavourited) {
             await removeFavourite(favouriteData);
+            favouriteButton.classList.remove('active');
         } else {
             await addFavourite(favouriteData);
+            favouriteButton.classList.add('active'); 
         }
     } catch (error) {
         console.error('Error handling favourite:', error);
