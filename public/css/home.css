@@ -63,8 +63,9 @@ main {
 
 .featured-container {
     margin: 0 auto;
+    padding: 0 20px;
     width: 100%;
-    max-width: min-content;
+    max-width: 940px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,6 +79,7 @@ main {
 
     @media screen and (max-width: 576px) {
         max-width: 80%;
+        top: -80px;
     }
 }
 
@@ -343,6 +345,10 @@ main {
     height: min-content;
     padding: 50px 0;
     background-color: #626F47;
+
+    @media screen and (max-width: 768px) {
+        padding: 30px 0;
+    }
 }
 
 .seasonal-container {

@@ -16,10 +16,10 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    
     h3 {
         margin: 0;
-        font-weight: 100;
+        font-weight: 300;
     }
 
     a {
