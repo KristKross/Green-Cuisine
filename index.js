@@ -5,23 +5,30 @@ const axios = require('axios');
 const path = require('path');
 const dotenv = require('dotenv');
 const mysql = require('mysql2');
+const MySQLStore = require('express-mysql-session')(session);
 
 // Added dotenv to load environment variables
 dotenv.config();
 
-const db = mysql.createConnection({
+const connection = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    port: 3306, // Optional, default is 3306
+    waitForConnections: true, // Optional, enables queueing
+    connectionLimit: 10, // Optional, defines pool size
+    queueLimit: 0 // Optional, no limit by default
 });
 
-db.connect((err) => {
+const sessionStore = new MySQLStore({}, connection);
+
+connection.getConnection((err) => {
     if (err) {
-        console.error('Error connecting to the database:', err);
+        console.error('Error connecting to the database pool:', err);
         return;
     }
-    console.log('Connected to the database');
+    console.log('Connected to the database pool');
 });
 
 // Variables to process environment variables
@@ -36,7 +43,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
+    key: 'recipe_session',
     secret: process.env.SESSION_SECRET,
+    store: sessionStore,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 3600000 }
@@ -204,7 +213,7 @@ app.post('/register', (req, res) => {
 
     // Check if the user exists in the database
     const query = 'SELECT * FROM users WHERE email = ?';
-    db.query(query, [email], (err, results) => {
+    connection.query(query, [email], (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -224,7 +233,7 @@ app.post('/register', (req, res) => {
         }
         // Insert the user data into the database
         const insertQuery = 'INSERT INTO users (email, username, password) VALUES (?, ?, ?)';
-        db.query(insertQuery, [email, username, password], (err, results) => {
+        connection.query(insertQuery, [email, username, password], (err, results) => {
             if (err) {
                 console.error('Error inserting data:', err);
                 res.json({ success: false, message: 'Error occurred' });
@@ -240,7 +249,7 @@ app.post('/login', (req, res) => {
 
     // Example query to verify user
     const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
-    db.query(query, [email, password], (err, results) => {
+    connection.query(query, [email, password], (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -261,13 +270,17 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/logout', (req, res) => {
+    req.session.destroy();
+    res.json({ success: true, message: 'Logged out successfully' });
+});
 
 // Route to read a user by ID 
 app.get('/read-user/:userID', (req, res) => {
     const userID = req.params.userID;
 
     const query = 'SELECT * FROM users WHERE UserID = ?';
-    db.query(query, [userID], (err, results) => {
+    connection.query(query, [userID], (err, results) => {
         if (err) {
             console.error('Error fetching user:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -291,7 +304,24 @@ app.put('/update-user/:userID', (req, res) => {
     let values = [];
 
     // Check which fields are provided and add them to the update query
+    if (!email && !password && !username) {
+        res.json({ success: false, message: 'No input provided. Please provide a value in the input field to proceed.' });
+        return;
+    }
+
     if (email) {
+        const queryCheckEmail = 'SELECT * FROM users WHERE email = ? AND UserID != ?';
+        connection.query(queryCheckEmail, [email, userID], (err, results) => {
+            if (err) {
+                console.error('Error fetching email:', err);
+                res.json({ success: false, message: 'Error occurred' });
+                return;
+            }
+            if (results.length > 0) {
+                res.json({ success: false, message: 'Email is already taken' });
+                return;
+            }
+        });
         fieldsToUpdate.push('email = ?');
         values.push(email);
     }
@@ -300,6 +330,7 @@ app.put('/update-user/:userID', (req, res) => {
         fieldsToUpdate.push('password = ?');
         values.push(password);
     }
+    
     if (username) {
         if (username.length < 3) {
             res.json({ success: false, message: 'Username must be at least 3 characters long' });
@@ -309,7 +340,6 @@ app.put('/update-user/:userID', (req, res) => {
             res.json({ success: false, message: 'Username must be at most 10 characters long' });
             return;
         }
-        
         fieldsToUpdate.push('username = ?');
         values.push(username);
     }
@@ -324,7 +354,7 @@ app.put('/update-user/:userID', (req, res) => {
     values.push(userID);
 
     const query = `UPDATE users SET ${fieldsToUpdate.join(', ')} WHERE UserID = ?`;
-    db.query(query, values, (err, results) => {
+    connection.query(query, values, (err, results) => {
         if (err) {
             console.error('Error updating data:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -338,7 +368,7 @@ app.put('/update-user/:userID', (req, res) => {
 app.delete('/delete-user/:id', (req, res) => {
     const userID = req.params.id;
     const query = 'DELETE FROM users WHERE UserID = ?';
-    db.query(query, [userID], (err, results) => {
+    connection.query(query, [userID], (err, results) => {
         if (err) {
             console.error('Error deleting data:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -353,7 +383,7 @@ app.post('/add-favourite', (req, res) => {
     const { user_id, recipe_name, recipe_uri } = req.body;
 
     const query = 'INSERT INTO favourites (UserID, RecipeName, RecipeURI) VALUES (?, ?, ?)';
-    db.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
+    connection.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
         if (err) {
             console.error('Error adding favourite:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -368,7 +398,7 @@ app.get('/favourites/:userID', (req, res) => {
     const userID = req.params.userID;
 
     const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
-    db.query(query, [userID], (err, results) => {
+    connection.query(query, [userID], (err, results) => {
         if (err) {
             console.error('Error fetching favourites:', err);    
             res.json({ success: false, message: 'Error occurred' });
@@ -384,7 +414,7 @@ app.post('/check-favourite', (req, res) => {
     const { user_id, recipe_name, recipe_uri } = req.body;
 
     const query = 'SELECT * FROM favourites WHERE UserID = ? AND RecipeName = ? AND RecipeURI = ?';
-    db.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
+    connection.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
         if (err) {
             console.error('Error checking favourite:', err);
             return res.json({ success: false, message: 'Error occurred' });
@@ -403,7 +433,7 @@ app.post('/remove-favourite', (req, res) => {
     const { user_id, recipe_name } = req.body;
 
     const query = 'DELETE FROM favourites WHERE UserID = ? AND RecipeName = ?';
-    db.query(query, [user_id, recipe_name], (err, results) => {
+    connection.query(query, [user_id, recipe_name], (err, results) => {
         if (err) {
             console.error('Error removing favourite:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -431,7 +461,7 @@ app.post('/search-favourites', async (req, res) => {
 function fetchFavouriteRecipeDetails(userID) {
     return new Promise((resolve, reject) => {
         const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
-        db.query(query, [userID], (err, results) => {
+        connection.query(query, [userID], (err, results) => {
             if (err) {
                 reject(err);
             } else {
