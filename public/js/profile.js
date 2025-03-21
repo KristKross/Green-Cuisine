@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     fetch('/session-data')
         .then(response => response.json())
         .then(data => {
@@ -73,8 +72,36 @@ function showPersonalInfo(mainContainer, userID) {
             `;
 
             document.querySelector('#logout-button').addEventListener('click', () => {
-                localStorage.clear();
-                window.location.href = '/login';
+                fetch('/logout', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '/login';
+                    } else {
+                        console.error('Error logging out:', data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+            document.querySelector('#delete-button').addEventListener('click', () => {
+                const confirmDelete = confirm('Are you sure you want to delete your account?');
+                if (confirmDelete) {
+                    fetch(`/delete-user/${userID}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = '/login';
+                        } else {
+                            console.error('Error deleting account:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
             });
         })
         .catch(error => console.error('Error:', error));
@@ -199,80 +226,63 @@ function showProfileSettings(mainContainer, userID) {
         .catch(error => console.error('Error:', error));
 }
 
-function showFavourites(mainContainer) {
+function showFavourites(mainContainer, userID) {
     mainContainer.innerHTML = `
         <h2>Favourites</h2>
         <div id="favourites"></div>
     `;
+
+    fetchFavourites(userID);
 }
 
-// Function to fetch favourite recipes
-// async function fetchFavourites(userID) {
-//     try {
-//         const response = await fetch(`/search-favourites`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ userID })
-//         });
-//         const data = await response.json();
+async function fetchFavourites(userID) {
+    try {
+        const response = await fetch(`/search-favourites`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userID })
+        });
+        const data = await response.json();
 
-//         if (data.success) {
-//             renderFavouriteRecipes(data.favourites);
-//         } else {
-//             console.error('Error fetching favourites:', data.message);
-//         }
-//     } catch (error) {
-//         console.error('Error fetching favourites:', error);
-//     }
-// }
+        if (data.success) {
+            renderFavouriteRecipes(data.favourites);
+        } else {
+            console.error('Error fetching favourites:', data.message);
+        }
+    } catch (error) {
+        console.error('Error fetching favourites:', error);
+    }
+}
 
-// // Function to render favourite recipes
-// function renderFavouriteRecipes(favourites) {
-//     const favouritesContainer = document.getElementById('favourites');
-//     favouritesContainer.innerHTML = favourites.map((recipe, index) => {
-//         return `
-//             <div class="recipe" data-index="${index}">
-//                 <div class="recipe-image-container">
-//                     <img src="${recipe.image}" alt="${recipe.label}">
-//                 </div>
-//                 <div class="recipe-column">
-//                     <div class="dish-type">${recipe.dishType}</div>
-//                     <div class="recipe-name">${recipe.label}</div>
-//                     <div class="time-container">
-//                         <div class="clock-image"></div> 
-//                         <h4 class="cooking-time">${recipe.totalTime} min</h4>
-//                     </div>
-//                 </div>
-//             </div>
-//         `;
-//     }).join('');
+// Function to render favourite recipes
+function renderFavouriteRecipes(favourites) {
+    const favouritesContainer = document.getElementById('favourites');
+    favouritesContainer.innerHTML = favourites.map((recipe, index) => {
+        return `
+            <div class="recipe" data-index="${index}">
+                <div class="recipe-image-container">
+                    <img src="${recipe.image}" alt="${recipe.label}">
+                </div>
+                <div class="recipe-column">
+                    <div class="dish-type">${recipe.dishType}</div>
+                    <div class="recipe-name">${recipe.label}</div>
+                    <div class="time-container">
+                        <div class="clock-image"></div> 
+                        <h4 class="cooking-time">${recipe.totalTime} min</h4>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
 
-//     document.querySelectorAll('.recipe').forEach((recipeElement, index) => {
-//         recipeElement.addEventListener('click', () => {
-//             const recipe = favourites[index];
-//             recipe.label = recipe.label.toLowerCase();
-//             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
-//             window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
-//         });
-//     });
-// }
-
-// Fetch favourites on page load
-
-// function fetchFavouritesOnPageLoad() {
-//     fetch('/session-data')
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.success) {
-//             userID = data.userID;
-//             console.log(userID)
-//             fetchFavourites(userID);
-//         } else {
-//             console.error('Error: User is not logged in.');
-//         }
-//     });
-// }
-
-// fetchFavouritesOnPageLoad();
+    document.querySelectorAll('.recipe').forEach((recipeElement, index) => {
+        recipeElement.addEventListener('click', () => {
+            const recipe = favourites[index];
+            recipe.label = recipe.label.toLowerCase();
+            localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
+            window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
+        });
+    });
+}

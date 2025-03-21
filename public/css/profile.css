@@ -74,9 +74,34 @@ main {
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
     
     h2 {
+        margin-bottom: 20px;
         padding: 10px 0;
         color: #626F47;
         border-bottom: 1px solid #ccc;
+    }
+}
+
+#personal-info-form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    label {
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+
+    input {
+        max-width: 100%;
+        width: 100%;
+        font-size: 12px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #252525;
+        border-radius: 5px;
+        box-sizing: border-box;
+        cursor: pointer;
     }
 }
 
@@ -116,33 +141,11 @@ main {
     }
 }
 
-#personal-info-form {
-    display: flex;
-    flex-direction: column;
-
-    label {
-        margin: 10px 0;
-        border-radius: 10px;
-    }
-
-    input {
-        max-width: 100%;
-        width: 100%;
-        font-size: 12px;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #252525;
-        border-radius: 5px;
-        box-sizing: border-box;
-        cursor: pointer;
-    }
-}
-
 .update-section {
     margin-bottom: 20px;
 
     label {
-        margin: 10px 0;
+        margin: 15px 0;
         border-radius: 10px;
     }
 
@@ -169,7 +172,7 @@ main {
     .display {
         margin: 5px 0;
         width: 100%;
-        max-width: 300px;
+        max-width: 500px;
         padding: 10px;
         font-size: 12px;
         border: 1px solid #252525;
@@ -227,7 +230,7 @@ main {
                 color: #a10000;
                 background-color: #fff;
             }
-    }
+        }
     } 
 
     .edit-field.hidden {
@@ -249,14 +252,10 @@ main {
 #favourites {
     margin: 20px auto; 
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     width: 100%;
     max-width: 1200px;
-
-    @media screen and (max-width: 1000px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
 
     @media screen and (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
