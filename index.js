@@ -96,18 +96,12 @@ async function fetchAllRecipes(recipeName, start, end, mealType, dishType, dietL
             from,
             to: from + limit
         });
-        if (mealType) {
-            params.append('mealType', mealType);
-        }
-        if (dishType) {
-            params.append('dishType', dishType);
-        }
-        if (dietLabel) {
-            params.append('diet', dietLabel);
-        }
-        if (healthLabel) {
-            params.append('health', healthLabel);
-        }
+
+        if (mealType) { params.append('mealType', mealType); }
+        if (dishType) { params.append('dishType', dishType); }
+        if (dietLabel) {params.append('diet', dietLabel); }
+        if (healthLabel) {params.append('health', healthLabel); }
+        
         const url = `${baseURL}?${params.toString()}`;
         const response = await axios.get(url);
         allHits = response.data.hits;
@@ -200,7 +194,7 @@ app.post('/register', (req, res) => {
             res.json({ success: false, message: 'Error occurred' });
             return;
         }
-        if (results.length > 0) {
+        if (results.length > 1) {
             res.json({ success: false, message: 'Email is already taken' });
             return;
         }
@@ -225,7 +219,6 @@ app.post('/register', (req, res) => {
     });
 });
 
-
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -247,6 +240,80 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.get('/read-user/:userID', (req, res) => {
+    const userID = req.params.userID;
+
+    const query = 'SELECT * FROM users WHERE UserID = ?';
+    db.query(query, [userID], (err, results) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            res.json({ success: false, message: 'Error occurred' });
+            return;
+        }
+        if (results.length === 0) {
+            res.json({ success: false, message: 'User not found' });
+            return;
+        }
+        const user = results[0];
+        res.json({ success: true, message: 'User found', username: user.Username, email: user.Email, password: user.Password });
+    });
+});
+
+app.put('/update-user/:userID', (req, res) => {
+    const userID = req.params.userID;
+    const { newEmail, newPassword, newUsername } = req.body;
+
+    let fieldsToUpdate = [];
+    let values = [];
+
+    // Check which fields are provided and add them to the update query
+    if (newEmail) {
+        fieldsToUpdate.push('email = ?');
+        values.push(newEmail);
+    }
+    if (newPassword) {
+        fieldsToUpdate.push('password = ?');
+        values.push(newPassword);
+    }
+    if (newUsername) {
+        fieldsToUpdate.push('username = ?');
+        values.push(newUsername);
+    }
+
+    // If no fields are provided, return an error
+    if (fieldsToUpdate.length === 0) {
+        res.json({ success: false, message: 'No fields provided for update' });
+        return;
+    }
+
+    // Add UserID to the values for the WHERE clause
+    values.push(userID);
+
+    const query = `UPDATE users SET ${fieldsToUpdate.join(', ')} WHERE UserID = ?`;
+
+    db.query(query, values, (err, results) => {
+        if (err) {
+            console.error('Error updating data:', err);
+            res.json({ success: false, message: 'Error occurred' });
+            return;
+        }
+        res.json({ success: true, message: 'User updated successfully' });
+    });
+});
+
+app.delete('/delete-user/:id', (req, res) => {
+    const userID = req.params.id;
+    const query = 'DELETE FROM users WHERE UserID = ?';
+    db.query(query, [userID], (err, results) => {
+        if (err) {
+            console.error('Error deleting data:', err);
+            res.json({ success: false, message: 'Error occurred' });
+            return;
+        }
+        res.json({ success: true, message: 'User deleted successfully' });
+    });
+});
+
 app.post('/add-favourite', (req, res) => {
     const { user_id, recipe_name, recipe_uri } = req.body;
 
@@ -261,6 +328,7 @@ app.post('/add-favourite', (req, res) => {
     });
 });
 
+// Function to fetch favourite recipes
 app.get('/favourites/:userID', (req, res) => {
     const userID = req.params.userID;
 
@@ -364,7 +432,6 @@ async function fetchRecipesFromAPI(results) {
     }
     return favouriteRecipes;
 }
-
 
 // Server listening on port 3000 
 app.listen(port, () => { 
