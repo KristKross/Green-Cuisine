@@ -59,9 +59,12 @@ function showPersonalInfo(mainContainer) {
         .then(data => {
             mainContainer.innerHTML = `
                 <h2>Personal Info</h2>
-                <p>Username: ${localStorage.getItem('username')}</p>
-                <p>Email: ${data.email}</p>
-                <p>Password: ${data.password}</p>
+                <label for="username">Username:</label>
+                <input type="email" id="username" name="username" value="${localStorage.getItem('username')}" readonly>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="${data.email}" readonly>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" value="${data.password}" readonly>
             `;
         })
     .catch(error => console.error('Error:', error));
