@@ -1,23 +1,5 @@
-#favourites {
-    margin: 20px auto; 
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    width: 100%;
-    max-width: 1200px;
-
-    @media screen and (max-width: 1000px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media screen and (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media screen and (max-width: 576px) {
-        grid-template-columns: 1fr;
-        min-width: 330px;
-    }
+main {
+    padding: 40px 20px;
 }
 
 .profile-container {
@@ -33,7 +15,7 @@
     flex-direction: column;
     width: 25%;
     height: fit-content;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-container {
@@ -44,12 +26,10 @@
     border-bottom: 1px solid #ccc;
 
     .profile-image {
-        margin-right: 10px;
+        margin-right: 15px;
         width: 50px;
         height: 50px;
-        border-radius: 50%;
         object-fit: cover;
-        margin-right: 15px;
         background-image: url('/images/profile-icon.svg');
         background-position: center;
         background-size: cover;
@@ -85,12 +65,207 @@
 }
 
 #main-container {
-    padding: 20px;
+    padding: 30px;
     width: 75%;
-    height: 80vh;
+    height: min-content;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+    
+    h2 {
+        padding: 10px 0;
+        color: #626F47;
+        border-bottom: 1px solid #ccc;
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0;
+
+    #logout-button {
+        padding: 10px 20px;
+        justify-self: flex-end;
+        background-color: #626F47;
+        color: #fff;
+        border: 1px solid #626F47;
+        border-radius: 5px;
+        cursor: pointer;
+    
+        &:hover {
+            background-color: #fff;
+            color: #626F47;
+        }
+    }
+    
+    #delete-button {
+        margin-left: 20px;
+        padding: 10px 20px;
+        background-color: #a10000;
+        color: #fff;
+        border: 1px solid #a10000;
+        border-radius: 5px;
+        cursor: pointer;
+    
+        &:hover{
+            background-color: #fff;
+            color: #a10000;
+        }
+    }
+}
+
+#personal-info-form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+
+    input {
+        max-width: 100%;
+        width: 100%;
+        font-size: 12px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #252525;
+        border-radius: 5px;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+}
+
+.update-section {
+    margin-bottom: 20px;
+
+    label {
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+
+    input {
+        width: 100%;
+        max-width: 500px;
+        font-size: 12px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #252525;
+        border-radius: 5px;
+        box-sizing: border-box;
+
+        &.error {
+            border: 2px solid #a10000;
+        }
+    }
+
+    .input-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .display {
+        margin: 5px 0;
+        width: 100%;
+        max-width: 300px;
+        padding: 10px;
+        font-size: 12px;
+        border: 1px solid #252525;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    
+    .edit-button {
+        margin-left: 10px;
+        padding: 5px 10px;
+        border: 1px solid #626F47;
+        background-color: #626F47;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+            color: #626F47;
+            background-color: #fff;
+        }
+    }
+
+    .edit-field {
+        display: flex;
+        align-items: center;
+
+        input {
+            margin: 5px 0;
+        }
+
+        .save-button {
+            margin: 0 7px;
+            padding: 5px 10px;
+            border: 1px solid #626F47;
+            background-color: #626F47;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;    
+
+            &:hover {
+                color: #626F47;
+                background-color: #fff;
+            }
+        }
+            
+        .cancel-button {
+            padding: 5px 10px;
+            border: 1px solid #a10000;
+            background-color: #a10000;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover {
+                color: #a10000;
+                background-color: #fff;
+            }
+    }
+    } 
+
+    .edit-field.hidden {
+        display: none;
+    }
+    
+    .error-message {
+        margin: 0;
+        color: red;
+        font-size: 15px;
+        display: none; 
+    }
+    
+    .error-message.visible {
+        display: block;
+    }
+}
+
+#favourites {
+    margin: 20px auto; 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px;
+
+    @media screen and (max-width: 1000px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 576px) {
+        grid-template-columns: 1fr;
+        min-width: 330px;
+    }
 }
 
 .recipe {
@@ -99,7 +274,7 @@
     min-height: 320px;
     border: 1px solid #ccc;
     padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
     caret-color: transparent;
     transition: transform 0.3s;
     cursor: pointer;
