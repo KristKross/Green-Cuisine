@@ -22,10 +22,18 @@ function setupSearchForm(searchForm) {
 
 function setupLoginName(loginName) {
     if (loginName) {
-        const username = localStorage.getItem('username');
-        if (username) {
-            loginName.textContent = `Hello, ${username}`;
-            loginName.href = '/profile';
-        }
+        fetch('/session-data')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.username) {
+                    loginName.textContent = `Hello, ${data.username}`;
+                    loginName.href = '/profile';
+                } else {
+                    loginName.textContent = 'Log In';
+                    loginName.href = '/login';
+                }
+            })
+        .catch(error => console.error('Error fetching session data:', error));
     }
 }
+

@@ -16,10 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then((data) => {
-                console.log(data);
-                if (data.success) { // Check if login was successful    
-                    localStorage.setItem('username', data.username);
-                    localStorage.setItem('userID', data.userID);
+                if (data.success) {   
                     window.location.href = '/';
                 } else {
                     alert(data.message);

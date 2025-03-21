@@ -1,5 +1,6 @@
 // Required modules
 const express = require('express');
+const session = require('express-session');
 const axios = require('axios');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -34,6 +35,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 3600000 }
+}));
+
 // Routes to serve the home page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/home.html'));
@@ -57,6 +65,14 @@ app.get('/register', (req, res) => {
 
 app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/profile.html'));
+});
+
+app.get('/session-data', (req, res) => {
+    if (req.session) {
+        res.json({ success: true, username: req.session.username, userID: req.session.userID });
+    } else {
+        res.json({ success: false, message: 'No user logged in' });
+    }
 });
 
 function getSeason() {
@@ -222,24 +238,31 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Check if the user exists in the database
+    // Example query to verify user
     const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
-
     db.query(query, [email, password], (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);
             res.json({ success: false, message: 'Error occurred' });
             return;
         }
+
         if (results.length === 0) {
             res.json({ success: false, message: 'Invalid email or password' });
             return;
         }
+
+        // Store username in the session
         const user = results[0];
-        res.json({ success: true, message: 'Login successful', username: user.Username, userID: user.UserID });
+        req.session.username = user.Username;
+        req.session.userID = user.UserID
+
+        res.json({ success: true, message: 'Login successful'});
     });
 });
 
+
+// Route to read a user by ID 
 app.get('/read-user/:userID', (req, res) => {
     const userID = req.params.userID;
 
@@ -259,38 +282,48 @@ app.get('/read-user/:userID', (req, res) => {
     });
 });
 
+// Route to update a user
 app.put('/update-user/:userID', (req, res) => {
     const userID = req.params.userID;
-    const { newEmail, newPassword, newUsername } = req.body;
+    const { email, password, username } = req.body;
 
     let fieldsToUpdate = [];
     let values = [];
 
     // Check which fields are provided and add them to the update query
-    if (newEmail) {
+    if (email) {
         fieldsToUpdate.push('email = ?');
-        values.push(newEmail);
-    }
-    if (newPassword) {
-        fieldsToUpdate.push('password = ?');
-        values.push(newPassword);
-    }
-    if (newUsername) {
-        fieldsToUpdate.push('username = ?');
-        values.push(newUsername);
+        values.push(email);
     }
 
-    // If no fields are provided, return an error
+    if (password) {
+        fieldsToUpdate.push('password = ?');
+        values.push(password);
+    }
+    if (username) {
+        if (username.length < 3) {
+            res.json({ success: false, message: 'Username must be at least 3 characters long' });
+            return;
+        }
+        if (username.length > 10) {
+            res.json({ success: false, message: 'Username must be at most 10 characters long' });
+            return;
+        }
+        
+        fieldsToUpdate.push('username = ?');
+        values.push(username);
+    }
+
+    // If no valid fields are provided
     if (fieldsToUpdate.length === 0) {
         res.json({ success: false, message: 'No fields provided for update' });
         return;
     }
 
-    // Add UserID to the values for the WHERE clause
+    // Add UserID to the values
     values.push(userID);
 
     const query = `UPDATE users SET ${fieldsToUpdate.join(', ')} WHERE UserID = ?`;
-
     db.query(query, values, (err, results) => {
         if (err) {
             console.error('Error updating data:', err);
@@ -301,6 +334,7 @@ app.put('/update-user/:userID', (req, res) => {
     });
 });
 
+// Delete a user from the database
 app.delete('/delete-user/:id', (req, res) => {
     const userID = req.params.id;
     const query = 'DELETE FROM users WHERE UserID = ?';
@@ -314,6 +348,7 @@ app.delete('/delete-user/:id', (req, res) => {
     });
 });
 
+// Function to add a recipe to favourites
 app.post('/add-favourite', (req, res) => {
     const { user_id, recipe_name, recipe_uri } = req.body;
 
