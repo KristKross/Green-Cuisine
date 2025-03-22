@@ -36,14 +36,15 @@ function renderSubNutrient(name, nutrient) {
 
 // Function to fetch favourites from the database
 async function fetchFavouritesFromDatabase() {
-    const userID = localStorage.getItem('userID');
+    const sessionResponse = await fetch('/session-data');
+    const sessionData = await sessionResponse.json();
 
-    if (!userID) {
+    if (!sessionData.success || !sessionData.userID) {
         return [];
     }
 
     try {
-        const response = await fetch(`/favourites/${userID}`);
+        const response = await fetch(`/favourites/${sessionData.userID}`);
         const result = await response.json();
 
         if (!response.ok || !result.success) {
@@ -64,15 +65,16 @@ async function fetchFavouritesFromDatabase() {
 
 async function handleFavouriteButtonClick(recipe) {
     const favouriteButton = document.querySelector('.favourite-button');
-    const userID = localStorage.getItem('userID');
+    const sessionResponse = await fetch('/session-data');
+    const sessionData = await sessionResponse.json();
 
-    if (!userID) {
+    if (!sessionData.success || !sessionData.userID) {
         window.location.href = '/login';
         return;
     }
 
     const favouriteData = {
-        user_id: userID,
+        user_id: sessionData.userID,
         recipe_name: recipe.label, 
         recipe_uri: recipe.uri
     };

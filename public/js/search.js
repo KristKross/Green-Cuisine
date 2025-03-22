@@ -172,11 +172,14 @@ async function renderRecipes(recipes) {
 
 // Function to fetch favourites from the database
 async function fetchFavouritesFromDatabase() {
-    const userID = localStorage.getItem('userID');
+    const sessionResponse = await fetch('/session-data');
+    const sessionData = await sessionResponse.json();
 
-    if (!userID) {
+    if (!sessionData.success || !sessionData.userID) {
         return [];
     }
+
+    const userID = sessionData.userID;
 
     try {
         const response = await fetch(`/favourites/${userID}`);
@@ -201,9 +204,10 @@ async function fetchFavouritesFromDatabase() {
 // Function to handle favourite button click
 async function handleFavouriteButtonClick(recipes, index) {
     const favouriteButton = document.querySelectorAll('.favourite-button')[index];
-    const userID = localStorage.getItem('userID');
+    const sessionResponse = await fetch('/session-data');
+    const sessionData = await sessionResponse.json();
 
-    if (!userID) {
+    if (!sessionData.success || !sessionData.userID) {
         window.location.href = '/login';
         return;
     }
@@ -211,7 +215,7 @@ async function handleFavouriteButtonClick(recipes, index) {
     const recipe = recipes[index];
 
     const favouriteData = {
-        user_id: userID,
+        user_id: sessionData.userID,
         recipe_name: recipe.label,
         recipe_uri: recipe.uri
     };
@@ -224,18 +228,19 @@ async function handleFavouriteButtonClick(recipes, index) {
         });
 
         const isFavouritedResult = await isFavouritedResponse.json();
-        
+
         if (isFavouritedResult.isFavourited) {
             await removeFavourite(favouriteData);
             favouriteButton.classList.remove('active');
         } else {
             await addFavourite(favouriteData);
-            favouriteButton.classList.add('active'); 
+            favouriteButton.classList.add('active');
         }
     } catch (error) {
         console.error('Error handling favourite:', error);
     }
 }
+
 
 // Function to add a favourite recipe to the database
 async function addFavourite(favouriteData) {
