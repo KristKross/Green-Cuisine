@@ -77,8 +77,21 @@ app.get('/profile', (req, res) => {
 });
 
 app.get('/session-data', (req, res) => {
-    if (req.session) {
-        res.json({ success: true, username: req.session.username, userID: req.session.userID });
+    if (req.session && req.session.username) {
+        const query = 'SELECT username FROM users WHERE UserID = ?';
+        connection.query(query, [req.session.userID], (err, results) => {
+            if (err) {
+                console.error('Error fetching username:', err);
+                res.json({ success: false, message: 'Error occurred' });
+                return;
+            }
+            if (results.length > 0) {
+                req.session.username = results[0].username;
+                res.json({ success: true, username: req.session.username, userID: req.session.userID });
+            } else {
+                res.json({ success: false, message: 'User not found' });
+            }
+        });
     } else {
         res.json({ success: false, message: 'No user logged in' });
     }
