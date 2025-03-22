@@ -164,7 +164,7 @@ function showProfileSettings(mainContainer, userID) {
                     const errorElement = document.getElementById(`${field}-error`);
                     if (errorElement) {
                         errorElement.classList.remove('visible');
-                        inputElement.classList.remove('error')
+                        inputElement.classList.remove('error');
                     }
                 });
             });
@@ -185,7 +185,8 @@ function showProfileSettings(mainContainer, userID) {
                     document.getElementById(`${field}-field`).classList.add('hidden');
                     document.getElementById(`${field}-field`).classList.remove('error');
                     document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'block';
-
+                    
+                    document.getElementById(`${field}-input`).classList.remove('error')
                     document.getElementById(`${field}-error`).classList.remove('visible');
                 });
             });
@@ -210,11 +211,19 @@ function showProfileSettings(mainContainer, userID) {
                             errorElement.textContent = data.message;
                             errorElement.classList.add('visible');
                             inputElement.classList.add('error')
+
                             return;
                         }
                         if (data.success) {
+                            document.getElementById(`${field}-display`).style.display = 'block';
+                            document.getElementById(`${field}-field`).classList.add('hidden');
+                            document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'block';
+
                             errorElement.classList.remove('visible');
+
                             alert(`${field} updated successfully!`);
+                            window.location.reload();
+
                         } else {
                             alert(data.message);
                         }
@@ -223,7 +232,7 @@ function showProfileSettings(mainContainer, userID) {
                 });
             });
         })
-        .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error));
 }
 
 function showFavourites(mainContainer, userID) {

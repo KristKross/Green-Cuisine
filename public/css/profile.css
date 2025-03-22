@@ -8,6 +8,10 @@ main {
     margin: 0 auto;
     gap: 20px;
     display: flex;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
 }
 
 .side-container {
@@ -16,6 +20,10 @@ main {
     width: 25%;
     height: fit-content;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .welcome-container {
@@ -65,9 +73,8 @@ main {
 }
 
 #main-container {
-    padding: 30px;
+    padding: 20px;
     width: 75%;
-    height: min-content;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -78,6 +85,10 @@ main {
         padding: 10px 0;
         color: #626F47;
         border-bottom: 1px solid #ccc;
+    }
+    
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 40px);
     }
 }
 
