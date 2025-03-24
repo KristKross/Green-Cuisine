@@ -37,7 +37,7 @@ function renderFeaturedRecipes(recipes) {
                 <div class="featured-card ${classes[index]}" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent), url('${recipe.image}');">
                     <div class="time-container">
                         <div class="clock-image"></div>
-                        <h4>${recipe.totalTime} min</h4>
+                        <h4>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h4>
                     </div>
                     <h3 class="recipe-name">${recipe.label}</h3>
                 </div>
@@ -65,7 +65,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
                 </div>
                 <div class="time-container">
                     <div class="clock-image"></div> 
-                    <h4>${mainRecipe.totalTime} min</h4>
+                    <h4>${mainRecipe.totalTime === 0 ? "N/A" : `${mainRecipe.totalTime} min`}</h4>
                 </div>
                 <h3 class="recipe-name">${mainRecipe.label}</h3>
             </div>
@@ -84,7 +84,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
                 </div>
                 <div class="time-container">
                     <div class="clock-image"></div> 
-                    <h4>${recipe.totalTime} min</h4>
+                    <h4>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h4>
                 </div>
                 <h3 class="recipe-name">${recipe.label}</h3>
             </div>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/favourites.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="/"><img src="img/logo.png" alt="Recipe Finder Logo"></a>
+            </div>
+            <form id="search-form">
+                <input type="text" name="recipeName" placeholder="Find a recipe or ingredient" required>
+                <button type="submit"></button>
+            </form>
+            <div class="login">
+                <img src="/images/login-icon.png">
+                <a id="login-name" href="/login">Log in</a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <!-- Container for loaded recipes and search results -->
+        <div id="results" class="results"></div>
+    </main>
+    <div id="pagination" class="pagination"></div>
+    <footer>
+        <p>Recipe Finder</p>
+    </footer>
+    <script src="js/common.js"></script>
+    <script src="js/favourites.js"></script>
+</body>
+</html>

@@ -143,7 +143,7 @@ async function renderRecipes(recipes) {
                     <h3 class="recipe-name">${recipe.label}</h3>
                     <div class="time-container">
                         <div class="clock-image"></div> 
-                        <h4 class="cooking-time">${recipe.totalTime} min</h4>
+                        <h4 class="cooking-time">${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h4>
                     </div>
                 </div>
             </div>

@@ -185,7 +185,7 @@ async function renderRecipes(recipeName) {
                                 <img src="/images/clock.png" alt="Clock">
                                 <div>
                                     <h4>Time</h4>
-                                    <p>${recipeData.totalTime} minutes</p>
+                                    <p>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} minutes`}</p>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +238,7 @@ async function renderRecipes(recipeName) {
                                 <h4>CALORIES</h4>
                             </div>
                             <div>
-                                <h3>${recipeData.totalTime} min</h3>                       
+                                <h3>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h3>                       
                                 <h4>TIME</h4>
                             </div>
                              <div>

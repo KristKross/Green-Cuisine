@@ -64,6 +64,10 @@ app.get('/recipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/recipe.html'));
 });
 
+app.get('/favourites', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html/favourites.html'));
+});
+
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html/login.html'));
 });
