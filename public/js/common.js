@@ -25,7 +25,7 @@ function setupLoginName(loginName) {
         fetch('/session-data')
             .then(response => response.json())
             .then(data => {
-                if (data.success && data.username) {
+                if (data.success) {
                     loginName.textContent = `Hello, ${data.username}`;
                     loginName.href = '/profile';
                 } else {

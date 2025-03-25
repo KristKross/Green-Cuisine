@@ -7,12 +7,12 @@ function updateURI(uri, state) {
 }
 
 // Function to show error message
-function showError() {
+function showError(title, message) {
     const errorMessageDiv = document.createElement('div');
     errorMessageDiv.id = 'error-message';
     errorMessageDiv.innerHTML = `
-        <div class="error-title">Whoops! This one's a bit undercooked.</div>
-        <div class="error-message">The page you're looking for is unavailable. Please try again using our menu at the top.</div>
+        <div class="error-title">${title ? title : "Whoops! This one's a bit undercooked."}</div>
+        <div class="error-message">${message ? message : "The page you're looking for is unavailable. Please try again using our menu at the top."}</div>
     `;
     
     const main = document.querySelector('main');
@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Function to fetch and render search results
 async function fetchFavourites(userID) {
     try {
+        showLoading();
+
         const response = await fetch(`/search-favourites`, {
             method: 'POST',
             headers: {
@@ -69,12 +71,21 @@ async function fetchFavourites(userID) {
         const data = await response.json();
 
         if (data.success) {
-            renderFavouriteRecipes(data.favourites);
+            const favouritesContainer = document.getElementById('results');
+            if (data.favourites.length === 0) {
+                showError('No Favourites Yet!', 'It looks like you haven\'t added any favourites here.');
+                favouritesContainer.style.display = 'none';
+            
+            } else {
+                renderFavouriteRecipes(data.favourites);
+            }
         } else {
             console.error('Error fetching favourites:', data.message);
         }
     } catch (error) {
         console.error('Error fetching favourites:', error);
+    } finally {
+        removeLoading();
     }
 }
 
