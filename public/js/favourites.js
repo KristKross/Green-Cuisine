@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         .then(data => {
             userID = data.userID
 
+            if (!data.success) {
+                window.location.href = '/login';
+                return 
+            }
+            
             fetchFavourites(userID)
 
             window.addEventListener('popstate', (event) => {
