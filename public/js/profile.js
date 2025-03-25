@@ -1,3 +1,30 @@
+// Function to show username
+function showUsername(userNameID, username) {
+    userNameID.textContent = `Hi, ${username}`;
+}
+
+function showPopupMessage() {
+    const popup = document.createElement('div');
+    popup.id = "confirmation-popup";
+    popup.classList.add('popup');
+    popup.innerHTML = `
+        <div class="popup-content">
+            <h2>Are you sure?</h2>
+            <p>Do you really want to delete your account? This<br>process cannot be undone.</p>
+            <button id="cancel-button" class="cancel">Cancel</button>
+            <button id="confirm-button" class="confirm">Delete</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+}
+
+function removePopupMessage() {
+    const popup = document.getElementById('confirmation-popup');
+    if (popup) {
+        document.body.removeChild(popup);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/session-data')
         .then(response => response.json())
@@ -45,11 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error fetching session data:', error));
 });
 
-// Function to show username
-function showUsername(userNameID, username) {
-    userNameID.textContent = `Hi, ${username}`;
-}
-
 function showPersonalInfo(mainContainer, userID) {
     fetch(`/read-user/${userID}`)
         .then(response => {
@@ -87,21 +109,27 @@ function showPersonalInfo(mainContainer, userID) {
             });
 
             document.querySelector('#delete-button').addEventListener('click', () => {
-                const confirmDelete = confirm('Are you sure you want to delete your account?');
-                if (confirmDelete) {
+                showPopupMessage();
+                  
+                document.getElementById('cancel-button').addEventListener('click', function () {
+                    removePopupMessage();
+                });
+
+                document.getElementById('confirm-button').addEventListener('click', function () {
                     fetch(`/delete-user/${userID}`, {
                         method: 'DELETE'
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.href = '/login';
+                            window.location.href = '/';
                         } else {
                             console.error('Error deleting account:', data.message);
                         }
                     })
                     .catch(error => console.error('Error:', error));
-                }
+                    removePopupMessage();
+                });
             });
         })
         .catch(error => console.error('Error:', error));
