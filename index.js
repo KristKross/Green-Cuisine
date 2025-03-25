@@ -236,7 +236,7 @@ app.post('/register', (req, res) => {
             res.json({ success: false, message: 'Error occurred' });
             return;
         }
-        if (results.length > 1) {
+        if (results.length > 0) {
             res.json({ success: false, message: 'Email is already taken' });
             return;
         }
@@ -256,7 +256,7 @@ app.post('/register', (req, res) => {
                 res.json({ success: false, message: 'Error occurred' });
                 return;
             }
-            res.json({ success: true, message: 'User registered successfully', email });
+            res.json({ success: true, message: 'User registered successfully'});
         });
     });
 });
