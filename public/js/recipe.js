@@ -185,7 +185,7 @@ async function renderRecipes(recipeName) {
                                 <img src="/images/clock.png" alt="Clock">
                                 <div>
                                     <h4>Time</h4>
-                                    <p>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} minutes`}</p>
+                                    <p>${recipeData.totalTime === 0 ? "N/A" : `${recipeData.totalTime} minutes`}</p>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +238,7 @@ async function renderRecipes(recipeName) {
                                 <h4>CALORIES</h4>
                             </div>
                             <div>
-                                <h3>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h3>                       
+                                <h3>${recipeData.totalTime === 0 ? "N/A" : `${recipeData.totalTime} min`}</h3>                       
                                 <h4>TIME</h4>
                             </div>
                              <div>
@@ -313,7 +313,7 @@ async function renderRecipes(recipeName) {
 
             document.querySelectorAll('.health-label').forEach(label => {
                 label.addEventListener('click', () => {
-                    window.location.href = `/search?q=recipes&page=1&health=${encodeURIComponent(label.textContent.toLowerCase())}`;
+                    window.location.href = `/search?q=recipes&health=${encodeURIComponent(label.textContent.toLowerCase())}`;
                 });
             });
         }

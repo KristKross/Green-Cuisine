@@ -121,108 +121,113 @@ const seasonalIngredients = {
     winter: ['root vegetables', 'citrus', 'stew', 'braised meat', 'roasted vegetables', 'hot chocolate', 'soup', 'baked goods']
 };
 
-// Store all fetched recipes globally
-let allRecipes = [];
-
-// Function to fetch all recipes and store them in memory
-async function fetchAllRecipes(recipeName, start, end, mealType, dishType, dietLabel, healthLabel) {
+// Function to fetch recipes
+async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel, nextPageURL = '') {
     let allHits = [];
-    let from = start ? start : 0;
-    const limit = end ? end : 100;
-    try {
-        const baseURL = 'https://api.edamam.com/search';
-        const params = new URLSearchParams({
-            q: recipeName,
-            app_id: appId,
-            app_key: apiKey,
-            from,
-            to: from + limit
-        });
+    let nextPage = '';
 
-        if (mealType) { params.append('mealType', mealType); }
-        if (dishType) { params.append('dishType', dishType); }
-        if (dietLabel) {params.append('diet', dietLabel); }
-        if (healthLabel) {params.append('health', healthLabel); }
-        
-        const url = `${baseURL}?${params.toString()}`;
+    try {
+        // Use nextPageURL if provided; otherwise, construct a new query
+        const url = nextPageURL || (() => {
+            const baseURL = 'https://api.edamam.com/api/recipes/v2?type=public';
+            const params = new URLSearchParams({
+                q: recipeName,
+                app_id: appId,
+                app_key: apiKey,
+            });
+
+            if (mealType) params.append('mealType', mealType);
+            if (dishType) params.append('dishType', dishType);
+            if (dietLabel) params.append('diet', dietLabel);
+            if (healthLabel) params.append('health', healthLabel);
+
+            return `${baseURL}&${params.toString()}`;
+        })();
+
+        console.log(`Fetching URL: ${url}`);
         const response = await axios.get(url);
-        allHits = response.data.hits;
+
+        allHits = response.data.hits || [];
+        nextPage = response.data._links?.next?.href || '';
     } catch (error) {
         console.error('Error fetching recipes:', error.message);
     }
-    allRecipes = allHits;
+
+    return { allHits, nextPage };
 }
 
+// Route to handle initial search
+app.post('/search', async (req, res) => {
+    const { recipeName, mealType, dishType, dietLabel, healthLabel } = req.body;
+
+    try {
+        const { allHits, nextPage } = await fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel);
+
+        const formattedRecipes = allHits.map(hit => {
+            const recipe = hit.recipe;
+            recipe.label = recipe.label.toLowerCase();
+            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
+            return recipe;
+        });
+
+        res.json({ recipes: formattedRecipes, nextPage });
+    } catch (error) {
+        console.error('Error in search endpoint:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/next', async (req, res) => {
+    const { nextPageURL } = req.query; // Get next page URL from query params
+
+    if (!nextPageURL) {
+        return res.status(400).json({ error: 'Missing nextPageURL parameter' });
+    }
+
+    try {
+        const { allHits, nextPage } = await fetchRecipes('', '', '', '', '', nextPageURL);
+
+        const formattedRecipes = allHits.map(hit => {
+            const recipe = hit.recipe;
+            recipe.label = recipe.label.toLowerCase();
+            recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
+            return recipe;
+        });
+
+        res.json({ recipes: formattedRecipes, nextPage });
+    } catch (error) {
+        console.error('Error fetching next page:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.get('/featured-search', async (req, res) => {
-    allRecipes = [];
-
     const recipeName = req.query.q;
-    const start = 0
-    await fetchAllRecipes(recipeName, start, 1);
+    const allRecipes = await fetchRecipes(recipeName);
 
-    const formattedRecipes = allRecipes.map(hit => {
-        const recipe = hit.recipe;
+    if (allRecipes.length > 0) {
+        const recipe = allRecipes[0].recipe;
         recipe.label = recipe.label.toLowerCase();
-        return recipe;
-    });
-
-    if (formattedRecipes.length) {
-        res.json({ recipes: formattedRecipes });
+        res.json({ recipes: [recipe] });
     } else {
         res.status(404).json({ success: false, message: 'No recipes found.' });
     }
 });
 
 app.get('/seasonal-recipes', async (req, res) => {
-    allRecipes = [];
-
     const season = getSeason();
     const recipeName = seasonalIngredients[season][Math.floor(Math.random() * seasonalIngredients[season].length)];
     
-    const start = Math.floor(Math.random() * 97);
-    await fetchAllRecipes(recipeName, start, 3);
+    const allRecipes = await fetchRecipes(recipeName);
 
-    const formattedRecipes = allRecipes.map(hit => {
+    const formattedRecipes = allRecipes.slice(0, 3).map(hit => {
         const recipe = hit.recipe;
         recipe.label = recipe.label.toLowerCase();
         recipe.dishType = Array.isArray(recipe.dishType) && recipe.dishType.length > 0 ? recipe.dishType[0] : '';
         return recipe;
     });
 
-    if (formattedRecipes.length) {
-        res.json({ recipes: formattedRecipes });
-    } else {
-        res.status(404).json({ success: false, message: 'No recipes found.' });
-    }
-});
-
-// Route to handle the search and paginate results
-app.post('/search', async (req, res) => {
-    const recipeName = req.body.recipeName;
-    const page = parseInt(req.query.page) || 1; 
-    const mealType = req.query.mealType || '';
-    const dishType = req.query.dishType || '';
-    const dietLabel = req.query.diet || '';
-    const healthLabel = req.query.health || '';
-    const limit = 24;
-
-    allRecipes = [];
-
-    await fetchAllRecipes(recipeName, null, null, mealType, dishType, dietLabel, healthLabel);
-
-    const start = (page - 1) * limit;
-    const end = start + limit;
-
-    const recipesForPage = allRecipes.slice(start, end);
-
-    const formattedRecipes = recipesForPage.map(hit => {
-        const recipe = hit.recipe;
-        recipe.label = recipe.label.toLowerCase();
-        recipe.dishType = Array.isArray(recipe.dishType) ? recipe.dishType.join(', ') : '';
-        return recipe;
-    });
-
-    res.json({recipes: formattedRecipes, total: allRecipes.length, page, limit});
+    res.json({ recipes: formattedRecipes });
 });
 
 app.post('/register', (req, res) => {
