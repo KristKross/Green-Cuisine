@@ -35,40 +35,67 @@ function showError() {
 
 // Variables to store and recipe name
 let currentRecipeName = new URLSearchParams(window.location.search).get('q') || '';
+let currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
 let currentMealType = new URLSearchParams(window.location.search).get('mealType') || '';
 let currentDishType = new URLSearchParams(window.location.search).get('dishType') || '';
 let currentDiet = new URLSearchParams(window.location.search).get('diet') || '';
 let currentHealth = new URLSearchParams(window.location.search).get('health') || '';
 
+const maxPages = 5; // Maximum number of pages to display
+
 // Event listener for when the HTML is loaded
 document.addEventListener('DOMContentLoaded', async () => {
     if (currentRecipeName) {
+        console.log(pageHistory);
+        if (currentPage > pageHistory.length + 1) {
+            showError();
+            return;
+        }
+        
         fetchSearchResults(currentRecipeName, currentMealType, currentDishType, currentDiet, currentHealth, true);
     }
+
+    // Listen for popstate event
+    window.addEventListener('popstate', async (event) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = parseInt(urlParams.get('page')) || 1;
+
+        if (pageHistory.length >= page) {
+            try {
+                const previousPageData = pageHistory[page - 1];
+
+                if (!previousPageData) return;  
+
+                renderRecipes(previousPageData.data.recipes);
+                renderPaginationControls(page);
+                nextPageURL = previousPageData.data.nextPage || '';
+                window.scrollTo(0, 0);
+
+            } catch (error) {
+                console.error('Error restoring page state:', error);
+                showError();
+            }
+        }
+    });
 });
 
-let nextPageURL = ''; // Store next page link
+let pageHistory = [];
+let nextPageURL = '';
 
-// Function to fetch and render search results
-async function fetchSearchResults(recipeName, mealType, dishType, diet, health, isSearch = false) {
+async function fetchSearchResults(recipeName, mealType = '', dishType = '', diet = '', health = '', isSearch = false) {
     if (document.getElementById('loader')) return;
 
     try {
         if (isSearch) {
             showLoading();
-            currentPage = 1;
-            prevPageURL = ''; 
+            pageHistory = [];
         }
 
-        let queryParams = new URLSearchParams();
-
-        queryParams.set('q', recipeName); // Set the recipe name
-
-        // Add the current query parameters to the query string if they exist
-        if (currentMealType) queryParams.set('mealType', currentMealType);
-        if (currentDishType) queryParams.set('dishType', currentDishType);
-        if (currentDiet) queryParams.set('diet', currentDiet);
-        if (currentHealth) queryParams.set('health', currentHealth);
+        const queryParams = new URLSearchParams({ q: recipeName });
+        if (mealType) queryParams.append('mealType', mealType);
+        if (dishType) queryParams.append('dishType', dishType);
+        if (diet) queryParams.append('diet', diet);
+        if (health) queryParams.append('health', health);
 
         const response = await fetch(`/search?${queryParams.toString()}`, {
             method: 'POST',
@@ -79,15 +106,28 @@ async function fetchSearchResults(recipeName, mealType, dishType, diet, health, 
         if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
 
         const data = await response.json();
-        nextPageURL = data.nextPage || ''; // Store next page link
+        
+        if (isSearch || pageHistory.length === 0) {
+            pageHistory.push({ 
+                url: '', 
+                data, 
+                recipeName, 
+                mealType, 
+                dishType, 
+                diet, 
+                health 
+            });
+        }
+
+        nextPageURL = data.nextPage || '';
 
         if (data.recipes.length > 0) {
             renderRecipes(data.recipes);
             renderPaginationControls();
-            updateURI(`/search?${queryParams}`, { page: currentPage, recipeName, mealType, dishType, diet, health });
         } else {
             showError();
         }
+
     } catch (error) {
         console.error('Error fetching search results:', error);
         showError();
@@ -96,64 +136,58 @@ async function fetchSearchResults(recipeName, mealType, dishType, diet, health, 
     }
 }
 
-
 async function fetchNextPage() {
     if (!nextPageURL) return;
 
     try {
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = ''; // Clear the page
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = ''; // Clear pagination until loaded
-
-        showLoading();
-
         const response = await fetch(`/next?nextPageURL=${encodeURIComponent(nextPageURL)}`);
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 
         const data = await response.json();
-        nextPageURL = data.nextPage || ''; // Update next page link
+
+        pageHistory.push({ url: nextPageURL, data }); 
+
+        nextPageURL = data.nextPage || '';
 
         renderRecipes(data.recipes);
         renderPaginationControls();
-        window.scrollTo(0, 0); // Scroll to top
+        window.scrollTo(0, 0);
+
+        const currentPage = pageHistory.length;
+        history.pushState({ nextPageURL }, '', `/search?q=${currentRecipeName}&page=${currentPage}`);
 
     } catch (error) {
+        showError();
         console.error('Error fetching next page:', error);
-    } finally {
-        removeLoading();
     }
 }
 
 async function fetchPreviousPage() {
-    if (!prevPageURL) return; // Prevent errors if there's no previous page
+    if (pageHistory.length <= 1) return;
 
     try {
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = ''; // Clear previous results
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = ''; // Clear pagination until loaded
+        pageHistory.pop();
 
-        showLoading();
+        const previousPage = pageHistory[pageHistory.length - 1];
 
-        const response = await fetch(`/prev?prevPageURL=${encodeURIComponent(prevPageURL)}`);
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        if (!previousPage) return;
 
-        const data = await response.json();
-        nextPageURL = data.nextPage || ''; // Update next page link
-        prevPageURL = data.prevPage || ''; // Update previous page link
-
-        renderRecipes(data.recipes);
+        renderRecipes(previousPage.data.recipes);
         renderPaginationControls();
-        window.scrollTo(0, 0); // Scroll to top
+        
+        nextPageURL = previousPage.data.nextPage || ''; // Ensure next page URL is restored
+
+        window.scrollTo(0, 0);
+
+        const currentPage = pageHistory.length;
+        history.pushState({ nextPageURL }, '', `/search?q=${currentRecipeName}&page=${currentPage}`);
 
     } catch (error) {
-        console.error('Error fetching previous page:', error);
+        console.error('Error loading previous page:', error);
     } finally {
         removeLoading();
     }
 }
-
 
 async function renderRecipes(recipes) {
     const favouriteRecipes = await fetchFavouritesFromDatabase();
@@ -270,7 +304,6 @@ async function handleFavouriteButtonClick(recipes, index) {
     }
 }
 
-
 // Function to add a favourite recipe to the database
 async function addFavourite(favouriteData) {
     const addResponse = await fetch('/add-favourite', {
@@ -301,14 +334,17 @@ async function removeFavourite(favouriteData) {
     }
 }
 
-function renderPaginationControls() {
+function renderPaginationControls(currentPage) {
     const paginationDiv = document.getElementById('pagination');
     let paginationHTML = '';
 
-    if (prevPageURL ) {
+    if (pageHistory.length > 1) {
         paginationHTML += `<button id="prev">Previous</button>`;
     }
-    if (nextPageURL) {
+
+    paginationHTML += `<p>Page ${currentPage ? currentPage : pageHistory.length} of ${maxPages}</p>`;
+
+    if (pageHistory.length < maxPages) {
         paginationHTML += `<button id="next">Next</button>`;
     }
 
@@ -316,12 +352,16 @@ function renderPaginationControls() {
     attachPaginationEventListeners();
 }
 
-
 // Function to attach event listeners for pagination buttons
 function attachPaginationEventListeners() {
     const nextButton = document.getElementById('next');
     const prevButton = document.getElementById('prev');
 
-    if (nextButton) nextButton.addEventListener('click', fetchNextPage);
-    if (prevButton) prevButton.addEventListener('click', fetchPreviousPage);
+    if (nextButton) {
+        nextButton.addEventListener('click', fetchNextPage);
+    }
+
+    if (prevButton) {
+        prevButton.addEventListener('click', fetchPreviousPage);
+    }
 }

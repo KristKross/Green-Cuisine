@@ -1,17 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('/seasonal-recipes');
-        const data = await response.json();
-        const seasonalRecipes = data.recipes;
-        renderSeasonalRecipes(seasonalRecipes);
-    } catch (error) {
-        console.error('Error fetching season:', error);
-    }
-
     const recipeQueries = [
-        'Non-Traditional Pasta Carbonara',
-        'Classic American Burger',
-        'Pan-Seared Ribeye Steak with Quick Creamed Spinach Recipe'
+        'http://www.edamam.com/ontologies/edamam.owl#recipe_da4a5ccd1498a3fb48eee56793ca4fbb',
+        'http://www.edamam.com/ontologies/edamam.owl#recipe_b9db2fefe520aea1f481adbfc007b832',
+        'http://www.edamam.com/ontologies/edamam.owl#recipe_2efb6c7072df4012bc84122481cc5ebd'
     ];
     try {
         const results = await Promise.all(
@@ -24,6 +15,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderFeaturedRecipes(singleRecipes);
     } catch (error) {
         console.error('Error fetching recipes:', error);
+    }
+
+    try {
+        const response = await fetch('/seasonal-recipes');
+        const data = await response.json();
+        renderSeasonalRecipes(data.recipes);
+    } catch (error) {
+        console.error('Error fetching season:', error);
     }
 });
 
@@ -56,7 +55,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
     const mainContainer = document.getElementById('main-container');
     const sideContainer = document.getElementById('side-container');
 
-    if (seasonalRecipes.length > 0) {
+    if (seasonalRecipes) {
         const mainRecipe = seasonalRecipes[0];
         mainContainer.innerHTML = `
             <div class="seasonal-card" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent), url('${mainRecipe.image}');">
@@ -97,7 +96,6 @@ function renderSeasonalRecipes(seasonalRecipes) {
         });
     });
 }
-
 
 const categoriesMap = {
     'main dishes': 'main course',

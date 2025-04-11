@@ -14,7 +14,7 @@ function setupSearchForm(searchForm) {
         searchForm.addEventListener('submit', (event) => {
             event.preventDefault();
             const recipeName = event.target.elements.recipeName.value;
-            window.location.href = `/search?q=${recipeName}`;
+            window.location.href = `/search?q=${recipeName}&page=1`;
         });
     }
 }
