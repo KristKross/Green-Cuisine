@@ -14,28 +14,36 @@ To get started with this project, follow the steps below to set up your local en
    npm install
    ```
 
-3. **Set up environment variables**:
+3. **Create the SQL Database**:
+   Make sure you have a SQL server running. You can create the database for the project by using the following SQL command:
+   ```sql
+   CREATE DATABASE recipe_database;
+   ```
+   After creating the database, execute the `create_tables.sql` and script located in the `sql-server-project` directory to create the necessary tables.
+   ```bash
+   mysql -u your_username -p recipe_database < sql-server-project/create_tables.sql
+   ```
+
+
+4. **Set up environment variables**:
    Create a `.env` file in the root directory of the project. Add your Edamam API credentials as follows:
    ```
    APP_ID=your_app_id
    API_KEY=your_api_key
    ```
 
-4. **Run the application**:
+5. **Run the application**:
    Start the server using the following command:
    ```bash
    npm start
    ```
    The application will be running at `http://localhost:3000`.
 
-5. **Development mode**:
+6. **Development mode**:
    To run the application in development mode with hot-reloading, use:
    ```bash
    npm run dev
    ```
-
-6. **SQL setup**:
-   Create the database: Open your SQL Server Management Studio (SSMS) or preferred SQL editor and run the following script to create the database and its tables.
 
 ## Usage
 
