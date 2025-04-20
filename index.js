@@ -101,88 +101,11 @@ app.get('/session-data', (req, res) => {
     }
 });
 
-function getSeason() {
-    const month = new Date().getMonth();
-    if (month >= 2 && month <= 4) {
-        return 'spring';
-    } else if (month >= 5 && month <= 7) {
-        return 'summer';
-    } else if (month >= 8 && month <= 10) {
-        return 'fall'; 
-    } else {
-        return 'winter'; 
-    }
-}
-
-const seasonalIngredients = {
-    spring: ['asparagus', 'strawberry', 'peas', 'lemon', 'mint', 'lamb', 'quiche', 'frittata'],
-    summer: ['tomato', 'zucchini', 'berries', 'stone fruit', 'grilled meat', 'salads', 'corn', 'avocado'],
-    fall: ['pumpkin', 'apples', 'squash', 'sweet potato', 'cranberries', 'brussels sprouts', 'turkey', 'stuffing'],
-    winter: ['root vegetables', 'citrus', 'stew', 'braised meat', 'roasted vegetables', 'hot chocolate', 'soup', 'baked goods']
-};
-
-// Function to fetch recipes
-async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel, nextPageURL = '') {
-    let allHits = [];
-    let nextPage = '';
-
-    try {
-        // Use nextPageURL if provided; otherwise, construct a new query
-        const url = nextPageURL || (() => {
-            const baseURL = 'https://api.edamam.com/api/recipes/v2?type=public';
-            const params = new URLSearchParams({
-                q: recipeName,
-                app_id: appId,
-                app_key: apiKey,
-            });
-
-            if (mealType) params.append('mealType', mealType);
-            if (dishType) params.append('dishType', dishType);
-            if (dietLabel) params.append('diet', dietLabel);
-            if (healthLabel) params.append('health', healthLabel);
-
-            return `${baseURL}&${params.toString()}`;
-        })();
-
-        const response = await axios.get(url);
-
-        allHits = response.data.hits || [];
-        nextPage = response.data._links?.next?.href || '';
-    } catch (error) {
-        console.error('Error fetching recipes:', error.message);
-    }
-
-    return { allHits, nextPage };
-}
-
-// Function to fetch recipe details usinh URI
-async function fetchRecipeWithURI(results) {
-    const favouriteRecipes = [];
-    
-    for (const result of results) {
-        const URI = result.RecipeURI;
-
-        try {
-            const baseURL = 'https://api.edamam.com/api/recipes/v2/by-uri?type=public';
-            const params = new URLSearchParams({
-                uri: URI,
-                app_id: appId,
-                app_key: apiKey
-            });
-
-            const url = `${baseURL}&${params.toString()}`;
-            const response = await axios.get(url);
-
-            if (response.data.hits && response.data.hits.length > 0) {
-                favouriteRecipes.push(response.data.hits[0].recipe);
-            }
-        } catch (error) {
-            console.error('Error fetching recipe details from Edamam:', error.message);
-        }
-    }
-
-    return favouriteRecipes;
-}
+const {
+    fetchRecipes,
+    fetchRecipeWithURI,
+    getRandomSeasonalIngredient
+} = require('./api/recipeAPI.js');
 
 // Route to handle initial search
 app.post('/search', async (req, res) => {
@@ -246,14 +169,11 @@ app.get('/featured-search', async (req, res) => {
     }
 });
 
-
 app.get('/seasonal-recipes', async (req, res) => {
-    const season = getSeason();
-    const recipeName = seasonalIngredients[season][Math.floor(Math.random() * seasonalIngredients[season].length)];
+    const recipeName = getRandomSeasonalIngredient();
 
     try {
         const { allHits } = await fetchRecipes(recipeName);
-        
         if (allHits.length > 0) {
             const formattedRecipes = allHits.slice(0, 3).map(hit => {
                 const recipe = hit.recipe;
@@ -261,7 +181,6 @@ app.get('/seasonal-recipes', async (req, res) => {
                 recipe.dishType = Array.isArray(recipe.dishType) && recipe.dishType.length > 0 ? recipe.dishType[0] : '';
                 return recipe;
             });
-
             res.json({ recipes: formattedRecipes });
         } else {
             res.status(404).json({ success: false, message: 'No recipes found.' });
@@ -271,7 +190,6 @@ app.get('/seasonal-recipes', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 });
-
 
 app.post('/register', (req, res) => {
     const { email, username, password } = req.body;
@@ -482,7 +400,8 @@ app.post('/check-favourite', (req, res) => {
     connection.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
         if (err) {
             console.error('Error checking favourite:', err);
-            return res.json({ success: false, message: 'Error occurred' });
+            res.json({ success: false, message: 'Error occurred' });
+            return;
         }
 
         if (results.length > 0) {
@@ -515,6 +434,7 @@ app.post('/search-favourites', async (req, res) => {
     try {
         const results = await fetchFavouriteRecipeDetails(userID);
         const favouriteRecipes = await fetchRecipeWithURI(results);
+        favouriteRecipes.forEach(recipe => recipe.label = recipe.label.toLowerCase());
         res.json({ success: true, favourites: favouriteRecipes });
     } catch (error) {
         console.error('Error fetching favourites:', error);
