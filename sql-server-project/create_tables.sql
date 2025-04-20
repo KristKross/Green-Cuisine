@@ -2,7 +2,7 @@
 CREATE TABLE users (
     UserID INT PRIMARY KEY,
     Username VARCHAR(50),
-    PasswordHash VARCHAR(256),
+    Password VARCHAR(256),
     Email VARCHAR(100)
 );
 
