@@ -274,12 +274,28 @@ main {
         max-width: 100%;
     }
 
-    h2 {
-        margin: 0;
+    .recipe-header-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         padding-bottom: 20px;
-        color: #626F47;
-        font-weight: 800;
         border-bottom: 1px solid #ccc;
+
+        h2 {
+            margin: 0;
+            color: #626F47;
+            font-weight: 800;
+        }
+
+        .recipe-header-image {
+            width: 30px;
+            height: 30px;
+            background-image: url('/images/recipe-icon.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
     }
 }
 

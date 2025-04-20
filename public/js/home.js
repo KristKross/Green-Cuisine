@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cachedSeasonalRecipes = localStorage.getItem('seasonalRecipes');
 
     if (!lastFetchTime || now - lastFetchTime > CACHE_EXPIRY_TIME) {
-        console.log('Cache expired or not set. Fetching new data...');
         localStorage.setItem('lastFetchTime', now);
 
         // Fetch Featured Recipes
@@ -43,12 +42,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         // Use Cached Data
         if (cachedFeaturedRecipes) {
-            console.log('Using cached featured recipes');
             renderFeaturedRecipes(JSON.parse(cachedFeaturedRecipes));
         }
         // Use Cached Seasonal Recipes
         if (cachedSeasonalRecipes) {
-            console.log('Using cached seasonal recipes');
             renderSeasonalRecipes(JSON.parse(cachedSeasonalRecipes));
         }
     }

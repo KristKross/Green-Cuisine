@@ -34,6 +34,19 @@ function renderSubNutrient(name, nutrient) {
     ` : '';
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Add the Edamam badge div
+    document.body.insertAdjacentHTML('beforeend', `
+        <div id="edamam-badge" data-color="white"></div>
+    `);
+
+    // Add the script after the div is added
+    const script = document.createElement('script');
+    script.src = "https://developer.edamam.com/attribution/badge.js";
+    script.async = true;
+    document.head.appendChild(script);
+});
+
 // Function to fetch favourites from the database
 async function fetchFavouritesFromDatabase() {
     const sessionResponse = await fetch('/session-data');
@@ -100,7 +113,6 @@ async function handleFavouriteButtonClick(recipe) {
     }
 }
 
-
 // Function to add a favourite recipe to the database
 async function addFavourite(favouriteData) {
     const addResponse = await fetch('/add-favourite', {
@@ -109,9 +121,7 @@ async function addFavourite(favouriteData) {
         body: JSON.stringify(favouriteData)
     });
 
-    if (addResponse.ok) {
-        console.log('Recipe added to favourites:', favouriteData.recipe_name);
-    } else {
+    if (addResponse.error) {
         console.error('Error adding favourite:', await addResponse.json().error);
     }
 }
@@ -124,9 +134,7 @@ async function removeFavourite(favouriteData) {
         body: JSON.stringify(favouriteData)
     });
 
-    if (removeResponse.ok) {
-        console.log('Recipe removed from favourites:', favouriteData.recipe_name);
-    } else {
+    if (removeResponse.error) {
         console.error('Error removing favourite:', await removeResponse.json().error);
     }
 }
@@ -148,10 +156,7 @@ async function renderRecipes(recipeName) {
         } else {
             const recipeContainer = document.getElementById('recipe');
             const favouriteRecipes = await fetchFavouritesFromDatabase();
-            console.log('Favourite recipes:', favouriteRecipes);
-            console.log('Recipe data:', recipeData.label, recipeData.uri);
             const isFavourited = favouriteRecipes.some(fav => fav.name === recipeData.label && fav.uri === recipeData.uri);
-            console.log('Is recipe favourited?', isFavourited);
 
             // Create the inner HTML for the recipe
             recipeContainer.innerHTML = `
@@ -231,7 +236,10 @@ async function renderRecipes(recipeName) {
                         </div>
                     </div>
                     <div class="recipe-information">
-                        <h2>Nutrition</h2>
+                        <div class="recipe-header-container">
+                            <h2>Nutrition</h2>
+                            <div id="edamam-badge" data-color="white"></div>
+                        </div>
                         <div class="information-container">
                             <div>
                                 <h3>${Math.round(recipeData.calories)}</h3>
