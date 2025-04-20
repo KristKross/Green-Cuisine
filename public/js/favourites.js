@@ -83,6 +83,7 @@ async function fetchFavourites(userID) {
             
             } else {
                 renderFavouriteRecipes(data.favourites);
+                renderPaginationControls(currentPage);
             }
         } else {
             console.error('Error fetching favourites:', data.message);
@@ -125,67 +126,34 @@ function renderFavouriteRecipes(favourites) {
     });
 }
 
-// Function to update pagination buttons
-function updatePagination(total, page, limit) {
-    const totalPages = Math.ceil(total / limit);
-    renderPaginationControls(totalPages, page);
-}
+function renderPaginationControls(currentPage) {
+    const paginationDiv = document.getElementById('pagination');
+    let paginationHTML = '';
 
-// Function to render pagination controls
-function renderPaginationControls(totalPages, currentPage) {
-    const paginationDiv = document.getElementById('pagination');  
-
-    // If pagination already exists, update only the active button
-    if (paginationDiv.innerHTML.trim() !== '') {
-        document.querySelectorAll('.page-number').forEach(button => {
-            button.classList.toggle('active', parseInt(button.dataset.page) === currentPage);
-        });
-        return;
+    if (pageHistory.length > 1) {
+        paginationHTML += `<button id="prev">Previous</button>`;
     }
 
-    // Otherwise, generate new buttons
-    let paginationHTML = `
-        <button id="prev" class="${currentPage === 1 ? 'disabled' : ''}">Previous</button>
-    `;
+    paginationHTML += `<p>Page ${currentPage ? currentPage : pageHistory.length} of ${maxPages}</p>`;
 
-    for (let i = 1; i <= totalPages; i++) {
-        const active = i === currentPage ? 'active' : '';
-        paginationHTML += `<button class="page-number ${active}" data-page="${i}">${i}</button>`;
+    if (pageHistory.length < maxPages) {
+        paginationHTML += `<button id="next">Next</button>`;
     }
-
-    paginationHTML += `<button id="next" class="${currentPage === totalPages ? 'disabled' : ''}">Next</button>`;
 
     paginationDiv.innerHTML = paginationHTML;
-    attachPaginationEventListeners(totalPages);
+    attachPaginationEventListeners();
 }
 
+// Function to attach event listeners for pagination buttons
+function attachPaginationEventListeners() {
+    const nextButton = document.getElementById('next');
+    const prevButton = document.getElementById('prev');
 
-// Function to attach event listeners to pagination buttons
-function attachPaginationEventListeners(totalPages) {
-    // Event listeners for the "Next" buttons
-    document.getElementById('next').addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth);
-        }
-    });
+    if (nextButton) {
+        nextButton.addEventListener('click', fetchNextPage);
+    }
 
-    // Event listeners for the "Previous" buttons
-    document.getElementById('prev').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth);
-        }
-    });
-
-    // Event listeners for the numbered buttons
-    document.querySelectorAll('.page-number').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const page = parseInt(event.target.getAttribute('data-page'));
-            if (page !== currentPage) {
-                currentPage = page;
-                fetchSearchResults(currentRecipeName, currentPage, currentMealType, currentDishType, currentDiet, currentHealth);
-            }
-        });
-    });
+    if (prevButton) {
+        prevButton.addEventListener('click', fetchPreviousPage);
+    }
 }
