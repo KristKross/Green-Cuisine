@@ -2,9 +2,11 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
 
+// Load environment variables from .env file
 const appId = process.env.APP_ID;
 const apiKey = process.env.API_KEY;
 
+// This function determines the current season based on the month
 function getSeason() {
     const month = new Date().getMonth();
     if (month >= 2 && month <= 4) return 'spring';
@@ -13,6 +15,15 @@ function getSeason() {
     return 'winter';
 }
 
+// This function returns a random seasonal ingredient based on the current season
+function getRandomSeasonalIngredient() {
+    const season = getSeason();
+    const ingredientList = seasonalIngredients[season];
+    const randomIndex = Math.floor(Math.random() * ingredientList.length);
+    return ingredientList[randomIndex];
+}
+
+// This function returns a random seasonal ingredient based on the current season
 const seasonalIngredients = {
     spring: ['asparagus', 'strawberry', 'peas', 'lemon', 'mint', 'lamb', 'quiche', 'frittata'],
     summer: ['tomato', 'zucchini', 'berries', 'stone fruit', 'grilled meat', 'salads', 'corn', 'avocado'],
@@ -20,6 +31,7 @@ const seasonalIngredients = {
     winter: ['root vegetables', 'citrus', 'stew', 'braised meat', 'roasted vegetables', 'hot chocolate', 'soup', 'baked goods']
 };
 
+// This function fetches recipes from the Edamam API based on the provided parameters
 async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel, nextPageURL = '') {
     let allHits = [];
     let nextPage = '';
@@ -51,6 +63,7 @@ async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLab
     return { allHits, nextPage };
 }
 
+// This function fetches recipe details using the RecipeURI from the Edamam API
 async function fetchRecipeWithURI(results) {
     const favouriteRecipes = [];
 
@@ -76,13 +89,6 @@ async function fetchRecipeWithURI(results) {
     }
 
     return favouriteRecipes;
-}
-
-function getRandomSeasonalIngredient() {
-    const season = getSeason();
-    const ingredientList = seasonalIngredients[season];
-    const randomIndex = Math.floor(Math.random() * ingredientList.length);
-    return ingredientList[randomIndex];
 }
 
 module.exports = {
