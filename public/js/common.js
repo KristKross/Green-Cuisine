@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginName = document.querySelector('#login-name');
         setupLoginName(loginName);
     }
+    
+    setupSearchPage();
 });
 
 function setupSearchForm(searchForm) {
@@ -36,3 +38,33 @@ function setupLoginName(loginName) {
     }
 }
 
+function setupSearchPage() {
+    const categoriesMap = {
+        'main dishes': 'main course',
+        'desserts': 'desserts',
+        'appetisers': 'starter',
+        'soups': 'soup',
+        'salads': 'salad',
+        'breakfast': 'breakfast'
+    };
+    
+    const categories = document.querySelectorAll('.categories > ul > li > p');
+    categories.forEach(category => {
+        category.addEventListener('click', () => {
+            const categoryText = category.textContent.toLowerCase();
+            currentCuisineType = '';
+            const type = ['soups', 'salads', 'main dishes', 'appetisers', 'desserts'].includes(categoryText) ? 'dishType' : 'mealType';
+            window.location.href = `/search?q=recipe&page=1&${type}=${encodeURIComponent(categoriesMap[categoryText])}`;
+        });
+    });
+
+    if (document.querySelector('.cuisines')) {
+        const cuisines = document.querySelectorAll('.cuisines > ul > li > p');
+        cuisines.forEach(cuisine => {
+            cuisine.addEventListener('click', () => {
+                const cuisineText = cuisine.textContent.toLowerCase();
+                window.location.href = `/search?q=recipe&page=1&cuisineType=${encodeURIComponent(cuisineText)}`;
+            });
+        });
+    }
+}
