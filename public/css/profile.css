@@ -1,5 +1,7 @@
 main {
-    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 20px;
 }
 
 .popup {
@@ -104,7 +106,7 @@ main {
         width: 50px;
         height: 50px;
         object-fit: cover;
-        background-image: url('/images/profile-icon.svg');
+        background-image: url('/assets/icons/profile-icon.svg');
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
@@ -421,7 +423,7 @@ main {
     margin-right: 5px;
     width: 20px;
     height: 20px;
-    background-image: url('/images/clock.png');
+    background-image: url('/assets/icons/clock.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

@@ -34,19 +34,6 @@ function renderSubNutrient(name, nutrient) {
     ` : '';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Add the Edamam badge div
-    document.body.insertAdjacentHTML('beforeend', `
-        <div id="edamam-badge" data-color="white"></div>
-    `);
-
-    // Add the script after the div is added
-    const script = document.createElement('script');
-    script.src = "https://developer.edamam.com/attribution/badge.js";
-    script.async = true;
-    document.head.appendChild(script);
-});
-
 // Function to fetch favourites from the database
 async function fetchFavouritesFromDatabase() {
     const sessionResponse = await fetch('/session-data');
@@ -154,6 +141,7 @@ async function renderRecipes(recipeName) {
         if (!recipeData || recipeData.label !== decodedRecipeName) {
             showError('Invalid recipe name in the URL.');
         } else {
+            console.log(recipeData.uri);
             const recipeContainer = document.getElementById('recipe');
             const favouriteRecipes = await fetchFavouritesFromDatabase();
             const isFavourited = favouriteRecipes.some(fav => fav.name === recipeData.label && fav.uri === recipeData.uri);
@@ -173,21 +161,21 @@ async function renderRecipes(recipeName) {
                         <div class="favourite-button ${isFavourited ? 'active' : ''}"></div>
                         <div class="recipe-description">
                             <div class="category-container">
-                                <img src="/images/cooking-pot.png" alt="Cooking Pot">
+                                <img src="/assets/icons/cooking-pot-icon.png" alt="Cooking Pot">
                                 <div>
                                     <h4>Category</h4>
                                     <p>${recipeData.dishType}</p>
                                 </div>
                             </div>
                             <div class="calorie-container">
-                                <img src="/images/tableware.png" alt="Tableware">
+                                <img src="/assets/icons/tableware-icon.png" alt="Tableware">
                                 <div>
                                     <h4>Cuisine</h4>
                                     <p>${recipeData.cuisineType}</p>
                                 </div>
                             </div>
                             <div class="time-container">
-                                <img src="/images/clock.png" alt="Clock">
+                                <img src="/assets/icons/clock-icon.png" alt="Clock">
                                 <div>
                                     <h4>Time</h4>
                                     <p>${recipeData.totalTime === 0 ? "N/A" : `${recipeData.totalTime} minutes`}</p>
@@ -238,7 +226,7 @@ async function renderRecipes(recipeName) {
                     <div class="recipe-information">
                         <div class="recipe-header-container">
                             <h2>Nutrition</h2>
-                            <div id="edamam-badge" data-color="white"></div>
+                            <div id="edamam-badge"></div>
                         </div>
                         <div class="information-container">
                             <div>
@@ -309,7 +297,7 @@ async function renderRecipes(recipeName) {
             `;
 
             document.querySelector('#back-button').addEventListener('click', () => {
-                window.location.href = '/';
+                window.history.back();
             });
 
             const favButton = document.querySelector('.favourite-button');

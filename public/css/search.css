@@ -1,6 +1,6 @@
 main {
     padding: 20px;
-    flex: 1;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
 }
@@ -143,7 +143,7 @@ main {
     margin-right: 5px;
     width: 20px;
     height: 20px;
-    background-image: url('/images/clock.png');
+    background-image: url('/assets/icons/clock-icon.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -186,7 +186,7 @@ main {
 .favourite-button {
     width: 50px;
     height: 50px;
-    background-image: url('/images/heart-icon.png');
+    background-image: url('/assets/icons/heart-icon.png');
     background-repeat: no-repeat;
     background-size: 40%;
     background-position: center;
@@ -206,13 +206,13 @@ main {
     }
 
     &:hover {
-        background-image: url('/images/heart-filled-icon.png');
+        background-image: url('/assets/icons/heart-filled-icon.png');
         background-color: #4e5c32;
         transition:  ease-in-out 0.1s;
     }
 
     &.active {
-        background-image: url('/images/heart-filled-icon.png');
+        background-image: url('/assets/icons/heart-filled-icon.png');
         background-color: #4e5c32;
     }
 }

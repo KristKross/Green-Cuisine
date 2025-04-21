@@ -36,7 +36,7 @@ main {
         margin-right: 10px;
         width: 20px;
         height: 20px;
-        background-image: url('/images/back.png');
+        background-image: url('/assets/icons/back-icon.png');
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
@@ -88,7 +88,7 @@ main {
 .favourite-button {
     width: 80px;
     height: 80px;
-    background-image: url('/images/heart-icon.png');
+    background-image: url('/assets/icons/heart-icon.png');
     background-repeat: no-repeat;
     background-size: 40%;
     background-position: center;
@@ -108,13 +108,13 @@ main {
     }
 
     &:hover {
-        background-image: url('/images/heart-filled-icon.png');
+        background-image: url('/assets/icons/heart-filled-icon.png');
         background-color: #4e5c32;
         transition:  ease-in-out 0.1s;
     }
 
     &.active {
-        background-image: url('/images/heart-filled-icon.png');
+        background-image: url('/assets/icons/heart-filled-icon.png');
         background-color: #4e5c32;
     }
 }
@@ -291,7 +291,7 @@ main {
         .recipe-header-image {
             width: 30px;
             height: 30px;
-            background-image: url('/images/recipe-icon.png');
+            background-image: url('/assets/icons/recipe-icon.png');
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;

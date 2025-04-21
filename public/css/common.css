@@ -70,7 +70,7 @@ input[type="text"] {
     outline: none;
     border-radius: 0 5px 5px 0;
     background-color: #fff;
-    background-image: url('/images/search-icon.png');
+    background-image: url('/assets/icons/search-icon.png');
     background-repeat: no-repeat;
     background-size: 50%;
     background-position: center;
@@ -83,7 +83,6 @@ input[type="text"] {
 
 main {
     padding: 20px;
-    flex: 1;
 }
 
 #error-message {
@@ -178,22 +177,53 @@ h4 {
 }
 
 footer {
-    padding: 40px 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: #eee;
     width: 100%;
-    margin-top: auto;
+
+    @media screen and (max-width: 768px) {
+        padding-top: 20px;
+    }
+
+    @media screen and (max-width: 576px) {
+        padding-top: 10px;
+    }
 
     .content {
+        margin: 0 auto;
+        padding: 20px 0;
         width: 100%;
-        max-width: 900px;
-        margin: auto;
+        max-width: 1200px;
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        border-bottom: 1px solid #ccc;
+
+        @media screen and (max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media screen and (max-width: 576px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .categories, .cuisines, .recipes, .media-links {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        padding: 0 20px;
     }
 
     h3 {
-        font-size: 20px;
         margin-bottom: 30px;
+
+        @media screen and (max-width: 576px) {
+            margin-bottom: 0;
+        }
     }
 
     ul {
@@ -211,10 +241,42 @@ footer {
         &:hover {
             color: #000;
         }
+    }
 
-        p {
-            font-size: 14px;
+    .media-links {
+        ul {
+            display: flex;
         }
+    
+        li:first-child {
+            margin-right: 20px;
+        }
+    
+        .github-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url('/assets/icons/github-icon.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    
+        .linkedin-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url('/assets/icons/linkedin-icon.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    }
+
+    .attribution {
+        margin: 20px 0;
     }
 }
 
+.footer-bottom {
+    padding: 10px 0;
+    text-align: center;
+}

@@ -9,7 +9,7 @@ main {
     max-height: 800px;
     color: #fff;
     text-align: center;
-    background-image: url('/images/hero.jpg');
+    background-image: url('/assets/images/hero.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -56,7 +56,7 @@ main {
     margin-right: 5px;
     width: 20px;
     height: 20px;
-    background-image: url('/images/clock.png');
+    background-image: url('/assets/icons/clock-icon.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -64,9 +64,8 @@ main {
 
 .featured-container {
     margin: 0 auto;
-    padding: 0 20px;
     width: 100%;
-    max-width: 940px;
+    max-width: 900px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -100,7 +99,7 @@ main {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/burger.jpg');
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/burger.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -149,7 +148,7 @@ main {
 
 .left{
     transform: translateX(10px);
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/carbonara.jpg');
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/carbonara.jpg');
     animation: slideUpLeft 1s ease-out 0.5s;
     animation-fill-mode: forwards;
 
@@ -161,7 +160,7 @@ main {
 
 .right {
     transform: translateX(-10px);
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/steak.jpg');
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/steak.jpg');
     animation: slideUpRight 1s ease-out 1s;
     animation-fill-mode: forwards;
     
@@ -268,27 +267,27 @@ main {
     }
 
     &:nth-child(1) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/main-dish.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/main-dish.jpg');
     }
 
     &:nth-child(2) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/dessert.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/dessert.jpg');
     }
 
     &:nth-child(3) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/appetiser.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/appetiser.jpg');
     }
 
     &:nth-child(4) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/soup.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/soup.jpg');
     }
 
     &:nth-child(5) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/salad.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/salad.jpg');
     }
   
     &:nth-child(6) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/breakfast.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/breakfast.jpg');
     }
 }
 
@@ -318,27 +317,27 @@ main {
     }
 
     &:nth-child(1) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/vegan.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/vegan.jpg');
     }
 
     &:nth-child(2) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/vegatarian.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/vegatarian.jpg');
     }
 
     &:nth-child(3) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/gluten-free.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/gluten-free.jpg');
     }
 
     &:nth-child(4) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/carb-free.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/carb-free.jpg');
     }
 
     &:nth-child(5) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/paleo.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/keto.jpg');
     }
 
     &:nth-child(6) {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/images/keto.jpg');
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/paleo.jpg');
     }
 }
 
