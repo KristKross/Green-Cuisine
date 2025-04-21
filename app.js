@@ -108,10 +108,10 @@ const {
 
 // Route to handle initial search
 app.post('/search', async (req, res) => {
-    const { recipeName, mealType, dishType, dietLabel, healthLabel } = req.body;
+    const { recipeName, mealType, dishType, dietLabel, healthLabel, cuisineType } = req.body;
 
     try {
-        const { allHits, nextPage } = await fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel);
+        const { allHits, nextPage } = await fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel, cuisineType);
 
         const formattedRecipes = allHits.map(hit => {
             const recipe = hit.recipe;
@@ -135,7 +135,7 @@ app.get('/next', async (req, res) => {
     }
 
     try {
-        const { allHits, nextPage } = await fetchRecipes('', '', '', '', '', nextPageURL);
+        const { allHits, nextPage } = await fetchRecipes('', '', '', '', '', '', nextPageURL);
 
         const formattedRecipes = allHits.map(hit => {
             const recipe = hit.recipe;

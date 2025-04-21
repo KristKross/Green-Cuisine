@@ -32,7 +32,7 @@ const seasonalIngredients = {
 };
 
 // This function fetches recipes from the Edamam API based on the provided parameters
-async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel, nextPageURL = '') {
+async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLabel, cuisineType, nextPageURL = '') {
     let allHits = [];
     let nextPage = '';
 
@@ -49,6 +49,7 @@ async function fetchRecipes(recipeName, mealType, dishType, dietLabel, healthLab
             if (dishType) params.append('dishType', dishType);
             if (dietLabel) params.append('diet', dietLabel);
             if (healthLabel) params.append('health', healthLabel);
+            if (cuisineType) params.append('cuisineType', cuisineType);
 
             return `${baseURL}&${params.toString()}`;
         })();
