@@ -84,12 +84,12 @@ main {
 }
 
 .featured-card {
+    margin: 0;
     opacity: 0;
-    background-color: #fff;
+    background-color: #ccc;
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0;
 }
     
 .main-card {
@@ -99,7 +99,7 @@ main {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/burger.jpg');
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -147,8 +147,8 @@ main {
 }
 
 .left{
-    transform: translateX(10px);
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/carbonara.jpg');
+    transform: translateX(2px);
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
     animation: slideUpLeft 1s ease-out 0.5s;
     animation-fill-mode: forwards;
 
@@ -159,8 +159,8 @@ main {
 }
 
 .right {
-    transform: translateX(-10px);
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent),url('/assets/images/steak.jpg');
+    transform: translateX(-2px);
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
     animation: slideUpRight 1s ease-out 1s;
     animation-fill-mode: forwards;
     
