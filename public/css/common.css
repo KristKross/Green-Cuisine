@@ -13,36 +13,86 @@ nav {
     display: flex;
     padding: 15px;
     color: #fff;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+
+    & a {
+        color: #fff;
+        margin: 0 5px;
+        text-decoration: none;
+    }
 }
 
 .navbar-container {
     width: 100%;
     max-width: 1200px;
-    display: flex; 
+    margin: 0 auto;
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
+}
+
+.menu-toggle {
+    display: none;
+    width: 30px;
+    height: 30px;
+    background-color: #626F47;
+    background-image: url(../assets/icons/menu-icon.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+
+    @media screen and (max-width: 576px) {
+        display: block;
+    }
+}
+
+.menu {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    
+    @media screen and (max-width: 576px) {
+        top: 100%; 
+        left: 0;
+        width: 100%;
+        display: none; 
+        position: absolute;
+        background-color: #626F47;
+        flex-direction: column;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    &.show {
+        padding: 10px 0;
+        display: flex;
+    }
 }
 
 .login {
     display: flex;
     align-items: center;
-}
 
-.login a:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: #fff;
-}
+    @media screen and (max-width: 576px) {
+        box-sizing: border-box;
+        margin: 0;
+        left: 20px;
+        padding: 20px;
+        width: 100%;
+    }
 
-#login-name {
-    text-transform: capitalize;
-}
-
-nav a {
-    color: #fff;
-    margin: 0 5px;
-    text-decoration: none;
+    & a:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-color: #fff;
+        text-transform: capitalize;
+    }
 }
 
 #search-form {
@@ -50,16 +100,39 @@ nav a {
     display: flex;
     justify-content: center;
     flex: 1;
+
+    @media screen and (max-width: 576px) {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 30px 20px;
+        width: 100%;
+        justify-content: start;
+        position: relative;
+
+        &::before {
+            content: 'Search';
+            width: fit-content;
+            display: block;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+    }
 }
 
 input[type="text"] {
     width: 100%;
-    max-width: 360px;   
+    max-width: 330px; 
     padding: 10px 5px;
     font-size: 16px;
     border: none;
     outline: none;
     border-radius: 5px 0 0 5px;
+
+    @media screen and (max-width: 576px) {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 #search-form button[type="submit"] {

@@ -1,12 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('#search-form')) {
-        const searchForm = document.querySelector('#search-form');
-        setupSearchForm(searchForm);
-    }
-    if (document.querySelector('#login-name')) {
-        const loginName = document.querySelector('#login-name');
-        setupLoginName(loginName);
-    }
+    const toggleButton = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('.menu');
+
+    toggleButton.addEventListener('click', () => {
+        menu.classList.toggle('show');
+    });
+
+    const searchForm = document.querySelector('#search-form');
+    setupSearchForm(searchForm);
+    
+    const loginName = document.querySelector('#login-name');
+    setupLoginName(loginName);
     
     setupSearchPage();
 });
