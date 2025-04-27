@@ -1,0 +1,290 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+.profile-page {
+    main {
+        padding: $padding-medium;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .profile-container {
+        width: 100%;
+        max-width: $main-width;
+        margin: 0 auto;
+        gap: 20px;
+        display: flex;
+    
+        @include tablet {
+            flex-direction: column;
+        }
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+    
+    .side-container {
+        display: flex;
+        flex-direction: column;
+        width: 25%;
+        height: fit-content;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+    
+        @include tablet {
+            width: 100%;
+        }
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+    
+    .welcome-container {
+        padding: 10px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+    
+        .login-icon {
+            margin: 0 10px;
+            width: 24px;
+            height: 24px;
+        }
+    
+        h3 {
+            text-transform: capitalize;
+            font-weight: 200;
+        }
+    }
+    
+    .nav-item {
+        padding: $padding-small;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+    
+        &:hover {
+            background-color: #f5f5f5;
+            color: $color-primary;
+        }
+    
+        &.active {
+            border-left: 5px solid $color-primary;
+            color: $color-primary;
+            font-weight: 600;
+    
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+    
+    #main-container {
+        padding: $padding-medium;
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        
+        h2 {
+            margin-bottom: 20px;
+            padding: 10px 0;
+            color: $color-primary;
+        }
+        
+        @include tablet {
+            width: 100%;
+        }
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+    
+    #personal-info-form {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    
+        label {
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+    
+        input {
+            max-width: 100%;
+            width: 100%;
+            font-size: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #252525;
+            border-radius: 5px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+    }
+    
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        padding: $vertical-padding-small;
+        
+        button {
+            padding: 10px 20px;
+
+            @include tablet {
+                padding: 8px 16px;
+            }
+
+            @include mobile {
+                padding: 6px 12px;
+            }
+
+            &#logout-button {
+                justify-self: flex-end;
+                background-color: $color-primary;
+                color: #fff;
+                border: 1px solid $color-primary;
+                border-radius: 5px;
+                cursor: pointer;
+            
+                &:hover {
+                    background-color: $color-white;
+                    color: $color-primary;
+                }
+            }
+            
+            &#delete-button {
+                margin-left: 20px;
+                background-color: #a10000;
+                color: #fff;
+                border: 1px solid #a10000;
+                border-radius: 5px;
+                cursor: pointer;
+            
+                &:hover{
+                    background-color: $color-white;
+                    color: #a10000;
+                }
+            }
+        }
+    }
+    
+    .update-section {
+        margin-bottom: 20px;
+    
+        label {
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+    
+        input {
+            width: 100%;
+            max-width: 500px;
+            font-size: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #252525;
+            border-radius: 5px;
+            box-sizing: border-box;
+    
+            &.error {
+                border: 2px solid #a10000;
+            }
+        }
+    
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+    
+        .display {
+            margin: 5px 0;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 12px;
+            border: 1px solid #252525;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        .edit-button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: 1px solid $color-primary;
+            background-color: $color-primary;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+    
+            &:hover {
+                color: $color-primary;
+                background-color: #fff;
+            }
+        }
+    
+        .edit-field {
+            display: flex;
+            align-items: center;
+    
+            input {
+                margin: 5px 0;
+            }
+    
+            .save-button {
+                margin: 0 7px;
+                padding: 5px 10px;
+                border: 1px solid $color-primary;
+                background-color: $color-primary;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;    
+    
+                &:hover {
+                    color: $color-primary;
+                    background-color: #fff;
+                }
+            }
+                
+            .cancel-button {
+                padding: 5px 10px;
+                border: 1px solid #a10000;
+                background-color: #a10000;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+    
+                &:hover {
+                    color: #a10000;
+                    background-color: #fff;
+                }
+            }
+        } 
+    
+        .edit-field.hidden {
+            display: none;
+        }
+        
+        .error-message {
+            margin: 0;
+            color: red;
+            font-size: 15px;
+            display: none; 
+        }
+        
+        .error-message.visible {
+            display: block;
+        }
+    }
+}

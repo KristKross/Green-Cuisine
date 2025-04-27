@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+</head>
+<body class="login-page">
+    <nav>
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="/"><img alt="Recipe Finder Logo"></a>
+            </div>
+            <button class="menu-toggle"></button>
+            <div class="menu">
+                <form id="search-form" action="/search" method="GET">
+                    <input type="text" name="q" placeholder="Find a recipe or ingredient" required>
+                    <input type="hidden" name="page" value="1">
+                    <button type="submit"></button>
+                </form>
+                <div class="login">
+                    <img src="../assets/icons/login-icon.png">
+                    <a id="login-name" href="/login">Log In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div id="login">
+            <form id="login-form">
+                <h2>Log in</h2>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Log in</button>
+                <p>Don't have an account? <a href="/register">Sign up</a></p>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="content">
+            <div class="categories">
+                <h3>Categories</h3>
+                <ul>
+                    <li><p id="main-dishes">Main Dishes</p></li>
+                    <li><p id="desserts">Desserts</p></li>
+                    <li><p id="appetisers">Appetisers</p></li>
+                    <li><p id="soups">Soups</p></li>
+                    <li><p id="salads">Salads</p></li>
+                    <li><p id="breakfast">Breakfast</p></li>
+                </ul>
+            </div>
+            <div class="cuisines">
+                <h3>Cuisines</h3>
+                <ul>
+                    <li><p id="italian">Italian</p></li>
+                    <li><p id="chinese">Chinese</p></li>
+                    <li><p id="indian">Indian</p></li>
+                    <li><p id="mexican">Mexican</p></li>
+                    <li><p id="japanese">Japanese</p></li>
+                    <li><p id="french">French</p></li>
+                </ul>
+            </div>
+            <div class="recipes">
+                <h3>Favourite Recipes</h3>
+                <ul>
+                    <li><p>Non-Traditional Pasta Carbonara</p></li>
+                    <li><p>Classic American Burgers</p></li>
+                    <li><p>Pan-Seared Ribeye Steak</p></li>
+                    <li><p>Classic French Ratatouille</p></li>
+                    <li><p>Indian Butter Chicken</p></li>
+                    <li><p>Authentic Mexican Tacos</p></li>
+                </ul>
+            </div>
+            <div class="media-links">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li><a href="https://github.com/KristKross" target="_blank"><div class="github-icon"></div></a></li>
+                    <li><a href="https://www.linkedin.com/in/kkd14/" target="_blank"><div class="linkedin-icon"></div></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="edamam-badge" class="attribution"></div>
+    </footer>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Recipe Finder. All rights reserved.</p>
+    </div>
+
+    <script src="https://developer.edamam.com/attribution/badge.js"></script>
+</body>
+</html>

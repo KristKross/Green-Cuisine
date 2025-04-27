@@ -1,0 +1,77 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/gradients' as *;
+
+.card {
+    margin: 0;
+    padding: 20px;
+    width: 100%;
+    height: 130px;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.8);
+    }
+}
+
+.card--main {
+    width: 350px;
+    height: 350px;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 2;
+
+    @media screen and (max-height: 800px) {
+        width: 250px;
+        height: 250px;
+    }
+
+    @include tablet {
+        width: 250px;
+        height: 250px;
+    }
+
+    @include mobile {
+        width: 100%;
+        height: 150px;
+    }
+}
+
+.card--sub {
+    width: 300px;
+    height: 300px;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 1;
+
+    @media screen and (max-height: 800px) {
+        width: 200px;
+        height: 200px;
+    }
+
+    @include tablet {
+        width: 200px;
+        height: 200px;
+    }
+
+    @include mobile {
+        display: none;
+    }
+}
+
+.card--left {
+    transform: translateX(2px);
+}
+
+.card--right {
+    transform: translateX(-2px);
+}

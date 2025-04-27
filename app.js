@@ -33,11 +33,10 @@ connection.getConnection((err) => {
 // Variables to process environment variables
 const app = express();
 const port = 3000;
-const appId = process.env.APP_ID;
-const apiKey = process.env.API_KEY;
 
 // Middleware to serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -52,31 +51,31 @@ app.use(session({
 
 // Routes to serve the home page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/home.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'home.html'));
 });
 
 app.get('/search', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/search.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'search.html'));
 });
 
 app.get('/recipe', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/recipe.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'recipe.html'));
 });
 
 app.get('/favourites', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/favourites.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'favourites.html'));
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/login.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'login.html'));
 });
 
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/register.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'register.html'));
 });
 
 app.get('/profile', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html/profile.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'profile.html'));
 });
 
 app.get('/session-data', (req, res) => {

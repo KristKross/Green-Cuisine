@@ -1,0 +1,26 @@
+@use "../abstracts/breakpoints" as *;
+
+#error-message {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    align-self: center;
+    text-align: center;
+}
+
+.error-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    
+    @include mobile {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+}
+
+.error-message {
+    @include mobile {
+        font-size: 12px;
+    }
+}

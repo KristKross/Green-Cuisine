@@ -1,0 +1,226 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+.search-result {
+    #results {
+        margin: 0 auto; 
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        width: 100%;
+        max-width: 1200px;
+
+        @include desktop {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include tablet {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include mobile {
+            gap: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .recipe {
+        padding: 15px;
+        background-color: $color-white;
+        width: 100%;
+        min-height: 320px;
+        border: $color-border;
+        box-shadow: $shadow-default;
+        caret-color: transparent;
+        transition: transform 0.3s;
+        cursor: pointer;
+
+        @include mobile {
+            padding: 15px 0;
+            width: 100%;
+            max-width: 450px;
+            min-height: 120px;
+            border: none;
+            border-bottom: $color-border;
+            box-shadow: none;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: auto;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        &:hover .recipe-name {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-decoration-color: $color-primary;
+        }
+    }
+
+    .recipe-column {
+        @include mobile {
+            padding: 0 20px;
+        }
+
+        .dish-type {
+            padding: $vertical-padding-small;
+            color: $color-gray;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+
+            @include mobile {
+                padding: 5px 0;
+            }
+        }
+
+        .time-container {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+    
+        .clock-image {
+            margin-right: 5px;
+            width: 20px;
+            height: 20px;
+        }
+    
+        .cooking-time {
+            color: $color-gray;
+        }
+    }
+
+    .recipe-name {
+        margin: 0;
+        line-height: 1.2;
+        font-weight: $font-semibold;
+        text-transform: capitalize;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .recipe-image-container {
+        position: relative;
+        width: 100%;
+        max-height: 200px;
+        height: 200px;
+
+        @include mobile {
+            width: 150px;
+            height: 90px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: auto;
+            border-radius: 5px;
+        
+            @include mobile {
+                min-width: 150px;
+                min-height: auto;
+                border-radius: 0;
+            }
+        }
+    }
+
+    .favourite-button {
+        width: 50px;
+        height: 50px;
+        background-image: url('../assets/icons/heart-icon.png');
+        background-repeat: no-repeat;
+        background-size: 40%;
+        background-position: center;
+        background-color: $color-primary;
+        border-radius: 50%;
+        border: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        @include mobile {
+            width: 30px;
+            height: 30px;
+            top: 5px;
+            right: 5px;
+        }
+
+        &:hover {
+            background-image: url('../assets/icons/heart-filled-icon.png');
+            color: $color-white;
+            background-color: #4e5c32;
+            transition:  ease-in-out 0.1s;
+        }
+
+        &.active {
+            background-image: url('../assets/icons/heart-filled-icon.png');
+            color: $color-white;
+            background-color: #4e5c32;
+        }
+    }
+
+    #pagination {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            width: 30px;
+            height: 30px;
+            margin: 0 20px;
+            background-color: $color-white;
+            padding: $padding-small;
+            cursor: pointer;
+
+            @include mobile {
+                width: 20px;
+                height: 20px;
+                margin: 0 10px;
+            }
+
+            &.hidden {
+                visibility: hidden;
+            }
+        }
+
+        #prev {
+            background-image: url('../assets/icons/left-arrow.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+
+            &:hover {
+                @include animateMoveLeft($distance: -5px);
+            }
+        }
+
+        #next {
+            background-image: url('../assets/icons/right-arrow.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+
+            &:hover {
+                @include animateMoveRight($distance: 5px);
+            }
+        }
+    }
+}

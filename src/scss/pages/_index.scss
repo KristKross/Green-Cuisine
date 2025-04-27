@@ -1,0 +1,338 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+.index-page {
+    main {
+        padding: 0;
+    }
+
+    #hero {
+        width: 100%;
+        height: calc(70vh - 70px);
+        min-height: 500px;
+        max-height: 800px;
+        color: $color-white;
+        text-align: center;
+        background-image: url('../assets/images/hero.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+        h1 {
+            font-weight: $font-black;
+        }
+
+        p {
+            padding: $vertical-padding-medium;
+        }
+    }
+
+    #featured {
+        height: 100vh;
+        min-height: 150px;
+        max-height: 250px;
+        background-color: $color-secondary;
+
+        @media screen and (max-height: 800px) {
+            max-height: 200px;
+        }
+
+        @include tablet {
+            max-height: 200px;
+        }
+
+        @include mobile {
+            max-height: 150px;
+        }
+    }
+            
+    .featured-container {
+        margin: 0 auto;
+        width: 100%;
+        max-width: $main-width;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        text-align: center;
+        top: -150px;
+
+        @media screen and (max-height: 800px) {
+            top: -120px;
+        }
+    
+        @include tablet {
+            top: -120px;
+        }
+    
+        @include mobile {
+            max-width: 80%;
+            top: -80px;
+        }
+    }
+
+    .featured-card {
+        margin: 0;
+        background-color: $color-secondary;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: $shadow-default;
+    }
+    
+    .main-card {
+        @extend .card;
+        @extend .card--main;
+        @include animateSlideUp; 
+    }
+    
+    .sub-card {
+        @extend .card;
+        @extend .card--sub;
+    }
+    
+    .left {
+        @extend .card--left;
+        @include animateSlideUpLeft;
+    }
+    
+    .right {
+        @extend .card--right;
+        @include animateSlideUpRight;
+    }
+
+    .recipe-name {
+        margin: 0;
+        line-height: 1.2;
+        font-weight: $font-semibold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-transform: capitalize;
+    }
+
+    .time-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .clock-image {
+        margin-right: 5px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    #recipe-categories,
+    #dietary-preferences {
+        height: min-content;
+        padding: $padding-medium;
+        background-color: $color-white;
+    
+        @include tablet {
+            padding: $padding-small;
+        }
+    }
+    
+    .categories-container,
+    .preferences-container {
+        text-align: center;
+    
+        h2 {
+            margin: 10px 0;
+            font-weight: $font-black;
+            color: $color-primary;
+        }
+    }
+    
+    .categories-grid,
+    .preferences-grid {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 940px;
+        display: grid;
+        grid-template-columns: repeat(3, 3fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 20px;
+        justify-items: center;
+    
+        @include tablet {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    $category-images: (
+        1: 'main-dish',
+        2: 'dessert',
+        3: 'appetiser',
+        4: 'soup',
+        5: 'salad',
+        6: 'breakfast'
+    );
+
+    .category-card {
+        @extend .card;
+      
+        @each $index, $name in $category-images {
+            &:nth-child(#{$index}) {
+                background-image: $gradient-overlay, url('../assets/images/#{$name}.jpg');
+            }
+        }
+    }
+
+    $preference-images: (
+        1: 'vegan',
+        2: 'vegatarian',
+        3: 'gluten-free',
+        4: 'carb-free',
+        5: 'keto',
+        6: 'paleo'
+    );
+      
+    .preference-card {
+        @extend .card;
+      
+        @each $index, $name in $preference-images {
+            &:nth-child(#{$index}) {
+                background-image: $gradient-overlay, url('../assets/images/#{$name}.jpg');
+            }
+        }
+    }  
+    
+    #dietary-preferences {
+        background-color: $color-secondary;
+    }
+    
+    #seasonal-recipes {
+        height: min-content;
+        padding: $padding-medium;
+        background-color: $color-primary;
+    
+        @include tablet {
+            padding: $padding-small;
+        }
+    }
+    
+    .seasonal-container {
+        text-align: center;
+    
+        h2 {
+            margin: 10px 0;
+            font-weight: $font-black;
+            color: $color-white;
+        }
+    
+        p {
+            color: $color-white;
+        }
+    }
+    
+    .recipe-container {
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        max-width: 950px;
+    
+        @include mobile {
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+        }
+    }
+    
+    .seasonal-card {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        background-color: $color-white;
+        border-radius: 5px;
+        box-shadow: $shadow-default;
+        box-sizing: border-box;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    
+        &:hover {
+            cursor: pointer;
+            filter: brightness(0.9);
+        }
+    
+        p {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+    
+        .text-container {
+            margin: 10px 10px 0 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            text-transform: capitalize;
+    
+            p {
+                margin: 0;
+                padding: 7px 5px;
+                font-size: 12px;
+            }
+        }
+    }
+    
+    #main-container {
+        width: 450px;
+        height: 450px;
+        color: $color-white;
+    
+        .seasonal-card {
+            height: 100%;
+        }
+    
+        @include mobile {
+            width: 100%;
+            height: 150px;
+        }
+    }
+    
+    #side-container {
+        margin-left: 10px;
+        width: 450px;
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: $color-white;
+    
+        .seasonal-card {
+            height: calc(50% - 5px);
+    
+        @include mobile {
+                height: 200px;
+            }
+        }
+    
+        @include mobile {
+            margin: 0;
+            gap: 10px;
+            width: 100%;
+            height: 300px;
+        }
+    }
+}

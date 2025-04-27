@@ -1,0 +1,105 @@
+@mixin animateSlideUpLeft($duration: 1s) {
+    opacity: 0;
+    animation: slideUpLeft $duration ease-out 1s;
+    animation-fill-mode: forwards;
+
+    @keyframes slideUpLeft {
+        from {
+            transform: translateX(10px) translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(10px) translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+@mixin animateSlideUpRight($duration: 1s) {
+    opacity: 0;
+    animation: slideUpRight $duration ease-out 0.5s;
+    animation-fill-mode: forwards;
+
+    @keyframes slideUpRight {
+        from {
+            transform: translateX(-10px) translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(-10px) translateY(0);
+            opacity: 1;
+        }
+    }    
+}
+
+@mixin animateSlideUp($duration: 1s) {
+    opacity: 0;
+    animation: slideUp $duration ease-out 0s;
+    animation-fill-mode: forwards;
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+@mixin animateSlideUpFromBottom($duration: 1s) {
+    opacity: 0;
+    animation: slideUp $duration ease-out 0s;
+    animation-fill-mode: forwards;
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+@mixin animateSpin($duration: 1s) {
+    animation: spin $duration linear infinite;
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+}
+
+@mixin animateMoveLeft($duration: 0.5s, $distance: -10px) {
+    animation: moveLeft $duration ease-in-out;
+    transform: translateX($distance);
+    
+    @keyframes moveLeft {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX($distance);
+        }
+    }
+}
+
+@mixin animateMoveRight($duration: 0.5s, $distance: 10px) {
+    animation: moveRight $duration ease-in-out;
+    transform: translateX($distance);
+
+    @keyframes moveRight {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX($distance);
+        }
+    }
+}
+

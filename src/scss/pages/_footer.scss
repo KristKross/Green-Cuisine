@@ -1,0 +1,105 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+footer {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $color-secondary;
+    width: 100%;
+
+    .content {
+        margin: 0 auto;
+        padding: 20px 0;
+        width: 100%;
+        max-width: $main-width;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: $color-border;
+
+        @include tablet {
+            flex-direction: column;
+        }
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+
+    .categories, .cuisines, .recipes, .media-links {
+        padding: 0 20px;
+    }
+
+    h3 {
+        margin-bottom: 30px;
+
+        @include tablet {
+            margin-bottom: 0;
+        }
+
+        @include mobile {
+            margin-bottom: 0;
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        margin: 10px 0;
+        text-decoration: none;
+        cursor: pointer;
+        color: $color-text;
+
+        &:hover {
+            color: $color-black;
+        }
+    }
+
+    .media-links {
+        ul {
+            display: flex;
+        }
+    
+        li:first-child {
+            margin-right: 20px;
+        }
+    
+        .github-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url('../assets/icons/github-icon.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    
+        .linkedin-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url('../assets/icons/linkedin-icon.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    }
+
+    .attribution {
+        margin: 20px 0;
+    }
+}
+
+.footer-bottom {
+    padding: 20px 0;
+    text-align: center;
+}

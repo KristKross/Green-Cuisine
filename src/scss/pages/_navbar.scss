@@ -1,0 +1,152 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+nav {
+    background-color: $color-primary;
+    color: $color-white;
+    display: flex;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: $shadow-heavy;
+
+    a {
+        color: $color-white;
+        margin: 0 5px;
+    }
+
+    .navbar-container {
+        width: 100%;
+        max-width: $main-width;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .menu-toggle {
+        display: none;
+        width: 30px;
+        height: 30px;
+        background-color: $color-primary;
+        background-image: url(../assets/icons/menu-icon.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border: none;
+        cursor: pointer;
+    
+        @include mobile {
+            display: block;
+        }
+    }
+    
+    .menu {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        
+        @include mobile {
+            top: 100%; 
+            left: 0;
+            width: 100%;
+            display: none; 
+            position: absolute;
+            background-color: $color-primary;;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+    
+        &.show {
+            padding: 10px 0;
+            display: flex;
+        }
+    }
+    
+    .login {
+        display: flex;
+        align-items: center;
+        text-transform: capitalize;
+    
+        @include mobile {
+            box-sizing: border-box;
+            left: 20px;
+            padding: 20px;
+            width: 100%;
+        }
+    
+        & a:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-color: #fff;
+            text-transform: capitalize;
+        }
+    }
+    
+    #search-form {
+        margin: 0 10px;
+        display: flex;
+        justify-content: center;
+        flex: 1;
+    
+        @include mobile {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 30px 20px;
+            width: 100%;
+            justify-content: start;
+            position: relative;
+    
+            &::before {
+                content: 'Search';
+                width: fit-content;
+                display: block;
+                position: absolute;
+                top: 5px;
+                left: 20px;
+            }
+        }
+
+        input {
+            width: 100%;
+            max-width: 330px; 
+            font-size: 16px;
+            border: none;
+            outline: none;
+            border-radius: 5px 0 0 5px;
+            padding-left: 10px;
+        
+            @include mobile {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        
+        button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            outline: none;
+            border-radius: 0 5px 5px 0;
+            background-color: #fff;
+            background-image: url('../assets/icons/search-icon.png');
+            background-repeat: no-repeat;
+            background-size: 50%;
+            background-position: center;
+            caret-color: transparent;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #eee;
+        }
+    }
+}

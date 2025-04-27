@@ -1,0 +1,64 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+.register-page {
+    main {
+        padding: $vertical-padding-medium;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    #register {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 350px;
+        padding: 20px;
+        border: $color-border;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: $shadow-default;
+    }
+    
+    #register-form h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    #register-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    #register-form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: $color-border;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    
+    #register-form button[type="submit"] {
+        margin: 10px 0;
+        width: 100%;
+        padding: 10px;
+        background-color: $color-primary;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+    #register-form button[type="submit"]:hover {
+        background-color: $color-primary-hover;
+    }
+}

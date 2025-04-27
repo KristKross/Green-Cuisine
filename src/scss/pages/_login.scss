@@ -1,0 +1,65 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../base/typography' as *;
+
+.login-page {
+    main {
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #login {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 350px;
+        padding: $padding-medium;
+        border: $color-border;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: $shadow-default;
+    }
+    
+    #login-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    #login-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    #login-form input[type="email"],
+    #login-form input[type="password"] {
+        width: 100%;
+        padding: $padding-small;
+        margin-bottom: 15px;
+        border: $color-border;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    
+    #login-form button[type="submit"] {
+        margin: 10px 0;
+        width: 100%;
+        padding: 10px;
+        background-color: $color-primary;
+        color: $color-white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+    #login-form button[type="submit"]:hover {
+        background-color: #4e5c32;
+    }
+}

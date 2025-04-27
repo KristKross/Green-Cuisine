@@ -1,0 +1,95 @@
+@use '../abstracts/breakpoints' as *;
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 48px;
+
+    @include tablet {
+        font-size: 36px;
+    }
+
+    @include mobile {
+        font-size: 24px;
+    }
+}
+
+h2 {
+    font-size: 32px;
+
+    @include tablet {
+        font-size: 24px;
+    }
+
+    @include mobile {
+        font-size: 18px;
+    }
+}
+
+h3 {
+    font-size: 20px;
+
+    @include tablet {
+        font-size: 18px;
+    }
+
+    @include mobile {
+        font-size: 14px;
+    }
+}
+
+h4 {
+    font-size: 12px;
+
+    @include tablet {
+        font-size: 10px;
+    }
+
+    @include mobile {
+        font-size: 8px;
+    }
+}
+
+p {
+    font-size: 16px;
+
+    @include tablet {
+        font-size: 14px;
+    }
+
+    @include mobile {
+        font-size: 12px;
+    }
+}
+
+li {
+    font-size: 16px;
+
+    @include tablet {
+        font-size: 14px;
+    }
+
+    @include mobile {
+        font-size: 12px;
+    }
+}
+
+button {
+    font-size: 16px;
+
+    @include tablet {
+        font-size: 14px;
+    }
+
+    @include mobile {
+        font-size: 12px;
+    }
+}
+
+$font-regular: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-black: 900;

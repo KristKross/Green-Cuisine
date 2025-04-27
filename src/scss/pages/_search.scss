@@ -1,0 +1,19 @@
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/animations' as *;
+@use '../abstracts/colors' as *;
+@use '../abstracts/gradients' as *;
+@use '../abstracts/shadows' as *;
+@use '../abstracts/spacing' as *;
+@use '../components/cards' as *;
+@use '../components/search-result' as *;
+@use '../base/typography' as *;
+
+.search-page {
+    main {
+        padding: $padding-medium;
+        min-height: calc(90vh);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
