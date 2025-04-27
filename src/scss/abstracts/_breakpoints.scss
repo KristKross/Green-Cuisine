@@ -19,3 +19,14 @@ $breakpoint-lg: 1024px;
         @content;
     }
 }
+
+@mixin responsive {
+    @include tablet {
+        @content;
+    }
+
+    @include mobile {
+        @content;
+    }
+}
+

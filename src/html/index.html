@@ -7,11 +7,9 @@
 </head>
 <body class="index-page">
     <nav>
-        <div class="navbar-container">
-            <div class="logo">
-                <a href="/"><img alt="Recipe Finder Logo"></a>
-            </div>
-            <button class="menu-toggle"></button>
+        <div class="navbar-container-top">
+            <button class="menu-toggle"><img src="../assets/icons/menu-icon.png" alt="Menu"></button>
+            <a href="/"><img alt="Recipe Finder Logo" class="logo"></a>
             <div class="menu">
                 <form id="search-form" action="/search" method="GET">
                     <input type="text" name="q" placeholder="Find a recipe or ingredient" required>
@@ -23,6 +21,60 @@
                     <a id="login-name" href="/login">Log In</a>
                 </div>
             </div>
+        </div>
+        <div class="navbar-container-bottom">
+            <ul class="nav-items">
+                <li>
+                    <button class="dropdown">Meals</button>
+                    <ul class="sub-menu">
+                        <li><p>Breakfast</p></li>
+                        <li><p>Lunch</p></li>
+                        <li><p>Dinner</p></li>
+                        <li><p>Desserts</p></li>
+                        <li><p>Snacks</p></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="dropdown">Ingredients</button>
+                    <ul class="sub-menu">
+                        <li><p>Vegetables</p></li>
+                        <li><p>Fruits</p></li>
+                        <li><p>Proteins</p></li>
+                        <li><p>Grains</p></li>
+                        <li><p>Dairy</p></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="dropdown">Diet</button>
+                    <ul class="sub-menu">
+                        <li><p>Vegan</p></li>
+                        <li><p>Vegetarian</p></li>
+                        <li><p>Gluten Free</p></li>
+                        <li><p>Keto</p></li>
+                        <li><p>Low Carb</p></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="dropdown">Health</button>
+                    <ul class="sub-menu">
+                        <li><p>Weight Loss</p></li>
+                        <li><p>Weight Gain</p></li>
+                        <li><p>Bodybuilding</p></li>
+                        <li><p>Vegan</p></li>
+                        <li><p>Fitness</p></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="dropdown">Cuisines</button>
+                    <ul class="sub-menu">
+                        <li><p>Italian</p></li>
+                        <li><p>Chinese</p></li>
+                        <li><p>Indian</p></li>
+                        <li><p>Mexican</p></li>
+                        <li><p>Japanese</p></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </nav>
     <main>

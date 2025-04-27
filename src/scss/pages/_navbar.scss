@@ -11,7 +11,7 @@ nav {
     background-color: $color-primary;
     color: $color-white;
     display: flex;
-    padding: 15px;
+    flex-direction: column;
     position: sticky;
     top: 0;
     left: 0;
@@ -23,39 +23,42 @@ nav {
         color: $color-white;
         margin: 0 5px;
     }
+}
 
-    .navbar-container {
+.navbar-container-top {
+    padding: 20px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: $main-width;
+    display: flex;
+    align-items: center;
+
+    .logo {
         width: 100%;
-        max-width: $main-width;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        min-width: max-content;
     }
-    
+
     .menu-toggle {
+        margin-right: 25px;
+        width: 24px;
+        height: 24px;
         display: none;
-        width: 30px;
-        height: 30px;
-        background-color: $color-primary;
-        background-image: url(../assets/icons/menu-icon.png);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        border: none;
-        cursor: pointer;
     
-        @include mobile {
+        @include responsive {
             display: block;
+        }
+
+        img {
+            width: inherit;
+            height: inherit;
         }
     }
     
     .menu {
         width: 100%;
         display: flex;
-        flex-direction: row;
         
-        @include mobile {
+        @include responsive {
             top: 100%; 
             left: 0;
             width: 100%;
@@ -72,33 +75,14 @@ nav {
         }
     }
     
-    .login {
-        display: flex;
-        align-items: center;
-        text-transform: capitalize;
-    
-        @include mobile {
-            box-sizing: border-box;
-            left: 20px;
-            padding: 20px;
-            width: 100%;
-        }
-    
-        & a:hover {
-            cursor: pointer;
-            text-decoration: underline;
-            text-decoration-color: #fff;
-            text-transform: capitalize;
-        }
-    }
-    
     #search-form {
+        width: 100%;
         margin: 0 10px;
         display: flex;
         justify-content: center;
         flex: 1;
     
-        @include mobile {
+        @include responsive {
             box-sizing: border-box;
             margin: 0;
             padding: 30px 20px;
@@ -118,15 +102,13 @@ nav {
 
         input {
             width: 100%;
-            max-width: 330px; 
-            font-size: 16px;
+            max-width: 420px;
             border: none;
             outline: none;
             border-radius: 5px 0 0 5px;
             padding-left: 10px;
         
-            @include mobile {
-                width: 100%;
+            @include responsive {
                 max-width: 100%;
             }
         }
@@ -147,6 +129,87 @@ nav {
         
         button[type="submit"]:hover {
             background-color: #eee;
+        }
+    }
+    
+    .login {
+        display: flex;
+        align-items: center;
+        text-transform: capitalize;
+    
+        @include responsive {
+            box-sizing: border-box;
+            left: 20px;
+            padding: 20px;
+            width: 100%;
+        }
+    
+        & a:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-color: #fff;
+            text-transform: capitalize;
+        }
+    }
+}
+
+.navbar-container-bottom {
+    padding: 10px 20px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: $main-width;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include responsive {
+        display: none;
+    }
+
+    .nav-items {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+
+        button {
+            color: $color-white;
+            text-transform: uppercase;
+        }
+
+        li {
+            padding: 10px 0;
+            position: relative;
+            &:hover {
+                .sub-menu {
+                    display: flex;
+                }
+            }
+
+            .sub-menu:hover {
+                display: flex;
+            }
+        }
+    }
+
+    .sub-menu {
+        min-width: fit-content;
+        position: absolute;
+        top: 100%;
+        left: -20px;    
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        background-color: $color-primary;
+
+        li {
+            margin-top: 10px;
+            min-width: 150px;
+            padding: 10px 20px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: $color-primary-hover;
+            }
         }
     }
 }

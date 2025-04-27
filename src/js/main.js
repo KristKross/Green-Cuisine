@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButton.addEventListener('click', _.debounce(() => {
         menu.classList.toggle('show');
     }, 300));
-
     
     const loginName = document.querySelector('#login-name');
     setupLoginName(loginName);
