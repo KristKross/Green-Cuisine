@@ -9,7 +9,8 @@
 
 .index-page {
     main {
-        padding: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     #hero {
@@ -139,7 +140,7 @@
         padding: $padding-medium;
         background-color: $color-white;
     
-        @include tablet {
+        @include responsive {
             padding: $padding-small;
         }
     }
@@ -222,7 +223,7 @@
         padding: $padding-medium;
         background-color: $color-primary;
     
-        @include tablet {
+        @include responsive {
             padding: $padding-small;
         }
     }

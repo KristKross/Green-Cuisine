@@ -66,7 +66,7 @@ nav {
             position: absolute;
             background-color: $color-primary;;
             flex-direction: column;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: $shadow-heavy;
         }
     
         &.show {
@@ -147,10 +147,16 @@ nav {
         & a:hover {
             cursor: pointer;
             text-decoration: underline;
-            text-decoration-color: #fff;
+            text-decoration-color: $color-white;
             text-transform: capitalize;
         }
     }
+}
+
+body.scrolled .navbar-container-bottom {
+    position: absolute;
+    max-height: 0;
+    opacity: 0;
 }
 
 .navbar-container-bottom {
@@ -158,9 +164,6 @@ nav {
     margin: 0 auto;
     width: 100%;
     max-width: $main-width;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
     @include responsive {
         display: none;
@@ -171,7 +174,8 @@ nav {
         gap: 40px;
         align-items: center;
 
-        button {
+        .dropdown {
+            font-weight: $font-semibold;
             color: $color-white;
             text-transform: uppercase;
         }
@@ -182,6 +186,11 @@ nav {
             &:hover {
                 .sub-menu {
                     display: flex;
+                }
+
+                .dropdown {
+                    text-decoration: underline;
+                    text-decoration-color: $color-white;
                 }
             }
 
@@ -195,16 +204,19 @@ nav {
         min-width: fit-content;
         position: absolute;
         top: 100%;
-        left: -20px;    
+        left: -20px;
         width: 100%;
         display: none;
         flex-direction: column;
         background-color: $color-primary;
 
         li {
-            margin-top: 10px;
             min-width: 150px;
             padding: 10px 20px;
+
+            &:first-child {
+                margin-top: 10px;
+            }
 
             &:hover {
                 cursor: pointer;

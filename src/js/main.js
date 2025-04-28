@@ -2,16 +2,21 @@ import _ from 'lodash';
 import '../scss/main.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.querySelector('.menu-toggle');
-    const menu = document.querySelector('.menu');
-
-    toggleButton.addEventListener('click', _.debounce(() => {
-        menu.classList.toggle('show');
-    }, 300));
-    
     const loginName = document.querySelector('#login-name');
     setupLoginName(loginName);
+
+    window.addEventListener('scroll', () => {
+        document.body.classList.toggle('scrolled', window.scrollY > 30);
+    });
     
+    
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    menuToggle.addEventListener('click', () => {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('show');
+    });
+
     setupSearchPage();
 });
 
@@ -30,32 +35,17 @@ function setupLoginName(loginName) {
 }
 
 function setupSearchPage() {
-    const categoriesMap = {
-        'main dishes': 'main course',
-        'desserts': 'desserts',
-        'appetisers': 'starter',
-        'soups': 'soup',
-        'salads': 'salad',
-        'breakfast': 'breakfast'
-    };
+    const categoryItems = document.querySelectorAll('.sub-menu p');
+
+    categoryItems.forEach(item => {
+        item.addEventListener('click', _.debounce(() => {
+            const category = item.getAttribute('data-category');
+            const filter = item.closest('ul').previousElementSibling.getAttribute('data-filter');
     
-    const categories = document.querySelectorAll('.categories > ul > li > p');
-    categories.forEach(category => {
-        category.addEventListener('click', _.debounce(() => {
-            const categoryText = category.textContent.toLowerCase();
-            const type = ['soups', 'salads', 'main dishes', 'appetisers', 'desserts'].includes(categoryText) ? 'dishType' : 'mealType';
-            window.location.href = `/search?q=recipe&page=1&${type}=${encodeURIComponent(categoriesMap[categoryText])}`;
+            window.location.href = `/search?q=recipe&page=1&${filter}=${encodeURIComponent(category)}`;
         }, 300));
     });
-
-    const cuisines = document.querySelectorAll('.cuisines > ul > li > p');
-    cuisines.forEach(cuisine => {
-        cuisine.addEventListener('click', _.debounce(() => {
-            const cuisineText = cuisine.textContent.toLowerCase();
-            window.location.href = `/search?q=recipe&page=1&cuisineType=${encodeURIComponent(cuisineText)}`;
-        }, 300));
-    });
-
+    
     let recipesMap = {
         "Non-Traditional Pasta Carbonara" : 'http://www.edamam.com/ontologies/edamam.owl#recipe_da4a5ccd1498a3fb48eee56793ca4fbb',
         "Classic American Burgers": 'http://www.edamam.com/ontologies/edamam.owl#recipe_b9db2fefe520aea1f481adbfc007b832',
@@ -63,10 +53,10 @@ function setupSearchPage() {
         "Classic French Ratatouille": 'http://www.edamam.com/ontologies/edamam.owl#recipe_082d4785f00436b464e5956c21da5551',
         "Indian Butter Chicken": 'http://www.edamam.com/ontologies/edamam.owl#recipe_820a30063d65927b942d592be2b1056b',
         "Authentic Mexican Tacos": 'http://www.edamam.com/ontologies/edamam.owl#recipe_e3f85c5e1b3a43699722f6b85bfc2f54',
-    }
-
+    };
+    
     document.querySelectorAll('.recipes > ul > li > p').forEach(recipe => {
-        recipe.addEventListener('click', () => {
+        recipe.addEventListener('click', _.debounce(() => {
             const recipeName = recipe.textContent;
             const recipeURI = _.get(recipesMap, recipeName);
     
@@ -84,7 +74,7 @@ function setupSearchPage() {
                         }
                     })
                 .catch(error => console.error('Error fetching featured search:', error));
-            }
-        });
+            };
+        }, 300));
     });
 }

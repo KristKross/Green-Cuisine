@@ -25,53 +25,63 @@
         <div class="navbar-container-bottom">
             <ul class="nav-items">
                 <li>
-                    <button class="dropdown">Meals</button>
+                    <button data-filter="mealType" class="dropdown">Meals</button>
                     <ul class="sub-menu">
-                        <li><p>Breakfast</p></li>
-                        <li><p>Lunch</p></li>
-                        <li><p>Dinner</p></li>
-                        <li><p>Desserts</p></li>
-                        <li><p>Snacks</p></li>
+                        <li><p data-category="breakfast">Breakfast</p></li>
+                        <li><p data-category="brunch">Brunch</p></li>
+                        <li><p data-category="lunch">Lunch</p></li>
+                        <li><p data-category="dinner">Dinner</p></li>
+                        <li><p data-category="snacks">Snacks</p></li>
+                    </ul>
+                </li>
+                <li>
+                    <button data-filter="dishType" class="dropdown">Dishes</button>
+                    <ul class="sub-menu">
+                        <li><p data-category="salad">Salads</p></li>
+                        <li><p data-category="soup">Soups</p></li>
+                        <li><p data-category="main-course">Main Dishes</p></li>
+                        <li><p data-category="dessert">Desserts</p></li>
+                        <li><p data-category="appetizer">Appetisers</p></li>
                     </ul>
                 </li>
                 <li>
                     <button class="dropdown">Ingredients</button>
                     <ul class="sub-menu">
-                        <li><p>Vegetables</p></li>
-                        <li><p>Fruits</p></li>
-                        <li><p>Proteins</p></li>
-                        <li><p>Grains</p></li>
-                        <li><p>Dairy</p></li>
+                        <li><p data-category="vegetable">Vegetables</p></li>
+                        <li><p data-category="fruit">Fruits</p></li>
+                        <li><p data-category="protein">Proteins</p></li>
+                        <li><p data-category="grain">Grains</p></li>
+                        <li><p data-category="dairy">Dairy</p></li>
                     </ul>
                 </li>
                 <li>
-                    <button class="dropdown">Diet</button>
+                    <button data-filter="dietLabel" class="dropdown">Diet</button>
                     <ul class="sub-menu">
-                        <li><p>Vegan</p></li>
-                        <li><p>Vegetarian</p></li>
-                        <li><p>Gluten Free</p></li>
-                        <li><p>Keto</p></li>
-                        <li><p>Low Carb</p></li>
+                        <li><p data-category="vegan">Vegan</p></li>
+                        <li><p data-category="vegetarian">Vegetarian</p></li>
+                        <li><p data-category="paleo">Paleo</p></li>
+                        <li><p data-category="low-carb">Low Carb</p></li>
+                        <li><p data-category="keto">Keto</p></li>
                     </ul>
                 </li>
                 <li>
-                    <button class="dropdown">Health</button>
+                    <button data-filter="healthLabel" class="dropdown">Health</button>
                     <ul class="sub-menu">
-                        <li><p>Weight Loss</p></li>
-                        <li><p>Weight Gain</p></li>
-                        <li><p>Bodybuilding</p></li>
-                        <li><p>Vegan</p></li>
-                        <li><p>Fitness</p></li>
+                        <li><p data-category="gluten-free">Gluten Free</p></li>
+                        <li><p data-category="dairy-free">Dairy Free</p></li>
+                        <li><p data-category="egg-free">Egg Free</p></li>
+                        <li><p data-category="low-sugar">Low Sugar</p></li>
+                        <li><p data-category="low-sodium">Low Sodium</p></li>
                     </ul>
                 </li>
                 <li>
-                    <button class="dropdown">Cuisines</button>
+                    <button data-category="cuisineType" class="dropdown">Cuisines</button>
                     <ul class="sub-menu">
-                        <li><p>Italian</p></li>
-                        <li><p>Chinese</p></li>
-                        <li><p>Indian</p></li>
-                        <li><p>Mexican</p></li>
-                        <li><p>Japanese</p></li>
+                        <li><p data-category="italian">Italian</p></li>
+                        <li><p data-category="chinese">Chinese</p></li>
+                        <li><p data-category="indian">Indian</p></li>
+                        <li><p data-category="mexican">Mexican</p></li>
+                        <li><p data-category="japanese">Japanese</p></li>
                     </ul>
                 </li>
             </ul>
@@ -163,25 +173,25 @@
     <footer>
         <div class="content">
             <div class="categories">
-                <h3>Categories</h3>
-                <ul>
-                    <li><p id="main-dishes">Main Dishes</p></li>
-                    <li><p id="desserts">Desserts</p></li>
-                    <li><p id="appetisers">Appetisers</p></li>
-                    <li><p id="soups">Soups</p></li>
-                    <li><p id="salads">Salads</p></li>
-                    <li><p id="breakfast">Breakfast</p></li>
+                <h3 data-filter="dishType">Categories</h3>
+                <ul class="sub-menu">
+                    <li><p data-category="main-dishes">Main Dishes</p></li>
+                    <li><p data-category="desserts">Desserts</p></li>
+                    <li><p data-category="appetisers">Appetisers</p></li>
+                    <li><p data-category="soups">Soups</p></li>
+                    <li><p data-category="salads">Salads</p></li>
+                    <li><p data-category="breakfast">Breakfast</p></li>
                 </ul>
             </div>
             <div class="cuisines">
-                <h3>Cuisines</h3>
-                <ul>
-                    <li><p id="italian">Italian</p></li>
-                    <li><p id="chinese">Chinese</p></li>
-                    <li><p id="indian">Indian</p></li>
-                    <li><p id="mexican">Mexican</p></li>
-                    <li><p id="japanese">Japanese</p></li>
-                    <li><p id="french">French</p></li>
+                <h3 data-filter="cuisineType">Cuisines</h3>
+                <ul class="sub-menu">
+                    <li><p data-category="italian">Italian</p></li>
+                    <li><p data-category="chinese">Chinese</p></li>
+                    <li><p data-category="indian">Indian</p></li>
+                    <li><p data-category="mexican">Mexican</p></li>
+                    <li><p data-category="japanese">Japanese</p></li>
+                    <li><p data-category="french">French</p></li>
                 </ul>
             </div>
             <div class="recipes">
