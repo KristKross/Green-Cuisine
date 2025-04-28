@@ -12,7 +12,7 @@ nav {
     color: $color-white;
     display: flex;
     flex-direction: column;
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -154,7 +154,6 @@ nav {
 }
 
 body.scrolled .navbar-container-bottom {
-    position: absolute;
     max-height: 0;
     opacity: 0;
 }
@@ -163,7 +162,12 @@ body.scrolled .navbar-container-bottom {
     padding: 10px 20px;
     margin: 0 auto;
     width: 100%;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
     max-width: $main-width;
+    overflow: hidden;
+    max-height: 200px;
+    opacity: 1;
+    z-index: 900;
 
     @include responsive {
         display: none;

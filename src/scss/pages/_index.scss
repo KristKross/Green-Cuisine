@@ -15,7 +15,7 @@
 
     #hero {
         width: 100%;
-        height: calc(70vh - 70px);
+        height: 80vh;
         min-height: 500px;
         max-height: 800px;
         color: $color-white;
@@ -27,6 +27,14 @@
         flex-direction: column;
         justify-content: center;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+        @include tablet {
+            max-height: 600px;
+        }
+
+        @include mobile {
+            max-height: 500px;
+        }
 
         h1 {
             font-weight: $font-black;
@@ -40,15 +48,15 @@
     #featured {
         height: 100vh;
         min-height: 150px;
-        max-height: 250px;
+        max-height: 200px;
         background-color: $color-secondary;
 
         @media screen and (max-height: 800px) {
-            max-height: 200px;
+            max-height: 180px;
         }
 
         @include tablet {
-            max-height: 200px;
+            max-height: 180px;
         }
 
         @include mobile {
@@ -65,7 +73,7 @@
         align-items: center;
         position: relative;
         text-align: center;
-        top: -150px;
+        top: -220px;
 
         @media screen and (max-height: 800px) {
             top: -120px;
