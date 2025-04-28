@@ -348,11 +348,11 @@ function renderPaginationControls(currentPage) {
 
     const current = currentPage ? currentPage : pageHistory.length;
 
-    paginationHTML += `<div class="pagination">
+    paginationHTML += `
         <button id="prev" class="${pageHistory.length > 1 ? '' : 'hidden'}"></button>
         <div class="page">Page ${current}</div>
-        <button id="next" class="${pageHistory.length < maxPages && nextPageURL ? '' : 'hidden'}">+</button>
-    </div>`;
+        <button id="next" class="${pageHistory.length < maxPages && nextPageURL ? '' : 'hidden'}"></button>
+    `;
 
     paginationDiv.innerHTML = paginationHTML;
     attachPaginationEventListeners();

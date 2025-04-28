@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupLoginName(loginName);
 
     window.addEventListener('scroll', () => {
-        document.body.classList.toggle('scrolled', window.scrollY > 30);
+        if (window.scrollY > 30) {
+            document.body.classList.add('scrolled');
+        } else {
+            document.body.classList.remove('scrolled');
+        }
     });
     
     
