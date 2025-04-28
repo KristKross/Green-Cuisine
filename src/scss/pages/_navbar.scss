@@ -163,32 +163,14 @@ body.scrolled .navbar-container-bottom {
     padding: 10px 20px;
     margin: 0 auto;
     width: 100%;
+    transition: height ease-in-out 0.3s;
     max-width: $main-width;
-    transition: height 0.3s ease, opacity 0.3s ease;
-    opacity: 1;
-    overflow: hidden;
-    z-index: 900;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.navbar-container-bottom {
-    padding: 10px 20px;
-    margin: 0 auto;
-    width: 100%;
-    transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    max-width: $main-width;
-    overflow: hidden;
-    max-height: 500px;
-    opacity: 1;
-    z-index: 900;
 
     @include responsive {
         display: none;
     }
 
-    .nav-items {    
+    .nav-items {
         display: flex;
         gap: 40px;
         align-items: center;

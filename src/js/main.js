@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('scrolled');
         }
     });
-    
-    
+
     const menuToggle = document.querySelector('.menu-toggle');
 
     menuToggle.addEventListener('click', () => {
