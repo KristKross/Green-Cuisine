@@ -212,8 +212,8 @@ body.scrolled .navbar-container-bottom {
         background-color: $color-primary;
 
         li {
+            padding: 0;
             min-width: 150px;
-            padding: 10px 20px;
 
             &:first-child {
                 margin-top: 10px;
@@ -223,6 +223,10 @@ body.scrolled .navbar-container-bottom {
                 cursor: pointer;
                 background-color: $color-primary-hover;
             }
+        }
+        
+        p {
+            padding: 15px 20px;
         }
     }
 }

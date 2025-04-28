@@ -42,12 +42,22 @@ function setupSearchPage() {
 
     categoryItems.forEach(item => {
         item.addEventListener('click', _.debounce(() => {
+            const search = item.getAttribute('data-search');
+            const filter = item.closest('ul')?.previousElementSibling?.getAttribute('data-filter');
             const category = item.getAttribute('data-category');
-            const filter = item.closest('ul').previousElementSibling.getAttribute('data-filter');
+
+            const queryUrlParams = new URLSearchParams({
+                q: search || 'recipe',
+            });
     
-            window.location.href = `/search?q=recipe&page=1&${filter}=${encodeURIComponent(category)}`;
+            if (filter) {
+                queryUrlParams.append(filter, category);
+            }
+
+            window.location.href = `/search?${queryUrlParams.toString()}`;
         }, 300));
     });
+    
     
     let recipesMap = {
         "Non-Traditional Pasta Carbonara" : 'http://www.edamam.com/ontologies/edamam.owl#recipe_da4a5ccd1498a3fb48eee56793ca4fbb',

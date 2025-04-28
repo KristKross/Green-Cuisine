@@ -23,8 +23,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.addEventListener('popstate', (event) => {
                 if (event.state) {
                     currentPage = event.state.page || 1;
-                    currentRecipeName = event.state.recipeName || '';
-                    fetchFavourites(userID)
+                    fetchFavourites(userID);
+                } else {
+                    fetchFavourites(userID);
+                }
+            });
+
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) {
+                    window.location.reload();
                 }
             });
         })

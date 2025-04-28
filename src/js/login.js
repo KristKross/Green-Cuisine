@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 // Function to handle login form submission
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('#login-form').addEventListener('submit', _.debounce((event) => {
+    document.querySelector('#login-form').addEventListener('submit', (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
         const jsonData = {};
@@ -27,5 +27,5 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch((error) => {
             console.error('Error:', error);
         });
-    }, 300));
+    });
 });

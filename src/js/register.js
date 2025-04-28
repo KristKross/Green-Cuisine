@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 // Event listener for when the html is loaded
-document.querySelector('#register-form').addEventListener('submit', _.debounce((event) => {
+document.querySelector('#register-form').addEventListener('submit', (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     const jsonData = {};
@@ -27,5 +27,5 @@ document.querySelector('#register-form').addEventListener('submit', _.debounce((
     .catch((error) => {
         console.error('Error:', error);
     });
-}, 500));
+});
 

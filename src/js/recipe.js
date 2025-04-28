@@ -154,7 +154,7 @@ async function renderRecipes(recipeName) {
             <div class="top-container">
                 <div class="button-container">
                     <div class="back-button-image"></div>
-                    <div id="back-button">Back to overview</div>
+                    <div id="back-button">Go Back</div>
                 </div>
                 <h2 class="recipe-name">${recipeData.label}</h2>
                 <h3>See full recipe on: <a href="${recipeData.url}" target="_blank" rel="noopener noreferrer">${recipeData.source}</a></h3>
