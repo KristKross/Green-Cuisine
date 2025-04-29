@@ -3,28 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Finder</title>
+    <title>Green Cuisine</title>
 </head>
 <body class="search-page search-result">
-    <nav>
-        <div class="navbar-container">
-            <div class="logo">
-                <a href="/"><img alt="Recipe Finder Logo"></a>
-            </div>
-            <button class="menu-toggle"></button>
+    <header>
+        <nav>
+            <button class="menu-toggle"><img src="../assets/icons/menu-icon.png" alt="Menu"></button>
+            <a href="/"><img alt="Green Cuisine Logo" class="logo"></a>
             <div class="menu">
-                <form id="search-form" action="/search" method="GET">
-                    <input type="text" name="q" placeholder="Find a recipe or ingredient" required>
-                    <input type="hidden" name="page" value="1">
-                    <button type="submit"></button>
-                </form>
-                <div class="login">
-                    <img src="../assets/icons/login-icon.png">
-                    <a id="login-name" href="/login">Log In</a>
+                <div class="main-menu">
+                    <form id="search-form" action="/search" method="GET">
+                        <input type="text" name="q" placeholder="Find a recipe or ingredient" required>
+                        <input type="hidden" name="page" value="1">
+                        <button type="submit"></button>
+                    </form>
+                    <div class="login">
+                        <img src="../assets/icons/login-icon.png">
+                        <a id="login-name" href="/login">Log In</a>
+                    </div>
+                    <div class="dropdown-container">
+                        <ul class="dropdown-list">
+                            <li class="dropdown-item">
+                                <button class="dropdown">
+                                    Meals
+                                    <img src="../assets/icons/next-icon.png" alt="Next">
+                                </button>
+                                <ul data-filter="mealType" class="sub-menu">
+                                    <li><p data-category="breakfast">Breakfast</p></li>
+                                    <li><p data-category="brunch">Brunch</p></li>
+                                    <li><p data-category="lunch">Lunch</p></li>
+                                    <li><p data-category="dinner">Dinner</p></li>
+                                    <li><p data-category="snack">Snacks</p></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item">
+                                <button class="dropdown">Dishes
+                                    <img src="../assets/icons/next-icon.png" alt="Next">
+                                </button>
+                                <ul data-filter="dishType" class="sub-menu">
+                                    <li><p data-category="salad">Salads</p></li>
+                                    <li><p data-category="soup">Soups</p></li>
+                                    <li><p data-category="main-course">Main Dishes</p></li>
+                                    <li><p data-category="desserts">Desserts</p></li>
+                                    <li><p data-category="starter">Appetisers</p></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item">
+                                <button class="dropdown">
+                                    Ingredients
+                                    <img src="../assets/icons/next-icon.png" alt="Next">
+                                </button>
+                                <ul class="sub-menu">
+                                    <li><p data-search="vegetable">Vegetables</p></li>
+                                    <li><p data-search="fruit">Fruits</p></li>
+                                    <li><p data-search="protein">Proteins</p></li>
+                                    <li><p data-search="grain">Grains</p></li>
+                                    <li><p data-search="dairy">Dairy</p></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item">
+                                <button class="dropdown">
+                                    Diet
+                                    <img src="../assets/icons/next-icon.png" alt="Next">
+                                </button>
+                                <ul data-filter="dietLabel" class="sub-menu">
+                                    <li><p data-category="vegan">Vegan</p></li>
+                                    <li><p data-category="vegetarian">Vegetarian</p></li>
+                                    <li><p data-category="paleo">Paleo</p></li>
+                                    <li><p data-category="low-carb">Low Carb</p></li>
+                                    <li><p data-category="keto">Keto</p></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item">
+                                <button class="dropdown">
+                                    Health
+                                    <img src="../assets/icons/next-icon.png" alt="Next">
+                                </button>
+                                <ul data-filter="healthLabel" class="sub-menu">
+                                    <li><p data-category="gluten-free">Gluten Free</p></li>
+                                    <li><p data-category="dairy-free">Dairy Free</p></li>
+                                    <li><p data-category="egg-free">Egg Free</p></li>
+                                    <li><p data-category="low-sugar">Low Sugar</p></li>
+                                    <li><p data-category="low-sodium">Low Sodium</p></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item">
+                                <button class="dropdown">
+                                    Cuisines
+                                    <img src="../assets/icons/next-icon.png" alt="Next">
+                                </button>
+                                <ul data-filter="cuisineType" class="sub-menu">
+                                    <li><p data-category="italian">Italian</p></li>
+                                    <li><p data-category="chinese">Chinese</p></li>
+                                    <li><p data-category="indian">Indian</p></li>
+                                    <li><p data-category="mexican">Mexican</p></li>
+                                    <li><p data-category="japanese">Japanese</p></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <div class="sub-menu-container"></div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
     <main>
         <div id="results" class="results"></div>
     </main>
@@ -75,7 +157,7 @@
         <div id="edamam-badge" class="attribution"></div>
     </footer>
     <div class="footer-bottom">
-        <p>&copy; 2025 Recipe Finder. All rights reserved.</p>
+        <p>&copy; 2025 Green Cuisine. All rights reserved.</p>
     </div>
 
     <script src="https://developer.edamam.com/attribution/badge.js"></script>

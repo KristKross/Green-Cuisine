@@ -11,8 +11,19 @@
 .favourites-page {
     main {
         padding: $padding-medium;
+        padding-top: 90px;
         min-height: 90vh;
         display: flex;
         flex-direction: column;
+
+        @include responsive {
+            padding-top: 0; 
+        }
+
+        
+        &.scrolled {
+            padding-top: 0;
+            transition: padding-top 0.5s ease-in-out;
+        }
     }
 }

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             fetchFavourites(userID)
 
+            // Listen for popstate event
             window.addEventListener('popstate', (event) => {
                 if (event.state) {
                     currentPage = event.state.page || 1;
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
+            // Listen for pageshow event
             window.addEventListener('pageshow', function (event) {
                 if (event.persisted) {
                     window.location.reload();
