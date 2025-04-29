@@ -152,7 +152,7 @@ function setupSubMenuItems(subMenuContainer) {
 // Function to set up the search page
 function setupSearchPage() {
     const categoryItems = document.querySelectorAll('.sub-menu p');
-    const recipeItems = document.querySelectorAll('.recipes > ul > li > p');
+    const recipeItems = document.querySelectorAll('.footer-content p');
 
     // Add event listener to each category item
     categoryItems.forEach(item => {
@@ -186,6 +186,7 @@ function handleCategoryClick(item) {
 
 // Function to handle recipe click
 function handleRecipeClick(recipe) {
+    console.log(recipe);
     return () => {
         const recipesMap = {
             "Non-Traditional Pasta Carbonara": 'http://www.edamam.com/ontologies/edamam.owl#recipe_da4a5ccd1498a3fb48eee56793ca4fbb',
