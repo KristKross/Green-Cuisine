@@ -31,7 +31,6 @@ header {
 }
 
 nav {
-
     margin: 0 auto;
     width: 100%;
     max-width: $main-width;
@@ -40,7 +39,16 @@ nav {
 
     .logo {
         width: 100%;
-        min-width: max-content;
+        max-width: 300px;
+        height: auto;
+
+        @include tablet {
+            max-width: 250px;
+        }
+
+        @include mobile {
+            max-width: 150px;
+        }
     }
 
     .menu-toggle {

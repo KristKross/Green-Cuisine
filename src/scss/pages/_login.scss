@@ -9,10 +9,33 @@
 
 .login-page {
     main {
+        height: 100vh;
         display: flex;
 
         @include responsive {
             flex-direction: column;
+        }
+    }
+
+    .header-logo {
+        padding: 10px 0;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        display: none;
+
+        @include responsive {
+            display: flex;
+        }
+
+        .logo {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+    
+            @include mobile {
+                max-width: 200px;
+            }
         }
     }
 
@@ -25,32 +48,51 @@
         background-repeat: no-repeat;
 
         @include tablet {
-            margin: 40px 0;
             width: 100%;
             height: 200px;
         }
 
         @include mobile {
-            margin: 40px 0;
             width: 100%;
             height: 100px;
         }
     }
 
     #login {
+        margin-top: 100px;
         width: 100%;
         max-width: 500px;
-        height: 75vh;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
 
         @include responsive {
             margin: 0 auto;
             padding: 20px;
             height: 100%
         }
+    }
+
+    .logo-container {
+        margin-bottom: 40px;
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        justify-content: start;
+
+        @include responsive {
+            display: none;
+        }
+
+        .logo {
+            width: 250px;
+            height: auto;
+        }
+    }
+
+    #login-form {
+        width: 100%;
+        max-width: 300px;
     }
     
     #login-form h2 {

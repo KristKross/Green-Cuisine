@@ -235,8 +235,6 @@ function showProfileSettings(mainContainer, userID) {
                             alert(`${field} updated successfully!`);
                             window.location.reload();
 
-                        } else {
-                            alert(data.message);
                         }
                     })
                     .catch(error => console.error('Error:', error));
