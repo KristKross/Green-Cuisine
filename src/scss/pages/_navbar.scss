@@ -120,9 +120,8 @@ nav {
 
     @include responsive {
         margin: 0;
-        order: -1;
         padding: 20px;
-        width: 100%;
+        order: -1;
     }
 
     input {
@@ -141,15 +140,15 @@ nav {
     }
 
     button {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
-        padding: 0; // Remove any internal padding
-        margin: 0;  // Remove gaps
         width: 40px;
         height: 40px;
         border: none;
         outline: none;
         border-radius: 0 5px 5px 0;
-        background-color: #fff;
+        background-color: $color-white;
         background-image: url('../assets/icons/search-icon.png');
         background-repeat: no-repeat;
         background-size: 50%;
@@ -158,7 +157,7 @@ nav {
     }
 
     button[type="submit"]:hover {
-        background-color: #eee;
+        background-color: $color-white-hover;
     }
 }
 
@@ -171,12 +170,11 @@ nav {
     white-space: nowrap;
 
     @include responsive {
-        order: 1;
-        justify-content: start;
-        box-sizing: border-box;
-        left: 20px;
         padding: 20px;
         width: 100%;
+        justify-content: start;
+        box-sizing: border-box;
+        order: 1;
     }
 }
 
@@ -188,8 +186,8 @@ body.scrolled .dropdown-container:not(.show) {
 
 .dropdown-container {
     margin: 0 auto;
-    width: 100%;
     padding: 10px 20px;
+    width: 100%;
     position: absolute;
     top: 99%;
     left: 0;
@@ -209,8 +207,8 @@ body.scrolled .dropdown-container:not(.show) {
     width: 100%;
     max-width: $main-width;
     display: flex;
-    gap: 40px;
     align-items: center;
+    gap: 40px;
 
     .dropdown {
         font-size: 14px;
@@ -280,8 +278,8 @@ body.scrolled .dropdown-container:not(.show) {
 
 .sub-menu-container {
     padding: 20px 40px;
-    display: none;
     width: 100%;
+    display: none;
     flex-direction: column;
 
     .back-btn {

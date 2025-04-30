@@ -54,7 +54,7 @@
         display: flex;
         justify-content: start;
         align-items: center;
-        border-bottom: 1px solid #ccc;
+        border-bottom: $color-border;
     
         .login-icon {
             margin: 0 10px;
@@ -70,11 +70,11 @@
     
     .nav-item {
         padding: $padding-small;
-        border-bottom: 1px solid #ccc;
+        border-bottom: $color-border;
         cursor: pointer;
     
         &:hover {
-            background-color: #f5f5f5;
+            background-color: $color-white-hover;
             color: $color-primary;
         }
     
@@ -95,7 +95,7 @@
         display: flex;
         flex-direction: column;
         border-radius: 10px;
-        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: $shadow-default;
         
         h2 {
             margin-bottom: 20px;
@@ -125,7 +125,7 @@
             font-size: 12px;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #252525;
+            border: $input-border;
             border-radius: 5px;
             box-sizing: border-box;
             cursor: pointer;
@@ -164,15 +164,15 @@
             
             &#delete-button {
                 margin-left: 20px;
-                background-color: #a10000;
+                background-color: $color-error;
                 color: #fff;
-                border: 1px solid #a10000;
+                border: 1px solid $color-error;
                 border-radius: 5px;
                 cursor: pointer;
             
                 &:hover{
                     background-color: $color-white;
-                    color: #a10000;
+                    color: $color-error;
                 }
             }
         }
@@ -192,12 +192,12 @@
             font-size: 12px;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #252525;
+            border: $input-border;
             border-radius: 5px;
             box-sizing: border-box;
     
             &.error {
-                border: 2px solid #a10000;
+                border: 2px solid $color-error;
             }
         }
     
@@ -207,12 +207,12 @@
         }
     
         .display {
+            padding: 10px;
             margin: 5px 0;
             width: 100%;
             max-width: 500px;
-            padding: 10px;
             font-size: 12px;
-            border: 1px solid #252525;
+            border: $input-border;
             border-radius: 5px;
             box-sizing: border-box;
         }
@@ -257,14 +257,14 @@
                 
             .cancel-button {
                 padding: 5px 10px;
-                border: 1px solid #a10000;
-                background-color: #a10000;
+                border: 1px solid $color-error;
+                background-color: $color-error;
                 color: white;
                 border-radius: 5px;
                 cursor: pointer;
     
                 &:hover {
-                    color: #a10000;
+                    color: $color-error;
                     background-color: #fff;
                 }
             }
@@ -276,7 +276,7 @@
         
         .error-message {
             margin: 0;
-            color: red;
+            color: $color-error;
             font-size: 15px;
             display: none; 
         }
