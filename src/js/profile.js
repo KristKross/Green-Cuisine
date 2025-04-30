@@ -69,7 +69,6 @@ function createProfileSettingsHTML(data) {
     `;
 }
 
-// Function to show username
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/session-data')
         .then(response => response.json())
@@ -79,42 +78,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     const userNameID = document.querySelector('#username');
                     showUsername(userNameID, data.username);
                 }
-            
+
                 const setActivePage = (button) => {
                     document.querySelectorAll('.active').forEach(activeButton => {
                         activeButton.classList.remove('active');
                     });
                     button.classList.add('active');
-            
+
                     const mainContainer = document.getElementById('main-container');
                     mainContainer.innerHTML = '';
-            
+
                     if (button.textContent.includes('Personal Info')) {
                         showPersonalInfo(mainContainer, data.userID);
-            
+
                     } else if (button.textContent.includes('Profile Settings')) {
                         showProfileSettings(mainContainer, data.userID);
-            
+
                     } else if (button.textContent.includes('Favourites')) {
-                        window.location.href = '/favourites'
+                        window.location.href = '/favourites';
                     }
                 };
-            
+
                 document.querySelectorAll('.nav-item').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const clickedButton = event.target.closest('.nav-item');
                         setActivePage(clickedButton);
                     });
                 });
-            
-                // Render the active page on DOMContentLoaded
-                const activeButton = document.querySelector('.nav-item.active');
-                if (activeButton) {
-                    setActivePage(activeButton);
-                }
+                setActivePage(document.querySelector('.nav-item'));
             }
         })
-        .catch(error => console.error('Error fetching session data:', error));
+    .catch(error => console.error('Error fetching session data:', error));
 });
 
 function showPersonalInfo(mainContainer, userID) {
@@ -173,6 +167,7 @@ function showProfileSettings(mainContainer, userID) {
         .then(response => response.json())
         .then(data => {
             mainContainer.innerHTML = createProfileSettingsHTML(data);
+
             document.querySelectorAll('.input').forEach(input => {
                 input.addEventListener('click', (event) => {
                     const field = event.target.id.split('-')[0];
