@@ -18,10 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then((data) => {
+            const emailInput = document.querySelector('#email');
+            const emailError = document.querySelector('#email-error');
+
+            const passwordInput = document.querySelector('#password');
+            const passwordError = document.querySelector('#password-error');
+
             if (data.success) {   
+                emailInput.classList.remove('error');
+                emailError.textContent = '';
+
+                passwordInput.classList.remove('error');
+                passwordError.textContent = '';
+
                 window.location.href = '/';
             } else {
-                alert(data.message);
+                emailInput.classList.add('error');
+                emailError.textContent = data.message || 'Invalid email or password';
+
+                passwordInput.classList.add('error');
+                passwordError.textContent = data.message || 'Invalid email or password';
             }
         })
         .catch((error) => {

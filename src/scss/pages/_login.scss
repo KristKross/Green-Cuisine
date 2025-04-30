@@ -117,6 +117,12 @@
         border: $color-border;
         border-radius: 5px;
         box-sizing: border-box;
+
+        &.error {
+            margin-bottom: 0;
+            border: 2px solid #a10000 !important;
+
+        }
     }
     
     #login-form button[type="submit"] {
@@ -136,5 +142,10 @@
 
     a {
         text-decoration: underline;
+    }
+
+    .error-message {
+        margin-bottom: 4px;
+        color: #a10000;
     }
 }

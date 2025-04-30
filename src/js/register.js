@@ -1,8 +1,13 @@
-import _ from 'lodash';
-
 // Event listener for when the html is loaded
 document.querySelector('#register-form').addEventListener('submit', (event) => {
     event.preventDefault();
+
+    ['email', 'username', 'password', 'confirm-password'].forEach(field => {
+        document.querySelector(`#${field}`).classList.remove('error');
+        const errorEl = document.querySelector(`#${field}-error`);
+        if (errorEl) errorEl.textContent = '';
+    });
+
     const data = new FormData(event.target);
     const jsonData = {};
 
@@ -21,7 +26,15 @@ document.querySelector('#register-form').addEventListener('submit', (event) => {
         if (data.success) {
             window.location.href = '/login';
         } else {
-            alert(data.message);
+            const field = data.field;
+            const message = data.message;
+
+            if (field) {
+                document.querySelector(`#${field}`).classList.add('error');
+                document.querySelector(`#${field}-error`).textContent = message;
+            } else {
+                alert(message);
+            }
         }
     })
     .catch((error) => {

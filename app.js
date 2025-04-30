@@ -190,7 +190,7 @@ app.get('/seasonal-recipes', async (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    const { email, username, password } = req.body;
+    const { email, username, password, confirm_password } = req.body;
 
     // Check if the user exists in the database
     const query = 'SELECT * FROM users WHERE email = ?';
@@ -201,17 +201,23 @@ app.post('/register', (req, res) => {
             return;
         }
         if (results.length > 0) {
-            res.json({ success: false, message: 'Email is already taken' });
+            res.json({ success: false, message: 'Email is already taken', field: 'email' });
             return;
         }
         if (username.length < 3) {
-            res.json({ success: false, message: 'Username must be at least 3 characters long' });
+            res.json({ success: false, message: 'Must be at least 3 characters long', field: 'username' });
             return;
         }
         if (username.length > 10) {
-            res.json({ success: false, message: 'Username must be at most 10 characters long' });
+            res.json({ success: false, message: 'Must be at most 10 characters long', field: 'username' });
             return;
         }
+
+        if (password !== confirm_password) {
+            res.json({ success: false, message: 'Passwords do not match', field: 'confirm-password' });
+            return;
+        }
+        
         // Insert the user data into the database
         const insertQuery = 'INSERT INTO users (email, username, password) VALUES (?, ?, ?)';
         connection.query(insertQuery, [email, username, password], (err, results) => {
