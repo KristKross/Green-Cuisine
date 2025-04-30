@@ -20,8 +20,6 @@ module.exports = {
         recipe: { import: "./src/js/recipe.js", dependOn: "shared" },
         search: { import: "./src/js/search.js", dependOn: "shared" },
         favourites: { import: "./src/js/favourites.js", dependOn: "shared" },
-
-        uiHelpers: { import: "./src/js/utils/uiHelpers.js", dependOn: "shared" },
         shared: "lodash",
     },
     optimization: {
