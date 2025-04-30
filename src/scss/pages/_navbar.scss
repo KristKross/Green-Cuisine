@@ -47,7 +47,7 @@ nav {
         }
 
         @include mobile {
-            max-width: 150px;
+            max-width: 200px;
         }
     }
 
@@ -230,6 +230,10 @@ body.scrolled .dropdown-container:not(.show) {
         &:hover {
             .sub-menu {
                 display: flex;
+
+                @include responsive {
+                    display: none;
+                }
             }
 
             .dropdown-list {
@@ -370,10 +374,6 @@ body.scrolled .dropdown-container:not(.show) {
                 width: 20px;
                 height: 20px;
             }
-        }
-        
-        .sub-menu {
-            display: none;
         }
     }
 }
