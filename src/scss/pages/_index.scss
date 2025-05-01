@@ -28,8 +28,14 @@
         justify-content: center;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 
+        
+        @media screen and (max-height: 800px) {
+            min-height: 400px;
+            max-height: 500px;
+        }
+
         @include tablet {
-            min-height: 300px;
+            min-height: 400px;
             max-height: 500px;
         }
 
@@ -54,14 +60,17 @@
         background-color: $color-secondary;
 
         @media screen and (max-height: 800px) {
-            max-height: 180px;
+            min-height: 150px;
+            max-height: 150px;
         }
 
         @include tablet {
-            max-height: 180px;
+            min-height: 150px;
+            max-height: 150px;
         }
 
         @include mobile {
+            min-height: 150px;
             max-height: 150px;
         }
     }
