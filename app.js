@@ -5,6 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const mysql = require('mysql2');
 const MySQLStore = require('express-mysql-session')(session);
+const cors = require('cors');
 
 // Added dotenv to load environment variables
 dotenv.config();
@@ -14,7 +15,7 @@ const connection = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: 3306, 
+    port: process.env.DB_PORT, 
     waitForConnections: true, 
     connectionLimit: 10,
     queueLimit: 0 
@@ -32,7 +33,6 @@ connection.getConnection((err) => {
 
 // Variables to process environment variables
 const app = express();
-const port = 3000;
 
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -52,6 +52,11 @@ app.use(session({
         sameSite: 'none',
         httpOnly: true,
     }
+}));
+
+app.use(cors({
+    origin: 'tommorow-s-web-assessment-production.up.railway.app',
+    credentials: true,
 }));
 
 
