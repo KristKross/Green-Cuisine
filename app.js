@@ -50,6 +50,7 @@ app.use(session({
         maxAge: 3600000,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'none',
+        httpOnly: true,
     }
 }));
 
@@ -103,6 +104,7 @@ app.get('/session-data', (req, res) => {
         res.json({ success: false, message: 'No user logged in' });
     }
 });
+
 
 const {
     fetchRecipes,

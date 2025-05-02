@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupLoginName(loginName) {
     if (!loginName) return;
 
-    fetch('/session-data')
+    fetch('/session-data', {
+        method: 'GET',
+        credentials: 'include',
+    })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
