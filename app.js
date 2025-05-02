@@ -46,8 +46,13 @@ app.use(session({
     store: sessionStore,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 3600000 }
+    cookie: {
+        maxAge: 3600000,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+    }
 }));
+
 
 // Routes to serve the home page
 app.get('/', (req, res) => {
