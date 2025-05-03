@@ -273,6 +273,7 @@ app.get('/read-user/:userID', (req, res) => {
 
     const query = 'SELECT * FROM users WHERE UserID = ?';
     connection.query(query, [userID], (err, results) => {
+        comsole.log('read-user:', results);
         if (err) {
             console.error('Error fetching user:', err);
             res.json({ success: false, message: 'Error occurred' });
