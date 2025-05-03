@@ -83,6 +83,8 @@ app.get('/profile', (req, res) => {
 });
 
 app.get('/session-data', (req, res) => {
+    console.log(req.session);
+    console.log(req.session.userID);
     if (req.session && req.session.userID) {
         const query = 'SELECT username FROM users WHERE UserID = ?';
         connection.query(query, [req.session.userID], (err, results) => {
