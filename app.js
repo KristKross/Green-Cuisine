@@ -5,17 +5,16 @@ const path = require('path');
 const dotenv = require('dotenv');
 const mysql = require('mysql2');
 const MySQLStore = require('express-mysql-session')(session);
-const cors = require('cors');
 
 // Added dotenv to load environment variables
 dotenv.config();
 
 const connection = mysql.createPool({
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT, 
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT, 
     waitForConnections: true, 
     connectionLimit: 10,
     queueLimit: 0 
@@ -46,19 +45,8 @@ app.use(session({
     store: sessionStore,
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        maxAge: 3600000,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none',
-        httpOnly: true,
-    }
+    cookie: { maxAge: 3600000 }
 }));
-
-app.use(cors({
-    origin: 'tommorow-s-web-assessment-production.up.railway.app',
-    credentials: true,
-}));
-
 
 // Routes to serve the home page
 app.get('/', (req, res) => {
@@ -109,7 +97,6 @@ app.get('/session-data', (req, res) => {
         res.json({ success: false, message: 'No user logged in' });
     }
 });
-
 
 const {
     fetchRecipes,
