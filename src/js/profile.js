@@ -166,7 +166,7 @@ function showProfileSettings(mainContainer, userID) {
     fetch(`/read-user/${userID}`)
         .then(response => response.json())
         .then(data => {
-            mainContainer.innerHTML = createPersonalInfoHTML(data.email, data.username);
+            mainContainer.innerHTML = createProfileSettingsHTML(data.email, data.username);
 
             document.querySelectorAll('.input').forEach(input => {
                 input.addEventListener('click', (event) => {
