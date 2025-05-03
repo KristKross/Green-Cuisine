@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 // Function to handle login form submission
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#login-form').addEventListener('submit', (event) => {
@@ -10,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/login', {
             method: 'POST',
             headers: {
-                headers: { 'Content-Type': 'application/json' },
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(jsonData),
             credentials: 'include',
+            body: JSON.stringify(jsonData)
         })
-        .then(response => response.json())  
+        .then(response => response.json())
         .then((data) => {
             const emailInput = document.querySelector('#email');
             const emailError = document.querySelector('#email-error');
