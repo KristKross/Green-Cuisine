@@ -284,6 +284,7 @@ app.get('/read-user/:userID', (req, res) => {
             return;
         }
         const user = results[0];
+        console.log('user:', user);
         res.json({ success: true, message: 'User found', username: user.Username, email: user.Email, password: user.Password });
     });
 });
