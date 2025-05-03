@@ -14,8 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'include',
-            body: JSON.stringify(jsonData)
+            body: JSON.stringify(jsonData),
         })
         .then(response => response.json())
         .then((data) => {

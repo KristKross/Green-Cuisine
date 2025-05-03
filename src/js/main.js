@@ -11,8 +11,8 @@
         const dropdownButtons = menu.querySelectorAll('.dropdown-item');
         const navItems = document.querySelector('.dropdown-container');
 
-        checkScroll(navItems, menu);
         setupLoginName(loginName);
+        checkScroll(navItems, menu);
         setupScrollListener(menuToggle);
         setupResizeHandlers(mainMenu, menu, subMenuContainer, navItems);
         setupMenuToggle(menuToggle, menu, navItems);
@@ -30,7 +30,6 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if (data.success) {
                 loginName.textContent = `Hello, ${data.username}`;
                 loginName.href = '/profile';

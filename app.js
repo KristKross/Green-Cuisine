@@ -47,10 +47,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         maxAge: 3600000,
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        sameSite: 'lax'
-      }
+    }
 }));
 
 // Routes to serve the home page
@@ -83,8 +80,7 @@ app.get('/profile', (req, res) => {
 });
 
 app.get('/session-data', (req, res) => {
-    console.log(req.session);
-    console.log(req.session.userID);
+    console.log('session data UID:', req.session.userID);
     if (req.session && req.session.userID) {
         const query = 'SELECT username FROM users WHERE UserID = ?';
         connection.query(query, [req.session.userID], (err, results) => {
@@ -95,6 +91,7 @@ app.get('/session-data', (req, res) => {
             }
             if (results.length > 0) {
                 req.session.username = results[0].username;
+
                 res.json({ success: true, username: req.session.username, userID: req.session.userID });
             } else {
                 res.json({ success: false, message: 'User not found' });
@@ -258,6 +255,8 @@ app.post('/login', (req, res) => {
         const user = results[0];
         req.session.username = user.Username;
         req.session.userID = user.UserID
+
+        console.log('userID:', req.session.userID);
 
         res.json({ success: true, message: 'Login successful'});
     });
