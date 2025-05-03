@@ -4,14 +4,14 @@ function showUsername(userNameID, username) {
     userNameID.textContent = `Hi, ${username}`;
 }
 
-function createPersonalInfoHTML(data) {
+function createPersonalInfoHTML(email, username) {
     return `
         <h2>Personal Info</h2>
         <form id="personal-info-form">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" value="${data.email}" readonly>
+            <input type="email" id="email" name="email" value="${email}" readonly>
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" value="${data.username}" readonly>
+            <input type="text" id="username" name="username" value="${username}" readonly>
         </form>    
         <div class="button-container">
             <button id="logout-button">Log Out</button>
@@ -20,13 +20,13 @@ function createPersonalInfoHTML(data) {
     `;
 }
 
-function createProfileSettingsHTML(data) {
+function createProfileSettingsHTML(email, username) {
     return `
         <h2>Update Your Account Information</h2>
         <div class="update-section">
             <label>Email Address:</label>
             <div class="input-container"> 
-                <p id="email-display" class="display">${data.email}</p>
+                <p id="email-display" class="display">${email}</p>
                 <button class="edit-button" data-field="email">Edit</button>
             </div>
             <div class="edit-field hidden" id="email-field">
@@ -40,7 +40,7 @@ function createProfileSettingsHTML(data) {
         <div class="update-section">
             <label>Username:</label>
             <div class="input-container">
-                <p id="username-display" class="display">${data.username}</p>
+                <p id="username-display" class="display">${username}</p>
                 <button class="edit-button" data-field="username">Edit</button>
             </div>
             <div class="edit-field hidden" id="username-field">
@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 if (document.querySelector('#username')) {
                     const userNameID = document.querySelector('#username');
+                    console.log("Session Data:", data);
                     showUsername(userNameID, data.username);
                 }
 
@@ -118,7 +119,7 @@ function showPersonalInfo(mainContainer, userID) {
             return response.json();
         })
         .then(data => {
-            mainContainer.innerHTML = createPersonalInfoHTML(data);
+            mainContainer.innerHTML = createPersonalInfoHTML(data.email, data.username);
 
             document.querySelector('#logout-button').addEventListener('click', () => {
                 fetch('/logout', {
@@ -166,7 +167,7 @@ function showProfileSettings(mainContainer, userID) {
     fetch(`/read-user/${userID}`)
         .then(response => response.json())
         .then(data => {
-            mainContainer.innerHTML = createProfileSettingsHTML(data);
+            mainContainer.innerHTML = createPersonalInfoHTML(data.email, data.username);
 
             document.querySelectorAll('.input').forEach(input => {
                 input.addEventListener('click', (event) => {
