@@ -189,7 +189,6 @@
 
     // Function to handle recipe click
     function handleRecipeClick(recipe) {
-        console.log(recipe);
         return () => {
             const recipesMap = {
                 "Non-Traditional Pasta Carbonara": 'http://www.edamam.com/ontologies/edamam.owl#recipe_da4a5ccd1498a3fb48eee56793ca4fbb',

@@ -80,7 +80,6 @@ app.get('/profile', (req, res) => {
 });
 
 app.get('/session-data', (req, res) => {
-    console.log('session data UID:', req.session.userID);
     if (req.session && req.session.userID) {
         const query = 'SELECT username FROM users WHERE UserID = ?';
         connection.query(query, [req.session.userID], (err, results) => {
@@ -256,8 +255,6 @@ app.post('/login', (req, res) => {
         req.session.username = user.Username;
         req.session.userID = user.UserID
 
-        console.log('userID:', req.session.userID);
-
         res.json({ success: true, message: 'Login successful'});
     });
 });
@@ -273,9 +270,7 @@ app.get('/read-user/:userID', (req, res) => {
 
     const query = 'SELECT * FROM users WHERE UserID = ?';
     connection.query(query, [userID], (err, results) => {
-        console.log('read-user:', results);
         if (err) {
-            console.error('Error fetching user:', err);
             res.json({ success: false, message: 'Error occurred' });
             return;
         }
@@ -284,7 +279,6 @@ app.get('/read-user/:userID', (req, res) => {
             return;
         }
         const user = results[0];
-        console.log('user:', user);
         res.json({ success: true, message: 'User found', username: user.username, email: user.email, password: user.password });
     });
 });
