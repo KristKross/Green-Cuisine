@@ -279,7 +279,7 @@ app.get('/read-user/:userID', (req, res) => {
             return;
         }
         const user = results[0];
-        res.json({ success: true, message: 'User found', username: user.username, email: user.email, password: user.password });
+        res.json({ success: true, message: 'User found', username: user.Username, email: user.Email, password: user.Password });
     });
 });
 
@@ -368,10 +368,10 @@ app.delete('/delete-user/:id', (req, res) => {
 
 // Function to add a recipe to favourites
 app.post('/add-favourite', (req, res) => {
-    const { user_id, recipe_name, recipe_uri } = req.body;
+    const { user_id, recipe_uri } = req.body;
 
-    const query = 'INSERT INTO favourites (UserID, RecipeName, RecipeURI) VALUES (?, ?, ?)';
-    connection.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
+    const query = 'INSERT INTO favourites (UserID, RecipeURI) VALUES (?, ?)';
+    connection.query(query, [user_id, recipe_uri], (err, results) => {
         if (err) {
             console.error('Error adding favourite:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -385,7 +385,7 @@ app.post('/add-favourite', (req, res) => {
 app.get('/favourites/:userID', (req, res) => {
     const userID = req.params.userID;
 
-    const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
+    const query = 'SELECT RecipeURI FROM favourites WHERE UserID = ?';
     connection.query(query, [userID], (err, results) => {
         if (err) {
             console.error('Error fetching favourites:', err);    
@@ -399,10 +399,10 @@ app.get('/favourites/:userID', (req, res) => {
 
 // Function to check if a recipe is favourited
 app.post('/check-favourite', (req, res) => {
-    const { user_id, recipe_name, recipe_uri } = req.body;
+    const { user_id, recipe_uri } = req.body;
 
-    const query = 'SELECT * FROM favourites WHERE UserID = ? AND RecipeName = ? AND RecipeURI = ?';
-    connection.query(query, [user_id, recipe_name, recipe_uri], (err, results) => {
+    const query = 'SELECT * FROM favourites WHERE UserID = ? AND RecipeURI = ?';
+    connection.query(query, [user_id, recipe_uri], (err, results) => {
         if (err) {
             console.error('Error checking favourite:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -419,10 +419,10 @@ app.post('/check-favourite', (req, res) => {
 
 // Function to remove a recipe from favourites
 app.post('/remove-favourite', (req, res) => {
-    const { user_id, recipe_name } = req.body;
+    const { user_id, recipe_uri } = req.body;
 
-    const query = 'DELETE FROM favourites WHERE UserID = ? AND RecipeName = ?';
-    connection.query(query, [user_id, recipe_name], (err, results) => {
+    const query = 'DELETE FROM favourites WHERE UserID = ? AND RecipeURI = ?';
+    connection.query(query, [user_id, recipe_uri], (err, results) => {
         if (err) {
             console.error('Error removing favourite:', err);
             res.json({ success: false, message: 'Error occurred' });
@@ -450,7 +450,7 @@ app.post('/search-favourites', async (req, res) => {
 // Function to fetch recipe details from the database
 function fetchFavouriteRecipeDetails(userID) {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT RecipeName, RecipeURI FROM favourites WHERE UserID = ?';
+        const query = 'SELECT RecipeURI FROM favourites WHERE UserID = ?';
         connection.query(query, [userID], (err, results) => {
             if (err) {
                 reject(err);

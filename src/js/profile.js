@@ -73,40 +73,64 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/session-data')
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                if (document.querySelector('#username')) {
-                    const userNameID = document.querySelector('#username');
-                    showUsername(userNameID, data.username);
-                }
+            if (!data.success) return;
 
-                const setActivePage = (button) => {
-                    document.querySelectorAll('.active').forEach(activeButton => {
-                        activeButton.classList.remove('active');
-                    });
-                    button.classList.add('active');
-
-                    const mainContainer = document.getElementById('main-container');
-                    mainContainer.innerHTML = '';
-
-                    if (button.textContent.includes('Personal Info')) {
-                        showPersonalInfo(mainContainer, data.userID);
-
-                    } else if (button.textContent.includes('Profile Settings')) {
-                        showProfileSettings(mainContainer, data.userID);
-
-                    } else if (button.textContent.includes('Favourites')) {
-                        window.location.href = '/favourites';
-                    }
-                };
-
-                document.querySelectorAll('.nav-item').forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        const clickedButton = event.target.closest('.nav-item');
-                        setActivePage(clickedButton);
-                    });
-                });
-                setActivePage(document.querySelector('.nav-item'));
+            // Show username if element exists
+            const usernameEl = document.querySelector('#username');
+            if (usernameEl) {
+                showUsername(usernameEl, data.username);
             }
+
+            // Function to switch content area based on nav button
+            const setActivePage = (button) => {
+                // Remove 'active' from all nav items
+                document.querySelectorAll('.active').forEach(el => {
+                    el.classList.remove('active');
+                });
+
+                // Activate the clicked button
+                button.classList.add('active');
+
+                // Clear and update main container
+                const mainContainer = document.getElementById('main-container');
+                mainContainer.innerHTML = '';
+
+                const label = button.textContent;
+
+                if (label.includes('Personal Info')) {
+                    showPersonalInfo(mainContainer, data.userID);
+                    
+                } else if (label.includes('Profile Settings')) {
+                    showProfileSettings(mainContainer, data.userID);
+
+                } else if (label.includes('Favourites')) {
+                    window.location.href = '/favourites';
+                }
+            };
+
+            // Set up click listeners for all nav items
+            document.querySelectorAll('.nav-item').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const clicked = event.target.closest('.nav-item');
+                    setActivePage(clicked);
+                });
+            });
+
+            // Set default active page to the first nav item
+            const firstNavItem = document.querySelector('.nav-item');
+            if (firstNavItem) {
+                setActivePage(firstNavItem);
+            }
+
+            // Handle back/forward browser navigation
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    const firstNavItem = document.querySelector('.nav-item');
+                    if (firstNavItem) {
+                        setActivePage(firstNavItem);
+                    }
+                }
+            });
         })
     .catch(error => console.error('Error fetching session data:', error));
 });
@@ -118,6 +142,7 @@ function showPersonalInfo(mainContainer, userID) {
             return response.json();
         })
         .then(data => {
+            console.log(data);
             mainContainer.innerHTML = createPersonalInfoHTML(data.email, data.username);
 
             document.querySelector('#logout-button').addEventListener('click', () => {
@@ -159,7 +184,7 @@ function showPersonalInfo(mainContainer, userID) {
                 });
             });
         })
-        .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error));
 }
 
 function showProfileSettings(mainContainer, userID) {
@@ -168,46 +193,80 @@ function showProfileSettings(mainContainer, userID) {
         .then(data => {
             mainContainer.innerHTML = createProfileSettingsHTML(data.email, data.username);
 
+            // Helper function for hiding error fields
+            const hideError = (field) => {
+                const input = document.getElementById(`${field}-input`);
+                const error = document.getElementById(`${field}-error`);
+                if (input) input.classList.remove('error');
+                if (error) error.classList.remove('visible');
+            };
+
+            // Helper functions for editing fields
+            const showEditField = (field) => {
+                document.getElementById(`${field}-display`).style.display = 'none';
+                document.getElementById(`${field}-field`).classList.remove('hidden');
+                document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'none';
+            };
+
+            // Helper functions for cancelling fields
+            const cancelEditField = (field) => {
+                document.getElementById(`${field}-display`).style.display = 'block';
+                document.getElementById(`${field}-field`).classList.add('hidden');
+                document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'block';
+                hideError(field);
+            };
+
+            // Helper functions for updating fields
+            const updateFieldSuccess = (field) => {
+                document.getElementById(`${field}-display`).style.display = 'block';
+                document.getElementById(`${field}-field`).classList.add('hidden');
+                document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'block';
+                hideError(field);
+                window.location.reload();
+            };
+
+            // Helper functions for showing error fields
+            const showFieldError = (field, message) => {
+                const input = document.getElementById(`${field}-input`);
+                const error = document.getElementById(`${field}-error`);
+                if (error) {
+                    error.textContent = message;
+                    error.classList.add('visible');
+                }
+                if (input) input.classList.add('error');
+            };
+
+            // Input click = hide error if visible
             document.querySelectorAll('.input').forEach(input => {
                 input.addEventListener('click', (event) => {
                     const field = event.target.id.split('-')[0];
-                    const inputElement = document.getElementById(`${field}-input`);
-                    const errorElement = document.getElementById(`${field}-error`);
-                    if (errorElement) {
-                        errorElement.classList.remove('visible');
-                        inputElement.classList.remove('error');
-                    }
+                    hideError(field);
                 });
             });
 
+            // Edit button logic
             document.querySelectorAll('.edit-button').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const field = event.target.dataset.field;
-                    document.getElementById(`${field}-display`).style.display = 'none';
-                    document.getElementById(`${field}-field`).classList.remove('hidden');
-                    event.target.style.display = 'none';
+                    showEditField(field);
                 });
             });
-            
+
+            // Cancel button logic
             document.querySelectorAll('.cancel-button').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const field = event.target.dataset.field;
-                    document.getElementById(`${field}-display`).style.display = 'block';
-                    document.getElementById(`${field}-field`).classList.add('hidden');
-                    document.getElementById(`${field}-field`).classList.remove('error');
-                    document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'block';
-                    
-                    document.getElementById(`${field}-input`).classList.remove('error')
-                    document.getElementById(`${field}-error`).classList.remove('visible');
+                    cancelEditField(field);
                 });
             });
-            
+
+            // Save button logic
             document.querySelectorAll('.save-button').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const field = event.target.dataset.field;
                     const newValue = document.getElementById(`${field}-input`).value;
-            
-                    // Send the updated value to the backend
+
+                    // Make API call to update user information
                     fetch(`/update-user/${userID}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
@@ -215,27 +274,11 @@ function showProfileSettings(mainContainer, userID) {
                     })
                     .then(response => response.json())
                     .then(data => {
-                        const errorElement = document.getElementById(`${field}-error`);
-                        const inputElement = document.getElementById(`${field}-input`);
-
                         if (!data.success) {
-                            errorElement.textContent = data.message;
-                            errorElement.classList.add('visible');
-                            inputElement.classList.add('error')
-
+                            showFieldError(field, data.message);
                             return;
                         }
-                        if (data.success) {
-                            document.getElementById(`${field}-display`).style.display = 'block';
-                            document.getElementById(`${field}-field`).classList.add('hidden');
-                            document.querySelector(`.edit-button[data-field="${field}"]`).style.display = 'block';
-
-                            errorElement.classList.remove('visible');
-
-                            alert(`${field} updated successfully!`);
-                            window.location.reload();
-
-                        }
+                        updateFieldSuccess(field);
                     })
                     .catch(error => console.error('Error:', error));
                 });
