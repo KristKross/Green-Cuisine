@@ -142,7 +142,6 @@ function showPersonalInfo(mainContainer, userID) {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             mainContainer.innerHTML = createPersonalInfoHTML(data.email, data.username);
 
             document.querySelector('#logout-button').addEventListener('click', () => {
