@@ -2,6 +2,7 @@
     import '../scss/main.scss';
     import backIconPath from '../assets/icons/back-icon.png';
 
+    // Event listener for when the html is loaded
     document.addEventListener('DOMContentLoaded', () => {
         const loginName = document.querySelector('#login-name');
         const menuToggle = document.querySelector('.menu-toggle');

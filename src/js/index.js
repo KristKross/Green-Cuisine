@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cachedFeaturedRecipes = localStorage.getItem('featuredRecipes');
     const cachedSeasonalRecipes = localStorage.getItem('seasonalRecipes');
 
+        // Check if it's been more than 12 hours since the last fetch
     if (!lastFetchTime || now - lastFetchTime > CACHE_EXPIRY_TIME) {
-        localStorage.setItem('lastFetchTime', now);
+        localStorage.setItem('lastFetchTime', now); // Update the last fetch time
 
         // Fetch Featured Recipes
         try {
@@ -76,7 +77,7 @@ function renderFeaturedRecipes(recipes) {
         recipeCard.addEventListener('click', _.debounce(() => {
             localStorage.setItem('selectedRecipe', JSON.stringify(recipes[index]));
             window.location.href = `/recipe?q=${encodeURIComponent(recipes[index].label)}`;
-        }, 300));
+        }, 100));
     });
 }
 
@@ -103,7 +104,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
         mainContainer.addEventListener('click', _.debounce(() => {
             localStorage.setItem('selectedRecipe', JSON.stringify(mainRecipe));
             window.location.href = `/recipe?q=${encodeURIComponent(mainRecipe.label)}`;
-        }, 300));
+        }, 100));
     }
     
     // Render side recipes
@@ -125,7 +126,7 @@ function renderSeasonalRecipes(seasonalRecipes) {
         sideRecipeElement.addEventListener('click', _.debounce(() => {
             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
             window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
-        }, 300));
+        }, 100));
     });
 }
 
@@ -148,7 +149,7 @@ document.querySelectorAll('.category-card').forEach(card => {
         } else {
             window.location.href = `/search?q=recipe&page=1&mealType=${encodeURIComponent(categoriesMap[category])}`;
         }
-    }, 300));
+    }, 100));
 });
 
 // Function to handle diet preference selection
@@ -167,5 +168,5 @@ document.querySelectorAll('.preference-card').forEach(card => {
         const diet = card.querySelector('h3').textContent.trim().toLowerCase();
 
         window.location.href = `/search?q=recipe&page=1&health=${encodeURIComponent(dietLabelMap[diet])}`;
-    }, 300));
+    }, 100));
 });

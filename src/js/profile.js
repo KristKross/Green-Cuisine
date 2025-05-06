@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error fetching session data:', error));
 });
 
+// Function to show personal info
 function showPersonalInfo(mainContainer, userID) {
     fetch(`/read-user/${userID}`)
         .then(response => {
@@ -142,8 +143,10 @@ function showPersonalInfo(mainContainer, userID) {
             return response.json();
         })
         .then(data => {
+            // Update main container
             mainContainer.innerHTML = createPersonalInfoHTML(data.email, data.username);
 
+            // Add event listeners for logout button
             document.querySelector('#logout-button').addEventListener('click', () => {
                 fetch('/logout', {
                     method: 'POST'
@@ -159,6 +162,7 @@ function showPersonalInfo(mainContainer, userID) {
                 .catch(error => console.error('Error:', error));
             });
 
+            // Add event listener for delete button
             document.querySelector('#delete-button').addEventListener('click', () => {
                 showPopupMessage();
                   
@@ -186,6 +190,7 @@ function showPersonalInfo(mainContainer, userID) {
     .catch(error => console.error('Error:', error));
 }
 
+// Function to show profile settings
 function showProfileSettings(mainContainer, userID) {
     fetch(`/read-user/${userID}`)
         .then(response => response.json())

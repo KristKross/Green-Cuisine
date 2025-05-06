@@ -231,7 +231,7 @@ async function renderRecipes(recipes) {
             const recipe = recipes[index];
             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
             window.location.href = `/recipe?q=${_.lowerCase(recipe.label)}`;
-        }, 300));
+        }, 100));
     });
 
     // Add event listener for favourite button click
@@ -373,7 +373,7 @@ function attachPaginationEventListeners() {
                 dishType: currentDishType,
                 mealType: currentMealType
             });
-        }, 500));
+        }, 100));
     }
 
     if (prevButton) {
@@ -386,6 +386,6 @@ function attachPaginationEventListeners() {
                 dishType: currentDishType,
                 mealType: currentMealType
             });
-        }, 500));
+        }, 100));
     }
 }

@@ -1,10 +1,8 @@
 import _ from 'lodash';
 import { showLoading, removeLoading, showError } from './utils/uiHelpers.js';
 import clockIconPath from '../assets/icons/clock-black-icon.png';
-let userID = '';
 
-// Variables to store current page and recipe name
-let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+let userID = '';
 
 // Event listener for when the html is loaded
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,16 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             
             fetchFavourites(userID)
-
-            // Listen for popstate event
-            window.addEventListener('popstate', (event) => {
-                if (event.state) {
-                    currentPage = event.state.page || 1;
-                    fetchFavourites(userID);
-                } else {
-                    fetchFavourites(userID);
-                }
-            });
 
             // Listen for pageshow event
             window.addEventListener('pageshow', function (event) {
@@ -62,7 +50,6 @@ async function fetchFavourites(userID) {
             
             } else {
                 renderFavouriteRecipes(data.favourites);
-                renderPaginationControls(currentPage);
             }
         } else {
             console.error('Error fetching favourites:', data.message);
@@ -75,11 +62,17 @@ async function fetchFavourites(userID) {
 }
 
 // Function to render favourite recipes
-function renderFavouriteRecipes(favourites) {
+function renderFavouriteRecipes(page) {
     const favouritesContainer = document.getElementById('results');
-    favouritesContainer.innerHTML = favourites.map((recipe, index) => {
+    favouritesContainer.style.display = 'grid';
+
+    const startIndex = (page - 1) * RECIPES_PER_PAGE;
+    const endIndex = startIndex + RECIPES_PER_PAGE;
+    const paginatedFavourites = allFavourites.slice(startIndex, endIndex);
+
+    favouritesContainer.innerHTML = paginatedFavourites.map((recipe, index) => {
         return `
-            <div class="recipe" data-index="${index}">
+            <div class="recipe" data-index="${startIndex + index}">
                 <div class="recipe-image-container">
                     <img src="${recipe.image}" alt="${recipe.label}">
                 </div>
@@ -95,12 +88,13 @@ function renderFavouriteRecipes(favourites) {
         `;
     }).join('');
 
-    document.querySelectorAll('.recipe').forEach((recipeElement, index) => {
+    document.querySelectorAll('.recipe').forEach((recipeElement) => {
         recipeElement.addEventListener('click', _.debounce(() => {
-            const recipe = favourites[index];
+            const recipeIndex = parseInt(recipeElement.getAttribute('data-index'));
+            const recipe = allFavourites[recipeIndex];
             recipe.label = recipe.label.toLowerCase();
             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
             window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
-        }, 300));
+        }, 100));
     });
 }
