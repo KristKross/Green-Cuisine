@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { showLoading, removeLoading, showError } from './utils/uiHelpers.js';
 import clockIconPath from '../assets/icons/clock-black-icon.png';
-
 let userID = '';
 
 // Event listener for when the html is loaded
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.location.href = '/login';
                 return 
             }
-            
+
             fetchFavourites(userID)
 
             // Listen for pageshow event
@@ -47,9 +46,10 @@ async function fetchFavourites(userID) {
             if (data.favourites.length === 0) {
                 showError('No Favourites Yet!', 'It looks like you haven\'t added any favourites here.');
                 favouritesContainer.style.display = 'none';
-            
+
             } else {
                 renderFavouriteRecipes(data.favourites);
+                renderPaginationControls(currentPage);
             }
         } else {
             console.error('Error fetching favourites:', data.message);
@@ -62,17 +62,11 @@ async function fetchFavourites(userID) {
 }
 
 // Function to render favourite recipes
-function renderFavouriteRecipes(page) {
+function renderFavouriteRecipes(favourites) {
     const favouritesContainer = document.getElementById('results');
-    favouritesContainer.style.display = 'grid';
-
-    const startIndex = (page - 1) * RECIPES_PER_PAGE;
-    const endIndex = startIndex + RECIPES_PER_PAGE;
-    const paginatedFavourites = allFavourites.slice(startIndex, endIndex);
-
-    favouritesContainer.innerHTML = paginatedFavourites.map((recipe, index) => {
+    favouritesContainer.innerHTML = favourites.map((recipe, index) => {
         return `
-            <div class="recipe" data-index="${startIndex + index}">
+            <div class="recipe" data-index="${index}">
                 <div class="recipe-image-container">
                     <img src="${recipe.image}" alt="${recipe.label}">
                 </div>
@@ -88,13 +82,13 @@ function renderFavouriteRecipes(page) {
         `;
     }).join('');
 
-    document.querySelectorAll('.recipe').forEach((recipeElement) => {
+    document.querySelectorAll('.recipe').forEach((recipeElement, index) => {
         recipeElement.addEventListener('click', _.debounce(() => {
-            const recipeIndex = parseInt(recipeElement.getAttribute('data-index'));
-            const recipe = allFavourites[recipeIndex];
+            const recipe = favourites[index];
+
             recipe.label = recipe.label.toLowerCase();
             localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
             window.location.href = `/recipe?q=${encodeURIComponent(recipe.label)}`;
-        }, 100));
+        }, 300));
     });
 }
