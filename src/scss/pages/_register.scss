@@ -41,18 +41,17 @@
     .background-image {
         width: 50%;
         min-height: 100vh;
-        background-image: url('../assets/images/recipe-background.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        object-fit: cover;
 
         @include tablet {
             width: 100%;
+            height: 200px;
             min-height: 200px;
         }
 
         @include mobile {
             width: 100%;
+            height: 100px;
             min-height: 100px;
         }
     }
