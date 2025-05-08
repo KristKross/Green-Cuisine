@@ -64,11 +64,16 @@ function renderFeaturedRecipes(recipes) {
         <div class="featured-container">
             ${recipes.slice(0, 3).map((recipe, index) => `
                 <div class="featured-card ${classes[index]}" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent), url('${recipe.image}');">
-                    <div class="time-container">
-                        <img src="${clockIconPath}" alt="Clock" class="clock-image">
-                        <h4>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h4>
+                <div class="featured-box">
+                    <h4>Featured Recipe</h4>
+                </div>
+                <div class="text-wrapper">
+                        <div class="time-container">
+                            <img src="${clockIconPath}" alt="Clock" class="clock-image">
+                            <h4>${recipe.totalTime === 0 ? "N/A" : `${recipe.totalTime} min`}</h4>
+                        </div>
+                        <h3 class="recipe-name">${recipe.label}</h3>
                     </div>
-                    <h3 class="recipe-name">${recipe.label}</h3>
                 </div>
             `).join('')}
         </div>

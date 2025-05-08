@@ -46,6 +46,7 @@
 
         h1 {
             font-weight: $font-black;
+            line-height: 0.9;
         }
 
         p {
@@ -56,7 +57,7 @@
     #featured {
         height: 100vh;
         min-height: 150px;
-        max-height: 200px;
+        max-height: 250px;
         background-color: $color-secondary;
 
         @media screen and (max-height: 800px) {
@@ -95,23 +96,24 @@
         }
     
         @include mobile {
-            max-width: 80%;
             top: -80px;
         }
     }
 
     .featured-card {
+        padding: 20px;
         margin: 0;
+        display: flex;
+        justify-content: space-between;
         background-color: $color-secondary;
         border-radius: 5px;
-        padding: 20px;
         box-shadow: $shadow-default;
     }
     
     .main-card {
         @extend .card;
         @extend .card--main;
-        @include animateSlideUp; 
+        @include animateSlideUp;
     }
     
     .sub-card {
@@ -127,6 +129,26 @@
     .right {
         @extend .card--right;
         @include animateSlideUpRight;
+    }
+
+    .featured-box {
+        padding: 5px 15px;
+        background-color: $color-primary;
+        border-radius: 5px;
+        box-shadow: $shadow-default;
+    }
+
+    .text-wrapper {
+        padding: 20px 0;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include responsive {
+            padding: 0;
+        }
     }
 
     .recipe-name {

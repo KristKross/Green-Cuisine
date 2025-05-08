@@ -15,7 +15,6 @@
         min-height: 90vh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
 
         @include responsive {
             padding-top: 0; 

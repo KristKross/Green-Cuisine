@@ -226,6 +226,9 @@ body.scrolled .dropdown-container:not(.show) {
         position: relative;
 
         &:hover {
+            text-decoration: underline;
+            text-decoration-color: $color-white;
+            
             .sub-menu {
                 display: flex;
 
