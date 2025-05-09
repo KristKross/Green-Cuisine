@@ -2,6 +2,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const mysql = require('mysql2');
 const MySQLStore = require('express-mysql-session')(session);
@@ -169,6 +170,7 @@ app.get('/featured-search', async (req, res) => {
     }
 });
 
+// Route to fetch seasonal recipes
 app.get('/seasonal-recipes', async (req, res) => {
     const recipeName = getRandomSeasonalIngredient();
 
@@ -221,41 +223,51 @@ app.post('/register', (req, res) => {
         }
         
         // Insert the user data into the database
-        const insertQuery = 'INSERT INTO users (email, username, password) VALUES (?, ?, ?)';
-        connection.query(insertQuery, [email, username, password], (err, results) => {
+        bcrypt.hash(password, 10, (err, hash) => {
             if (err) {
-                console.error('Error inserting data:', err);
-                res.json({ success: false, message: 'Error occurred' });
-                return;
+                console.error('Error hashing password:', err);
+                return res.json({ success: false, message: 'Error occurred while securing your password' });
             }
-            res.json({ success: true, message: 'User registered successfully'});
-        });
+            
+            // Insert the user data
+            const insertQuery = 'INSERT INTO users (email, username, password) VALUES (?, ?, ?)';
+            connection.query(insertQuery, [email, username, hash], (err, results) => {
+                if (err) {
+                    console.error('Error inserting data:', err);
+                    return res.json({ success: false, message: 'Error occurred' });
+                }
+                res.json({ success: true, message: 'User registered successfully' });
+            });
+        });        
     });
 });
 
+// Function to handle user login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
     // Example query to verify user
-    const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
-    connection.query(query, [email, password], (err, results) => {
+    const query = 'SELECT * FROM users WHERE email = ?';
+    connection.query(query, [email], (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);
-            res.json({ success: false, message: 'Error occurred' });
-            return;
+            return res.json({ success: false, message: 'Error occurred' });
         }
 
         if (results.length === 0) {
-            res.json({ success: false, message: 'Invalid email or password' });
-            return;
+            return res.json({ success: false, message: 'Invalid email or password' });
         }
 
-        // Store username in the session
         const user = results[0];
-        req.session.username = user.Username;
-        req.session.userID = user.UserID
+        bcrypt.compare(password, user.Password, (err, isMatch) => {
+            if (err || !isMatch) {
+                return res.json({ success: false, message: 'Invalid email or password' });
+            }
 
-        res.json({ success: true, message: 'Login successful'});
+            req.session.username = user.Username;
+            req.session.userID = user.UserID;
+            res.json({ success: true, message: 'Login successful' });
+        });
     });
 });
 
@@ -297,6 +309,7 @@ app.put('/update-user/:userID', (req, res) => {
         return;
     }
 
+    // Check if email is provided
     if (email) {
         const queryCheckEmail = 'SELECT * FROM users WHERE email = ? AND UserID != ?';
         connection.query(queryCheckEmail, [email, userID], (err, results) => {
@@ -314,11 +327,37 @@ app.put('/update-user/:userID', (req, res) => {
         values.push(email);
     }
 
+    // Check if password is provided
     if (password) {
-        fieldsToUpdate.push('password = ?');
-        values.push(password);
+        // Hash the new password before updating
+        bcrypt.hash(password, 10, (err, hash) => {
+            if (err) {
+                console.error('Error hashing new password:', err);
+                return res.json({ success: false, message: 'Error occurred while hashing new password' });
+            }
+            
+            // Add the password field to the fieldsToUpdate array
+            fieldsToUpdate.push('password = ?');
+
+            // Add the hashed password and userID to the values array
+            values.push(hash);
+            values.push(userID);
+            
+            // Update the user's password
+            const query = `UPDATE users SET ${fieldsToUpdate.join(', ')} WHERE UserID = ?`;
+            connection.query(query, values, (err, results) => {
+                if (err) {
+                    console.error('Error updating data:', err);
+                    return res.json({ success: false, message: 'Error occurred' });
+                }
+                res.json({ success: true, message: 'User updated successfully' });
+            });
+        });
+
+        return;
     }
     
+    // Add the username field to the fieldsToUpdate array
     if (username) {
         if (username.length < 3) {
             res.json({ success: false, message: 'Username must be at least 3 characters long' });

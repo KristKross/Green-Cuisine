@@ -72,6 +72,7 @@ To get started with this project, follow the steps below to set up your local en
 ## Dependencies List
    #### Dependencies:
    - axios: ^1.8.2
+   - bcrypt: ^5.1.1
    - dotenv: ^16.4.7
    - express: ^4.21.2
    - express-mysql-session: ^3.0.3
